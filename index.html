@@ -215,8 +215,10 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   .carousel-pair{height:56vw;max-height:62vw}
   .carousel-pair img{object-fit:contain;object-position:center center}
 
-  /* Carrousel actus : hauteur adaptée mobile */
-  .actu-carousel-wrap{height:72vw;max-height:80vw}
+ /* Carrousel actus : hauteur adaptée mobile */
+@media(max-width:600px){.actu-carousel-wrap{height:520px;max-height:none;}
+
+  .actu-slide img{object-fit:contain;object-position:center center;}}
 
   /* Cartes hero actu */
   .news-hero-body h3{font-size:1rem}
@@ -277,7 +279,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 /* CARROUSEL ACTUALITÉS */
 .actu-carousel-wrap{position:relative;height:calc(100dvh - 210px);overflow:hidden;background:#000}
 .actu-track{display:flex;height:100%;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}
-.actu-slide{flex:0 0 calc(100% / 3);width:calc(100% / 3);height:100%;position:relative;overflow:hidden;}
+.actu-slide{flex:0 0 100%;width:100%;height:100%;position:relative;overflow:hidden;}
 .actu-slide img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;transition:transform .5s ease}
 .actu-slide img:hover{transform:scale(1.06)}.actu-slide img{cursor:pointer}
 .actu-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px 22px 20px;background:linear-gradient(transparent 0%,rgba(13,46,53,.92) 40%,rgba(13,46,53,.98) 100%);color:#fff}
@@ -305,13 +307,12 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 .actu-slide picture img{
     max-width:100%;
 }
-}
 
-/* Réglages mobile */
-@media (max-width:768px){
 
-    .actu-carousel-wrap{
-        height:320px;
+    /* 1 slide plein écran par vue sur mobile */
+    .actu-slide{
+        flex:0 0 100%;
+        width:100%;
     }
 
     .actu-slide img{
@@ -398,6 +399,10 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
          onerror="this.style.display='none';this.parentNode.style.background='var(--encre)'">
   </picture>
 
+         alt="Pâtes de fruits Fraise Banane Guarana"
+         onerror="this.style.display='none';this.parentNode.style.background='var(--encre)'">
+  </picture>
+
   <div class="actu-overlay">
     <span class="tag tag--boost">Nouveauté</span>
     <h3>Pâtes de fruits Fraise Banane Guarana</h3>
@@ -408,34 +413,57 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 
      <div class="actu-slide">
   <picture>
-    <source media="(max-width:768px)" srcset="actu/sticks-mobile.webp">
 
-    <img src="actu/sticks.webp"
-         alt="Sticks Électrolytes Recharge"
-         onerror="this.style.display='none';this.parentNode.style.background='var(--encre)'">
+    <!-- Version mobile verticale -->
+    <source
+      media="(max-width:768px)"
+      srcset="actu/sticks-mobile.webp">
+
+    <!-- Version desktop horizontale -->
+    <img
+      src="actu/sticks.webp"
+      alt="Sticks Électrolytes Recharge"
+      onerror="this.style.display='none';this.parentNode.style.background='var(--encre)'">
+
   </picture>
 
   <div class="actu-overlay">
-    <span class="tag tag--electro">Nouveauté</span>
+    <span class="tag">Nouveauté</span>
     <h3>Sticks Électrolytes Recharge</h3>
-    <p>Nouveaux sticks à diluer dans 500 ml d'eau — ananas passion pomme &amp; fruits rouges. Sans édulcorants. 350 mg sodium · 470 mg potassium. Display de 30.</p>
+    <p>
+      Nouveaux sticks à diluer dans 500 ml d'eau.
+      Ananas passion pomme & fruits rouges.
+      Sans édulcorants.
+    </p>
     <div class="date">Juin 2026</div>
   </div>
 </div>
 
-      <div class="actu-slide">
+     <div class="actu-slide">
   <picture>
-    <source media="(max-width:768px)" srcset="actu/barres-mobile.webp">
 
-    <img src="actu/barres.webp"
-         alt="Activ Bar Myrtilles Cranberries"
-         onerror="this.style.display='none';this.parentNode.style.background='var(--encre)'">
+    <!-- Version mobile verticale -->
+    <source
+      media="(max-width:768px)"
+      srcset="actu/barres-mobile.webp">
+
+    <!-- Version desktop horizontale -->
+    <img
+      src="actu/barres.webp"
+      alt="Activ Bar Myrtilles Cranberries"
+      onerror="this.style.display='none';this.parentNode.style.background='var(--encre)'">
+
   </picture>
 
   <div class="actu-overlay">
     <span class="tag tag--activ">Nouveauté</span>
     <h3>Activ Bar Myrtilles Cranberries</h3>
-    <p>Le duo gagnant rejoint la gamme Activ Bar ! 5 vitamines · 22 g de glucides · 4 électrolytes. Avant &amp; pendant l'effort. Display de 16.</p>
+    <p>
+      Le duo gagnant rejoint la gamme Activ Bar !
+      5 vitamines · 22 g de glucides · 4 électrolytes.
+      Avant &amp; pendant l'effort.
+      Display de 16.
+    </p>
     <div class="date">Juin 2026</div>
   </div>
 </div>
@@ -1433,11 +1461,17 @@ recompute();
 
   function goTo(n){
     cur = (n + total) % total;
-    track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-    dotsWrap.querySelectorAll('.actu-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
-    if(counter) counter.textContent = (cur+1) + ' / ' + total;
-  }
 
+    track.style.transform =
+        'translateX(-' + (cur * 100) + '%)';
+
+    dotsWrap.querySelectorAll('.actu-dot')
+        .forEach((d,i)=>d.classList.toggle('active',i===cur));
+
+    if(counter){
+        counter.textContent = (cur + 1) + ' / ' + total;
+    }
+}
   document.getElementById('actuPrev').addEventListener('click',()=>goTo(cur-1));
   document.getElementById('actuNext').addEventListener('click',()=>goTo(cur+1));
 
