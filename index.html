@@ -277,7 +277,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 /* CARROUSEL ACTUALITÉS */
 .actu-carousel-wrap{position:relative;height:calc(100dvh - 210px);overflow:hidden;background:#000}
 .actu-track{display:flex;height:100%;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}
-.actu-slide{min-width:100%;height:100%;position:relative;flex-shrink:0}
+.actu-slide{flex:0 0 calc(100% / 3);width:calc(100% / 3);height:100%;position:relative;overflow:hidden;}
 .actu-slide img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;transition:transform .5s ease}
 .actu-slide img:hover{transform:scale(1.06)}.actu-slide img{cursor:pointer}
 .actu-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px 22px 20px;background:linear-gradient(transparent 0%,rgba(13,46,53,.92) 40%,rgba(13,46,53,.98) 100%);color:#fff}
@@ -300,12 +300,11 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     height:100%;
 }
 
+.actu-slide picture,
+.actu-slide picture source,
 .actu-slide picture img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center center;
-    display:block;
+    max-width:100%;
+}
 }
 
 /* Réglages mobile */
