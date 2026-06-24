@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -156,12 +156,12 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 .lightbox-close{position:absolute;top:16px;right:20px;color:#fff;font-size:2.2rem;font-weight:700;cursor:pointer;line-height:1;opacity:.9;z-index:10;background:rgba(0,0,0,.3);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
 .lightbox-close:hover{opacity:1;background:rgba(0,0,0,.5)}
 /* Boutons zoom */
-.lightbox-zoom-bar{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:10px;align-items:center;z-index:10}
-.lb-zoom-btn{background:rgba(255,255,255,.18);backdrop-filter:blur(6px);border:none;color:#fff;font-size:1.4rem;font-weight:700;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
-.lb-zoom-btn:hover{background:rgba(255,255,255,.35)}
-.lb-zoom-reset{font-size:.72rem;font-weight:800;letter-spacing:.06em;width:auto;padding:0 14px;border-radius:999px;background:rgba(167,218,32,.25);border:1px solid rgba(167,218,32,.5)}
+
+
+
+
 /* Indicateur zoom */
-.lb-zoom-level{color:rgba(255,255,255,.7);font-size:.7rem;font-weight:700;letter-spacing:.05em;background:rgba(0,0,0,.3);padding:4px 10px;border-radius:999px}
+
 
 /* BARRE FIXE */
 .bottombar{position:fixed;left:0;right:0;bottom:0;background:var(--encre);color:#fff;z-index:50;box-shadow:0 -6px 24px rgba(0,0,0,.2);transition:transform .2s}
@@ -212,11 +212,11 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   .section-title{padding:16px 16px 8px;font-size:.85rem}
 
   /* Carrousel gamme : hauteur adaptée mobile */
-  .carousel-pair{height:calc(100vw * 1.1);max-height:70vh}
-  .carousel-pair img{object-fit:contain}
+  .carousel-pair{height:56vw;max-height:62vw}
+  .carousel-pair img{object-fit:contain;object-position:center center}
 
   /* Carrousel actus : hauteur adaptée mobile */
-  .actu-carousel-wrap{height:calc(100vw * 1.15);max-height:72vh}
+  .actu-carousel-wrap{height:72vw;max-height:80vw}
 
   /* Cartes hero actu */
   .news-hero-body h3{font-size:1rem}
@@ -226,8 +226,8 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   .gamme-intro p{font-size:.74rem}
 
   /* Lightbox zoom bar visible et bien placée sur mobile */
-  .lightbox-zoom-bar{bottom:12px;gap:8px}
-  .lb-zoom-btn{width:48px;height:48px;font-size:1.5rem}
+
+
 
   /* Ressources */
   .res-wrap{padding:14px 14px 0}
@@ -248,8 +248,9 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 .carousel-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}
 .carousel-slide{min-width:100%;position:relative}
 .carousel-slide{min-width:100%;position:relative}
-.carousel-pair{display:flex;gap:3px;background:var(--encre-dk);align-items:stretch;height:calc(100dvh - 210px)}
-.carousel-pair img{flex:1;display:block;object-fit:contain;object-position:top center;height:100%;min-width:0}
+.carousel-pair{display:flex;gap:3px;background:var(--encre-dk);align-items:stretch;height:calc(100dvh - 210px);overflow:hidden}
+.carousel-pair img{flex:1;display:block;object-fit:contain;object-position:top center;height:100%;min-width:0;transition:transform .45s ease}
+.carousel-pair img:hover{transform:scale(1.06)}.carousel-pair img{cursor:pointer}
 .cp-3 img{width:33.333%}
 .cp-4 img{width:25%}
 .carousel-empty{flex:1;background:var(--encre-dk)}
@@ -276,8 +277,9 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 /* CARROUSEL ACTUALITÉS */
 .actu-carousel-wrap{position:relative;height:calc(100dvh - 210px);overflow:hidden;background:#000}
 .actu-track{display:flex;height:100%;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform}
-.actu-slide{min-width:100%;height:100%;position:relative;flex-shrink:0}
-.actu-slide img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.actu-slide{min-width:100%;height:100%;position:relative;flex-shrink:0;overflow:hidden}
+.actu-slide img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .5s ease}
+.actu-slide img:hover{transform:scale(1.06)}.actu-slide img{cursor:pointer}
 .actu-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px 22px 20px;background:linear-gradient(transparent 0%,rgba(13,46,53,.92) 40%,rgba(13,46,53,.98) 100%);color:#fff}
 .actu-overlay .tag{margin-bottom:10px}
 .actu-overlay h3{font-size:1.2rem;font-weight:800;line-height:1.25;margin-bottom:8px}
@@ -313,12 +315,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="lightbox-img-wrap" id="lbImgWrap">
     <img id="lb-img" src="" alt="">
   </div>
-  <div class="lightbox-zoom-bar">
-    <button class="lb-zoom-btn" onclick="lbZoom(-1)" title="Dézoomer">−</button>
-    <span class="lb-zoom-level" id="lbZoomLevel">100%</span>
-    <button class="lb-zoom-btn lb-zoom-reset" onclick="lbZoomReset()" title="Taille réelle">↺ Reset</button>
-    <button class="lb-zoom-btn" onclick="lbZoom(1)" title="Zoomer">+</button>
-  </div>
+
 </div>
 
 <div class="brandbar">
@@ -438,7 +435,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="prod-list">
     <div class="prod" data-net="0.498" data-pcb="32" data-ref="50121867" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50121867.png" alt="ABRICOT BANANE"
+        <img src="images/50121867.webp" alt="ABRICOT BANANE"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍬</span><span class=\'ph-ref\'>50121867</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -468,7 +465,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="0.498" data-pcb="32" data-ref="50121866" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50121866.png" alt="FRUIT ROUGES"
+        <img src="images/50121866.webp" alt="FRUIT ROUGES"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍬</span><span class=\'ph-ref\'>50121866</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -498,7 +495,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="3.07" data-pcb="10" data-ref="50120744" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50120744.png" alt="ETUI MIX DE 6 (3 FR + 3AB)"
+        <img src="images/50120744.webp" alt="ETUI MIX DE 6 (3 FR + 3AB)"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍬</span><span class=\'ph-ref\'>50120744</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -528,7 +525,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="3.31" data-pcb="10" data-ref="50137700" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50137700.png" alt="ETUI X6 FRAISE BANANE GUARANA"
+        <img src="images/50137700.webp" alt="ETUI X6 FRAISE BANANE GUARANA"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍬</span><span class=\'ph-ref\'>50137700</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -567,7 +564,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="prod-list">
     <div class="prod" data-net="1.25" data-pcb="18" data-ref="50133117" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50133117.png" alt="POMME MANGUE PASSION"
+        <img src="images/50133117.webp" alt="POMME MANGUE PASSION"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍎</span><span class=\'ph-ref\'>50133117</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -597,7 +594,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.25" data-pcb="18" data-ref="50133116" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50133116.png" alt="POMME BANANE"
+        <img src="images/50133116.webp" alt="POMME BANANE"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍎</span><span class=\'ph-ref\'>50133116</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -627,7 +624,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.25" data-pcb="18" data-ref="50133118" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50133118.png" alt="POMME FRAISE CASSIS"
+        <img src="images/50133118.webp" alt="POMME FRAISE CASSIS"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍎</span><span class=\'ph-ref\'>50133118</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -666,7 +663,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="prod-list">
     <div class="prod" data-net="1.555" data-pcb="18" data-ref="50128308" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50128308.png" alt="POMME TOMATE POIVRON"
+        <img src="images/50128308.webp" alt="POMME TOMATE POIVRON"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🥕</span><span class=\'ph-ref\'>50128308</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -696,7 +693,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.555" data-pcb="18" data-ref="50128307" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50128307.png" alt="POMME BUTTERNUT CURCUMA"
+        <img src="images/50128307.webp" alt="POMME BUTTERNUT CURCUMA"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🥕</span><span class=\'ph-ref\'>50128307</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -735,7 +732,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="prod-list">
     <div class="prod" data-net="1.4" data-pcb="16" data-ref="50134503" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50134503.png" alt="MYRTILLES CRANBERRIES"
+        <img src="images/50134503.webp" alt="MYRTILLES CRANBERRIES"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍫</span><span class=\'ph-ref\'>50134503</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -765,7 +762,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.4" data-pcb="16" data-ref="50119521" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50119521.png" alt="POMME POIRE ABRICOT"
+        <img src="images/50119521.webp" alt="POMME POIRE ABRICOT"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍫</span><span class=\'ph-ref\'>50119521</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -795,7 +792,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.4" data-pcb="16" data-ref="50119519" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50119519.png" alt="FRUITS ROUGES"
+        <img src="images/50119519.webp" alt="FRUITS ROUGES"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍫</span><span class=\'ph-ref\'>50119519</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -825,7 +822,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.4" data-pcb="16" data-ref="50119520" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50119520.png" alt="BANANE CHOCOLAT"
+        <img src="images/50119520.webp" alt="BANANE CHOCOLAT"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🍫</span><span class=\'ph-ref\'>50119520</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -864,7 +861,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="prod-list">
     <div class="prod" data-net="0.85" data-pcb="30" data-ref="50132077" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50132077.png" alt="ANANAS PASSION POMME"
+        <img src="images/50132077.webp" alt="ANANAS PASSION POMME"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>⚡</span><span class=\'ph-ref\'>50132077</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -894,7 +891,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="0.85" data-pcb="30" data-ref="50129284" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50129284.png" alt="FRUITS ROUGES"
+        <img src="images/50129284.webp" alt="FRUITS ROUGES"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>⚡</span><span class=\'ph-ref\'>50129284</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -933,7 +930,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="prod-list">
     <div class="prod" data-net="1.15" data-pcb="30" data-ref="50119284" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50119284.png" alt="GEL BOOST AGRUMES YUZU"
+        <img src="images/50119284.webp" alt="GEL BOOST AGRUMES YUZU"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🔋</span><span class=\'ph-ref\'>50119284</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -963,7 +960,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.15" data-pcb="30" data-ref="50119285" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50119285.png" alt="GEL ANTIOXYDANT CASSIS BETTERAVE"
+        <img src="images/50119285.webp" alt="GEL ANTIOXYDANT CASSIS BETTERAVE"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🔋</span><span class=\'ph-ref\'>50119285</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -993,7 +990,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="1.15" data-pcb="30" data-ref="50125944" data-tva="0.055">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50125944.png" alt="GEL BOOST FRAISE CRANBERRY GOYAVE"
+        <img src="images/50125944.webp" alt="GEL BOOST FRAISE CRANBERRY GOYAVE"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🔋</span><span class=\'ph-ref\'>50125944</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -1032,7 +1029,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="prod-list">
     <div class="prod" data-net="0.955" data-pcb="14" data-ref="50127575" data-tva="0.2">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50127575.png" alt="MANGUE BANANE Sachet de 6 gummies"
+        <img src="images/50127575.webp" alt="MANGUE BANANE Sachet de 6 gummies"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🐻</span><span class=\'ph-ref\'>50127575</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -1062,7 +1059,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     </div>
     <div class="prod" data-net="0.955" data-pcb="14" data-ref="50132677" data-tva="0.2">
       <div class="prod-thumb" onclick="openLightbox(this)">
-        <img src="images/50132677.png" alt="FRAISE  Sachet de 6 gummies"
+        <img src="images/50132677.webp" alt="FRAISE  Sachet de 6 gummies"
              onerror="this.parentNode.innerHTML='<div class=\'thumb-placeholder\'><span class=\'ph-icon\'>🐻</span><span class=\'ph-ref\'>50132677</span></div>'"
              style="width:100%;height:100%;object-fit:contain">
       </div>
@@ -1191,7 +1188,7 @@ let lbDragOrig = null, lbDragPos = {x:0, y:0}, lbDragStart = {x:0, y:0};
 function lbUpdateTransform(){
   const img = document.getElementById('lb-img');
   img.style.transform = `scale(${lbScale}) translate(${lbDragPos.x}px, ${lbDragPos.y}px)`;
-  document.getElementById('lbZoomLevel').textContent = Math.round(lbScale*100)+'%';
+
 }
 
 function lbZoom(dir){
@@ -1222,7 +1219,7 @@ function openLightbox(src){
 }
 
 function closeLightbox(e){
-  if(e&&(e.target===document.getElementById('lb-img')||e.target.closest('.lightbox-zoom-bar'))) return;
+  if(e&&e.target===document.getElementById('lb-img')) return;
   document.getElementById('lightbox').style.display='none';
   document.body.style.overflow='';
   lbScale=1; lbDragPos={x:0,y:0};
@@ -1449,6 +1446,23 @@ recompute();
   let timer = setInterval(()=>goTo(cur+1), 5000);
   car.addEventListener('mouseenter',()=>clearInterval(timer));
   car.addEventListener('mouseleave',()=>{timer=setInterval(()=>goTo(cur+1),5000);});
+})();
+
+// Lightbox au tap/clic sur les images des carousels
+(function(){
+  function attachLightbox(img){
+    var ts={x:0,y:0};
+    img.addEventListener('touchstart',function(e){
+      ts={x:e.touches[0].clientX,y:e.touches[0].clientY};
+    },{passive:true});
+    img.addEventListener('touchend',function(e){
+      var dx=Math.abs(e.changedTouches[0].clientX-ts.x);
+      var dy=Math.abs(e.changedTouches[0].clientY-ts.y);
+      if(dx<12&&dy<12){e.preventDefault();openLightbox(img.src);}
+    });
+    img.addEventListener('click',function(){openLightbox(img.src);});
+  }
+  document.querySelectorAll('.carousel-pair img,.actu-slide img').forEach(attachLightbox);
 })();
 </script>
 </body>
