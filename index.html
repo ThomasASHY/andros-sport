@@ -1449,27 +1449,10 @@ recompute();
 })();
 
 // Lightbox au tap/clic sur les images des carousels
-(function(){
-  function attachLightbox(img){
-    var ts={x:0,y:0};
-    var wasSwiped=false;
-    img.addEventListener('touchstart',function(e){
-      ts={x:e.touches[0].clientX,y:e.touches[0].clientY};
-      wasSwiped=false;
-    },{passive:true});
-    img.addEventListener('touchend',function(e){
-      var dx=Math.abs(e.changedTouches[0].clientX-ts.x);
-      var dy=Math.abs(e.changedTouches[0].clientY-ts.y);
-      if(dx<12&&dy<12){e.preventDefault();openLightbox(img.src);}
-      else{wasSwiped=true;}
-    });
-    img.addEventListener('click',function(){
-      if(wasSwiped){wasSwiped=false;return;}
-      openLightbox(img.src);
-    });
-  }
-  document.querySelectorAll('.carousel-pair img,.actu-slide img').forEach(attachLightbox);
-})();
+// Le navigateur mobile supprime le click après un swipe — pas besoin de touch handlers
+document.querySelectorAll('.carousel-pair img,.actu-slide img').forEach(function(img){
+  img.addEventListener('click',function(){openLightbox(img.src);});
+});
 </script>
 </body>
 </html>
