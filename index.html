@@ -1528,7 +1528,7 @@ recompute();
 // Lightbox au tap/clic sur les images des carousels
 // Le navigateur mobile supprime le click après un swipe — pas besoin de touch handlers
 document.querySelectorAll('.carousel-pair img,.actu-slide img').forEach(function(img){
-  img.addEventListener('click',function(){openLightbox(img.src);});
+  img.addEventListener('click',function(){openLightbox(img.currentSrc || img.src);});
 });
 </script>
 </body>
