@@ -50,6 +50,39 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 .field input.required.filled{border-color:var(--lime)}
 .field.full{grid-column:1/-1}
 .req{color:var(--red);font-size:.8rem;margin-left:1px}
+/* Bulle verte — magasin */
+.field-bulle input{border-radius:999px;padding:10px 18px;font-size:.98rem;font-weight:700;background:var(--lime-clair);border-color:var(--lime);border-width:2px}
+.field-bulle input:focus{border-color:var(--lime-dk);box-shadow:0 0 0 3px rgba(167,218,32,.25)}
+.field-bulle input.required{border-color:var(--lime);border-width:2px}
+.field-bulle input.required.filled{border-color:var(--lime-dk)}
+/* Champs verts secondaires — CP, Ville */
+.field-green input{background:var(--lime-clair);border-color:var(--lime);border-width:1.5px}
+.field-green input:focus{border-color:var(--lime-dk);box-shadow:0 0 0 3px rgba(167,218,32,.25)}
+.field-green input.required{border-color:var(--lime);border-width:2px}
+.field-green input.required.filled{border-color:var(--lime-dk)}
+/* Bulle bleu nuit — contact */
+.field-bulle-blue input{border-radius:999px;padding:10px 18px;font-size:.98rem;font-weight:700;background:#E5EDEF;border-color:var(--encre);border-width:2px;color:var(--encre)}
+.field-bulle-blue input:focus{border-color:var(--encre-dk);box-shadow:0 0 0 3px rgba(19,63,73,.2)}
+.field-bulle-blue input.required{border-color:var(--encre);border-width:2px}
+.field-bulle-blue input.required.filled{border-color:var(--encre-dk)}
+/* Autocomplete CP */
+.cp-wrap{position:relative}
+.cp-drop{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--encre);border-radius:10px;box-shadow:0 6px 18px rgba(19,63,73,.14);z-index:200;overflow:hidden;display:none}
+.cp-drop.open{display:block}
+.cp-opt{padding:9px 14px;font-size:.87rem;cursor:pointer;border-bottom:1px solid var(--ligne);display:flex;gap:8px;align-items:baseline}
+.cp-opt:last-child{border-bottom:none}
+.cp-opt:hover,.cp-opt:focus{background:var(--lime-clair);outline:none}
+.cp-opt b{color:var(--encre);font-weight:700;min-width:48px}
+.cp-opt span{color:var(--gris)}
+/* Champs bleu nuit secondaires — téléphone, email */
+.field-blue input{background:#E5EDEF;border-color:var(--encre);border-width:1.5px;color:var(--encre)}
+.field-blue input:focus{border-color:var(--encre-dk);box-shadow:0 0 0 3px rgba(19,63,73,.2)}
+.field-blue input.required{border-color:var(--encre);border-width:2px}
+.field-blue input.required.filled{border-color:var(--encre-dk)}
+.field-notes{margin-top:10px}
+.field-notes label{display:block;font-size:.72rem;color:var(--gris);margin-bottom:4px;font-weight:600}
+.field-notes textarea{width:100%;border:1.5px solid #ccc;border-radius:14px;padding:10px 14px;font-size:.88rem;font-family:inherit;background:#F2F2F0;color:var(--encre-dk);resize:none;min-height:66px;box-sizing:border-box}
+.field-notes textarea:focus{outline:none;border-color:#aaa;box-shadow:0 0 0 3px rgba(120,120,120,.15)}
 .secteur-info{margin-top:12px;font-size:.8rem;padding:9px 12px;border-radius:9px;background:#FBFBF9;border:1px solid var(--ligne);color:var(--gris)}
 .secteur-info.ok{background:var(--lime-clair);border-color:var(--lime);color:var(--lime-dk);font-weight:600}
 .secteur-info.warn{background:#FFE8DE;border-color:#FFBFA0;color:var(--red-dk);font-weight:600}
@@ -58,8 +91,11 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 .section-title{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.95rem;padding:20px 24px 8px;text-transform:uppercase;border-bottom:1px solid var(--ligne)}
 .section-title .pic{width:28px;height:28px;border-radius:7px;background:var(--lime-clair);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
 .section-title .pcbtag{margin-left:auto;font-size:.7rem;font-weight:700;color:var(--gris);letter-spacing:.03em;text-transform:none}
-.tva-badge{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:999px;background:var(--lime-clair);color:var(--lime-dk);letter-spacing:.03em}
-.tva-badge.t20{background:#FFE8DE;color:var(--red-dk)}
+.tva-badge{font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:999px;background:#EBEBEB;color:#888;letter-spacing:.03em}
+.tva-badge.t20{background:#EBEBEB;color:#888}
+.offer-cta{display:block;background:var(--lime);color:var(--encre-dk);border:none;border-radius:11px;padding:12px 32px;font-size:.95rem;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(167,218,32,.45);text-align:center;white-space:nowrap}
+.offer-cta:active{transform:scale(.98)}
+.offer-cta-fw{width:100%;border-radius:0;box-shadow:none;padding:16px;font-size:1rem}
 
 /* PRODUITS */
 .prod-list{margin:0 24px}
@@ -382,6 +418,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 
     <div class="carousel-dots" id="carouselDots"></div>
 
+    <button class="offer-cta offer-cta-fw" onclick="showTab('bdc')">Passer commande &#x2192;</button>
   </div>
 </section>
 
@@ -485,14 +522,18 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   </div>
 
   <section class="client">
-    <h2>Informations client</h2>
+    <h2>Vos infos</h2>
     <div class="fgrid">
-      <div class="field full"><label>Raison sociale <span class="req">*</span></label><input type="text" id="c_name" class="required" placeholder="Nom du magasin"></div>
-      <div class="field"><label>Contact <span class="req">*</span></label><input type="text" id="c_contact" class="required" placeholder="Responsable"></div>
-      <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="c_email" class="required" placeholder="contact@magasin.fr"></div>
-      <div class="field"><label>Téléphone</label><input type="tel" id="c_phone" placeholder="06 00 00 00 00"></div>
-      <div class="field"><label>Code postal <span class="req">*</span></label><input type="text" id="c_cp" class="required" inputmode="numeric" maxlength="5" placeholder="89000" oninput="routeSecteur()"></div>
-      <div class="field full"><label>Ville</label><input type="text" id="c_ville" placeholder="Ville"></div>
+      <div class="field full field-bulle"><label>Nom du magasin <span class="req">*</span></label><input type="text" id="c_name" class="required" placeholder="ex : runbike 2000"></div>
+      <div class="field field-green"><label>Code postal <span class="req">*</span></label><div class="cp-wrap"><input type="text" id="c_cp" class="required" inputmode="numeric" maxlength="5" placeholder="75000" oninput="cpInput()" autocomplete="off"><div id="cp-drop" class="cp-drop"></div></div></div>
+      <div class="field field-green"><label>Ville</label><input type="text" id="c_ville" placeholder="Ville"></div>
+      <div class="field full field-bulle-blue"><label>Contact / Acheteur <span class="req">*</span></label><input type="text" id="c_contact" class="required" placeholder="Nom de la personne qui passe commande"></div>
+      <div class="field field-blue"><label>Téléphone</label><input type="tel" id="c_phone" placeholder="06 00 00 00 00"></div>
+      <div class="field field-blue"><label>Email <span class="req">*</span></label><input type="email" id="c_email" class="required" placeholder="contact@magasin.fr"></div>
+    </div>
+    <div class="field-notes">
+      <label>Notes</label>
+      <textarea id="c_notes" placeholder="Commentaires / infos / n° de commande"></textarea>
     </div>
     <div id="secteur-info" class="secteur-info">Renseignez le code postal pour adresser la commande au bon commercial.</div>
   </section>
@@ -501,7 +542,6 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <span class="pic">🍬</span>
     PATES DE FRUITs
     <span class="tva-badge ">TVA 5,5 %</span>
-    <span class="pcbtag">DISPLAY DE 32</span>
   </div>
   <div class="prod-list">
     <div class="prod" data-net="0.498" data-pcb="32" data-ref="50121867" data-tva="0.055">
@@ -512,7 +552,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ABRICOT BANANE</div>
-        <div class="prod-meta">Réf. 50121867 · DLUO 10/2027 · EAN 3608580114536 · displays de 32</div>
+        <div class="prod-meta">Réf. 50121867 · EAN 3608580114536 · <strong>DISPLAYS DE 32</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.498 € HT/UC</span>
           <span class="badge pv">PV 1.20 € TTC</span>
@@ -542,7 +582,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUIT ROUGES</div>
-        <div class="prod-meta">Réf. 50121866 · DLUO 09/2027 · EAN 3608580114581 · displays de 32</div>
+        <div class="prod-meta">Réf. 50121866 · EAN 3608580114581 · <strong>DISPLAYS DE 32</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.498 € HT/UC</span>
           <span class="badge pv">PV 1.20 € TTC</span>
@@ -572,7 +612,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ETUI MIX DE 6 (3 FR + 3AB)</div>
-        <div class="prod-meta">Réf. 50120744 · DLUO 09/2027 · EAN 3608580115311 · displays de 10</div>
+        <div class="prod-meta">Réf. 50120744 · EAN 3608580115311 · <strong>PCB DE 10</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 3.070 € HT/UC</span>
           <span class="badge pv">PV 5.90 € TTC</span>
@@ -602,7 +642,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ETUI X6 FRAISE BANANE GUARANA</div>
-        <div class="prod-meta">Réf. 50137700 · DLUO 10/2027 · EAN 3608580207658 · displays de 10</div>
+        <div class="prod-meta">Réf. 50137700 · EAN 3608580207658 · <strong>PCB DE 10</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 3.310 € HT/UC</span>
           <span class="badge pv">PV 6.49 € TTC</span>
@@ -630,7 +670,6 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <span class="pic">🍎</span>
     energy fruits
     <span class="tva-badge ">TVA 5,5 %</span>
-    <span class="pcbtag">DISPLAY DE 18</span>
   </div>
   <div class="prod-list">
     <div class="prod" data-net="1.25" data-pcb="18" data-ref="50133117" data-tva="0.055">
@@ -641,7 +680,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME MANGUE PASSION</div>
-        <div class="prod-meta">Réf. 50133117 · DLUO 03/2027 · EAN 3608580187837 · displays de 18</div>
+        <div class="prod-meta">Réf. 50133117 · EAN 3608580187837 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -671,7 +710,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME BANANE</div>
-        <div class="prod-meta">Réf. 50133116 · DLUO 03/2027 · EAN 3608580187806 · displays de 18</div>
+        <div class="prod-meta">Réf. 50133116 · EAN 3608580187806 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -701,7 +740,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME FRAISE CASSIS</div>
-        <div class="prod-meta">Réf. 50133118 · DLUO 03/2027 · EAN 3608580187868 · displays de 18</div>
+        <div class="prod-meta">Réf. 50133118 · EAN 3608580187868 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -729,7 +768,6 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <span class="pic">🥕</span>
     energy MIX
     <span class="tva-badge ">TVA 5,5 %</span>
-    <span class="pcbtag">DISPLAY DE 18</span>
   </div>
   <div class="prod-list">
     <div class="prod" data-net="1.555" data-pcb="18" data-ref="50128308" data-tva="0.055">
@@ -740,7 +778,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME TOMATE POIVRON</div>
-        <div class="prod-meta">Réf. 50128308 · DLUO 01/2027 · EAN 3608580159506 · displays de 18</div>
+        <div class="prod-meta">Réf. 50128308 · EAN 3608580159506 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.555 € HT/UC</span>
           <span class="badge pv">PV 3.00 € TTC</span>
@@ -770,7 +808,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME BUTTERNUT CURCUMA</div>
-        <div class="prod-meta">Réf. 50128307 · DLUO 01/2027 · EAN 3608580159476 · displays de 18</div>
+        <div class="prod-meta">Réf. 50128307 · EAN 3608580159476 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.555 € HT/UC</span>
           <span class="badge pv">PV 3.00 € TTC</span>
@@ -798,7 +836,6 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <span class="pic">🍫</span>
     ACTIV BAR
     <span class="tva-badge ">TVA 5,5 %</span>
-    <span class="pcbtag">DISPLAY DE 16</span>
   </div>
   <div class="prod-list">
     <div class="prod" data-net="1.4" data-pcb="16" data-ref="50134503" data-tva="0.055">
@@ -809,7 +846,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">MYRTILLES CRANBERRIES</div>
-        <div class="prod-meta">Réf. 50134503 · DLUO 02/2027 · EAN 3608580192930 · displays de 16</div>
+        <div class="prod-meta">Réf. 50134503 · EAN 3608580192930 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -839,7 +876,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME POIRE ABRICOT</div>
-        <div class="prod-meta">Réf. 50119521 · DLUO 02/2027 · EAN 3608580111962 · displays de 16</div>
+        <div class="prod-meta">Réf. 50119521 · EAN 3608580111962 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -869,7 +906,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUITS ROUGES</div>
-        <div class="prod-meta">Réf. 50119519 · DLUO 11/2026 · EAN 3608580111900 · displays de 16</div>
+        <div class="prod-meta">Réf. 50119519 · EAN 3608580111900 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -899,7 +936,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">BANANE CHOCOLAT</div>
-        <div class="prod-meta">Réf. 50119520 · DLUO 02/2027 · EAN 3608580111931 · displays de 16</div>
+        <div class="prod-meta">Réf. 50119520 · EAN 3608580111931 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -927,7 +964,6 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <span class="pic">⚡</span>
     ELECTROLYTES RECHARGE
     <span class="tva-badge ">TVA 5,5 %</span>
-    <span class="pcbtag">DISPLAY DE 30</span>
   </div>
   <div class="prod-list">
     <div class="prod" data-net="0.85" data-pcb="30" data-ref="50132077" data-tva="0.055">
@@ -938,7 +974,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ANANAS PASSION POMME</div>
-        <div class="prod-meta">Réf. 50132077 · DLUO 06/2027 · EAN 3608580182450 · displays de 30</div>
+        <div class="prod-meta">Réf. 50132077 · EAN 3608580182450 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.850 € HT/UC</span>
           <span class="badge pv">PV 1.69 € TTC</span>
@@ -968,7 +1004,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUITS ROUGES</div>
-        <div class="prod-meta">Réf. 50129284 · DLUO 06/2027 · EAN 3608580167471 · displays de 30</div>
+        <div class="prod-meta">Réf. 50129284 · EAN 3608580167471 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.850 € HT/UC</span>
           <span class="badge pv">PV 1.69 € TTC</span>
@@ -996,7 +1032,6 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <span class="pic">🔋</span>
     GEL
     <span class="tva-badge ">TVA 5,5 %</span>
-    <span class="pcbtag">DISPLAY DE 30</span>
   </div>
   <div class="prod-list">
     <div class="prod" data-net="1.15" data-pcb="30" data-ref="50119284" data-tva="0.055">
@@ -1007,7 +1042,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL BOOST AGRUMES YUZU</div>
-        <div class="prod-meta">Réf. 50119284 · DLUO 06/2027 · EAN 3608580109846 · displays de 30</div>
+        <div class="prod-meta">Réf. 50119284 · EAN 3608580109846 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1037,7 +1072,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL ANTIOXYDANT CASSIS BETTERAVE</div>
-        <div class="prod-meta">Réf. 50119285 · DLUO 07/2027 · EAN 3608580109877 · displays de 30</div>
+        <div class="prod-meta">Réf. 50119285 · EAN 3608580109877 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1067,7 +1102,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL BOOST FRAISE CRANBERRY GOYAVE</div>
-        <div class="prod-meta">Réf. 50125944 · DLUO 07/2027 · EAN 3608580144922 · displays de 30</div>
+        <div class="prod-meta">Réf. 50125944 · EAN 3608580144922 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1095,7 +1130,6 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <span class="pic">🐻</span>
     GUMMIES
     <span class="tva-badge t20">TVA 20 %</span>
-    <span class="pcbtag">DISPLAY DE 14</span>
   </div>
   <div class="prod-list">
     <div class="prod" data-net="0.955" data-pcb="14" data-ref="50127575" data-tva="0.2">
@@ -1106,7 +1140,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">MANGUE BANANE Sachet de 6 gummies</div>
-        <div class="prod-meta">Réf. 50127575 · DLUO 09/2027 · EAN 3608580155133 · displays de 14</div>
+        <div class="prod-meta">Réf. 50127575 · EAN 3608580155133 · <strong>DISPLAYS DE 14</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.955 € HT/UC</span>
           <span class="badge pv">PV 2.00 € TTC</span>
@@ -1136,7 +1170,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRAISE  Sachet de 6 gummies</div>
-        <div class="prod-meta">Réf. 50132677 · DLUO 06/2027 · EAN 3608580184973 · displays de 14</div>
+        <div class="prod-meta">Réf. 50132677 · EAN 3608580184973 · <strong>DISPLAYS DE 14</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.955 € HT/UC</span>
           <span class="badge pv">PV 2.00 € TTC</span>
@@ -1359,7 +1393,47 @@ document.addEventListener('keydown',e=>{
 
 const DESTINATAIRE="thomas.m@magnitude.fr";
 const NOMS={"stephane.l@magnitude.fr":"Stéphane Lefrand","severine.v@magnitude.fr":"Séverine V.","florian.d@magnitude.fr":"Florian D.","yoann.p@magnitude.fr":"Yoann P."};
-const COMMERCIAUX={"14":"stephane.l@magnitude.fr","16":"stephane.l@magnitude.fr","17":"stephane.l@magnitude.fr","22":"stephane.l@magnitude.fr","27":"stephane.l@magnitude.fr","28":"stephane.l@magnitude.fr","29":"stephane.l@magnitude.fr","35":"stephane.l@magnitude.fr","36":"stephane.l@magnitude.fr","37":"stephane.l@magnitude.fr","41":"stephane.l@magnitude.fr","44":"stephane.l@magnitude.fr","45":"stephane.l@magnitude.fr","49":"stephane.l@magnitude.fr","50":"stephane.l@magnitude.fr","53":"stephane.l@magnitude.fr","56":"stephane.l@magnitude.fr","61":"stephane.l@magnitude.fr","72":"stephane.l@magnitude.fr","76":"stephane.l@magnitude.fr","85":"stephane.l@magnitude.fr","86":"stephane.l@magnitude.fr","02":"severine.v@magnitude.fr","08":"severine.v@magnitude.fr","10":"severine.v@magnitude.fr","51":"severine.v@magnitude.fr","52":"severine.v@magnitude.fr","54":"severine.v@magnitude.fr","55":"severine.v@magnitude.fr","57":"severine.v@magnitude.fr","59":"severine.v@magnitude.fr","60":"severine.v@magnitude.fr","62":"severine.v@magnitude.fr","67":"severine.v@magnitude.fr","68":"severine.v@magnitude.fr","77":"severine.v@magnitude.fr","78":"severine.v@magnitude.fr","80":"severine.v@magnitude.fr","88":"severine.v@magnitude.fr","89":"severine.v@magnitude.fr","91":"severine.v@magnitude.fr","92":"severine.v@magnitude.fr","93":"severine.v@magnitude.fr","94":"severine.v@magnitude.fr","95":"severine.v@magnitude.fr","09":"florian.d@magnitude.fr","11":"florian.d@magnitude.fr","12":"florian.d@magnitude.fr","13":"florian.d@magnitude.fr","15":"florian.d@magnitude.fr","19":"florian.d@magnitude.fr","23":"florian.d@magnitude.fr","24":"florian.d@magnitude.fr","30":"florian.d@magnitude.fr","31":"florian.d@magnitude.fr","32":"florian.d@magnitude.fr","33":"florian.d@magnitude.fr","34":"florian.d@magnitude.fr","40":"florian.d@magnitude.fr","46":"florian.d@magnitude.fr","47":"florian.d@magnitude.fr","64":"florian.d@magnitude.fr","65":"florian.d@magnitude.fr","66":"florian.d@magnitude.fr","79":"florian.d@magnitude.fr","81":"florian.d@magnitude.fr","82":"florian.d@magnitude.fr","87":"florian.d@magnitude.fr","01":"yoann.p@magnitude.fr","2A":"yoann.p@magnitude.fr","2B":"yoann.p@magnitude.fr","20":"yoann.p@magnitude.fr","03":"yoann.p@magnitude.fr","04":"yoann.p@magnitude.fr","05":"yoann.p@magnitude.fr","06":"yoann.p@magnitude.fr","07":"yoann.p@magnitude.fr","18":"yoann.p@magnitude.fr","21":"yoann.p@magnitude.fr","25":"yoann.p@magnitude.fr","26":"yoann.p@magnitude.fr","38":"yoann.p@magnitude.fr","39":"yoann.p@magnitude.fr","42":"yoann.p@magnitude.fr","43":"yoann.p@magnitude.fr","58":"yoann.p@magnitude.fr","63":"yoann.p@magnitude.fr","69":"yoann.p@magnitude.fr","70":"yoann.p@magnitude.fr","71":"yoann.p@magnitude.fr","73":"yoann.p@magnitude.fr","74":"yoann.p@magnitude.fr","83":"yoann.p@magnitude.fr","84":"yoann.p@magnitude.fr","90":"yoann.p@magnitude.fr"};
+const COMMERCIAUX={"14":"stephane.l@magnitude.fr","16":"stephane.l@magnitude.fr","17":"stephane.l@magnitude.fr","22":"stephane.l@magnitude.fr","27":"stephane.l@magnitude.fr","28":"stephane.l@magnitude.fr","29":"stephane.l@magnitude.fr","35":"stephane.l@magnitude.fr","36":"stephane.l@magnitude.fr","37":"stephane.l@magnitude.fr","41":"stephane.l@magnitude.fr","44":"stephane.l@magnitude.fr","45":"stephane.l@magnitude.fr","49":"stephane.l@magnitude.fr","50":"stephane.l@magnitude.fr","53":"stephane.l@magnitude.fr","56":"stephane.l@magnitude.fr","61":"stephane.l@magnitude.fr","72":"stephane.l@magnitude.fr","76":"stephane.l@magnitude.fr","85":"stephane.l@magnitude.fr","86":"stephane.l@magnitude.fr","02":"severine.v@magnitude.fr","08":"severine.v@magnitude.fr","10":"severine.v@magnitude.fr","51":"severine.v@magnitude.fr","52":"severine.v@magnitude.fr","54":"severine.v@magnitude.fr","55":"severine.v@magnitude.fr","57":"severine.v@magnitude.fr","59":"severine.v@magnitude.fr","60":"severine.v@magnitude.fr","62":"severine.v@magnitude.fr","67":"severine.v@magnitude.fr","68":"severine.v@magnitude.fr","77":"severine.v@magnitude.fr","78":"severine.v@magnitude.fr","80":"severine.v@magnitude.fr","88":"severine.v@magnitude.fr","89":"severine.v@magnitude.fr","91":"severine.v@magnitude.fr","92":"severine.v@magnitude.fr","93":"severine.v@magnitude.fr","94":"severine.v@magnitude.fr","95":"severine.v@magnitude.fr","75":"severine.v@magnitude.fr","09":"florian.d@magnitude.fr","11":"florian.d@magnitude.fr","12":"florian.d@magnitude.fr","13":"florian.d@magnitude.fr","15":"florian.d@magnitude.fr","19":"florian.d@magnitude.fr","23":"florian.d@magnitude.fr","24":"florian.d@magnitude.fr","30":"florian.d@magnitude.fr","31":"florian.d@magnitude.fr","32":"florian.d@magnitude.fr","33":"florian.d@magnitude.fr","34":"florian.d@magnitude.fr","40":"florian.d@magnitude.fr","46":"florian.d@magnitude.fr","47":"florian.d@magnitude.fr","64":"florian.d@magnitude.fr","65":"florian.d@magnitude.fr","66":"florian.d@magnitude.fr","79":"florian.d@magnitude.fr","81":"florian.d@magnitude.fr","82":"florian.d@magnitude.fr","87":"florian.d@magnitude.fr","01":"yoann.p@magnitude.fr","2A":"yoann.p@magnitude.fr","2B":"yoann.p@magnitude.fr","20":"yoann.p@magnitude.fr","03":"yoann.p@magnitude.fr","04":"yoann.p@magnitude.fr","05":"yoann.p@magnitude.fr","06":"yoann.p@magnitude.fr","07":"yoann.p@magnitude.fr","18":"yoann.p@magnitude.fr","21":"yoann.p@magnitude.fr","25":"yoann.p@magnitude.fr","26":"yoann.p@magnitude.fr","38":"yoann.p@magnitude.fr","39":"yoann.p@magnitude.fr","42":"yoann.p@magnitude.fr","43":"yoann.p@magnitude.fr","58":"yoann.p@magnitude.fr","63":"yoann.p@magnitude.fr","69":"yoann.p@magnitude.fr","70":"yoann.p@magnitude.fr","71":"yoann.p@magnitude.fr","73":"yoann.p@magnitude.fr","74":"yoann.p@magnitude.fr","83":"yoann.p@magnitude.fr","84":"yoann.p@magnitude.fr","90":"yoann.p@magnitude.fr"};
+
+// Autocomplete CP via api-adresse.data.gouv.fr (accepte saisies partielles)
+var _cpTimer;
+function cpInput(){
+  routeSecteur();
+  var val=document.getElementById('c_cp').value.trim();
+  var drop=document.getElementById('cp-drop');
+  clearTimeout(_cpTimer);
+  if(val.length<2){drop.innerHTML='';drop.classList.remove('open');return;}
+  _cpTimer=setTimeout(function(){
+    fetch('https://api-adresse.data.gouv.fr/search/?q='+encodeURIComponent(val)+'&type=municipality&limit=10&autocomplete=1')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        var feats=data&&data.features;
+        if(!feats||!feats.length){drop.innerHTML='';drop.classList.remove('open');return;}
+        drop.innerHTML=feats.map(function(f){
+          var cp=f.properties.postcode||'';
+          var ville=(f.properties.name||f.properties.city||'').replace(/'/g,'&#39;');
+          var cpSafe=cp.replace(/'/g,'&#39;');
+          return '<div class="cp-opt" tabindex="0" onmousedown="selectCP(\''+cpSafe+'\',\''+ville+'\')">'
+            +'<b>'+cp+'</b><span>'+f.properties.name+'</span></div>';
+        }).join('');
+        drop.classList.add('open');
+      })
+      .catch(function(){drop.innerHTML='';drop.classList.remove('open');});
+  },280);
+}
+function selectCP(cp,ville){
+  document.getElementById('c_cp').value=cp;
+  document.getElementById('c_ville').value=ville;
+  ['c_cp','c_ville'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el.value.trim())el.classList.add('filled');
+  });
+  document.getElementById('cp-drop').classList.remove('open');
+  routeSecteur();
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.cp-wrap'))document.getElementById('cp-drop').classList.remove('open');
+});
 
 function deptFromCP(cp){cp=(cp||'').trim().toUpperCase();if(/^(2A|2B)/.test(cp))return cp.slice(0,2);return cp.slice(0,2);}
 function commercialFor(cp){return COMMERCIAUX[deptFromCP(cp)]||null;}
@@ -1414,7 +1488,7 @@ function recompute(){
 }
 function submitOrder(){
   const name=document.getElementById('c_name').value.trim();
-  if(!name){alert('Merci de renseigner la raison sociale.');document.getElementById('c_name').focus();return;}
+  if(!name){alert('Merci de renseigner le magasin.');document.getElementById('c_name').focus();return;}
   const cp=document.getElementById('c_cp').value.trim();
   if(cp.length<2){alert('Merci de renseigner le code postal.');document.getElementById('c_cp').focus();return;}
   const commercial=commercialFor(cp);
