@@ -1485,7 +1485,9 @@ function recompute(){
   set('bb_sub',disp+(disp>1?' displays · ':' display · ')+fmt(ht)+' HT');
   document.getElementById('btn_go').disabled=disp===0;
 }
+const MAILER_URL='https://mailer.thomas-m-682.workers.dev';
 function submitOrder(){
+  const btn=document.getElementById('btn_go');
   const name=document.getElementById('c_name').value.trim();
   if(!name){alert('Merci de renseigner le magasin.');document.getElementById('c_name').focus();return;}
   const cp=document.getElementById('c_cp').value.trim();
@@ -1508,10 +1510,25 @@ function submitOrder(){
   });
   const subject='Commande Andros Sport — '+name+(cp?' ('+cp+')':'');
   const body='BON DE COMMANDE ANDROS SPORT\n'+'='.repeat(32)+'\n\nCLIENT\nRaison sociale : '+name+'\nContact : '+(contact||'—')+'\nEmail : '+(email||'—')+'\nTéléphone : '+(phone||'—')+'\nCP / Ville : '+cp+' '+(ville||'')+'\n'+(commercial?'Secteur : '+NOMS[commercial]+'\n':'')+'\nCOMMANDE\n'+lignes.join('\n')+'\n\nRÉCAPITULATIF\nDisplays : '+document.getElementById('r_disp').textContent+'\nUC : '+document.getElementById('r_uc').textContent+'\nTotal HT : '+document.getElementById('r_ht').textContent+'\nTVA 5,5 % : '+document.getElementById('r_tva55').textContent+'\nTVA 20 % (gummies) : '+document.getElementById('r_tva20').textContent+'\nTOTAL TTC : '+document.getElementById('g_ttc').textContent+'\n';
-  let href='mailto:'+encodeURIComponent(to)+'?';
-  if(cc)href+='cc='+encodeURIComponent(cc)+'&';
-  href+='subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-  window.location.href=href;
+  btn.disabled=true;
+  const label=btn.textContent;
+  btn.textContent='Envoi en cours…';
+  fetch(MAILER_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({to,cc,subject,body,replyTo:email||undefined})
+  }).then(res=>{
+    if(!res.ok)throw new Error('send failed');
+    return res.json();
+  }).then(data=>{
+    if(!data.ok)throw new Error(data.error||'send failed');
+    alert('Commande envoyée avec succès !');
+  }).catch(()=>{
+    alert("Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial.");
+  }).finally(()=>{
+    btn.disabled=false;
+    btn.textContent=label;
+  });
 }
 recompute();
 
