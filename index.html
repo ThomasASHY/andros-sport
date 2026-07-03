@@ -1516,7 +1516,7 @@ function submitOrder(){
   fetch(MAILER_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({to,cc,subject,body,replyTo:email||undefined})
+    body:JSON.stringify({to,cc:[cc,email].filter(Boolean),subject,body,replyTo:email||undefined})
   }).then(res=>{
     if(!res.ok)throw new Error('send failed');
     return res.json();
