@@ -1205,6 +1205,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
         <div><div class="g-lbl">Total TTC</div><div class="grand-ht" id="g_ht">— HT</div></div>
         <div class="grand-ttc" id="g_ttc">0,00 €</div>
       </div>
+      <div class="rline"><span class="rl-lbl">Franco de port</span><span>200,00 € HT minimum</span></div>
     </div>
   </section>
   <footer>Total HT ligne = nb displays × PCB × tarif HT net · TVA 5,5 % sur la gamme, 20 % sur les gummies · Andros Sport tarifs 2026</footer>
@@ -1391,6 +1392,8 @@ document.addEventListener('keydown',e=>{
 });
 
 const DESTINATAIRE="thomas.m@magnitude.fr";
+const FRANCO_MIN=200;
+let currentHT=0;
 const NOMS={"stephane.l@magnitude.fr":"Stéphane Lefrand","severine.v@magnitude.fr":"Séverine V.","florian.d@magnitude.fr":"Florian D.","yoann.p@magnitude.fr":"Yoann P."};
 const COMMERCIAUX={"14":"stephane.l@magnitude.fr","16":"stephane.l@magnitude.fr","17":"stephane.l@magnitude.fr","22":"stephane.l@magnitude.fr","27":"stephane.l@magnitude.fr","28":"stephane.l@magnitude.fr","29":"stephane.l@magnitude.fr","35":"stephane.l@magnitude.fr","36":"stephane.l@magnitude.fr","37":"stephane.l@magnitude.fr","41":"stephane.l@magnitude.fr","44":"stephane.l@magnitude.fr","45":"stephane.l@magnitude.fr","49":"stephane.l@magnitude.fr","50":"stephane.l@magnitude.fr","53":"stephane.l@magnitude.fr","56":"stephane.l@magnitude.fr","61":"stephane.l@magnitude.fr","72":"stephane.l@magnitude.fr","76":"stephane.l@magnitude.fr","85":"stephane.l@magnitude.fr","86":"stephane.l@magnitude.fr","02":"severine.v@magnitude.fr","08":"severine.v@magnitude.fr","10":"severine.v@magnitude.fr","51":"severine.v@magnitude.fr","52":"severine.v@magnitude.fr","54":"severine.v@magnitude.fr","55":"severine.v@magnitude.fr","57":"severine.v@magnitude.fr","59":"severine.v@magnitude.fr","60":"severine.v@magnitude.fr","62":"severine.v@magnitude.fr","67":"severine.v@magnitude.fr","68":"severine.v@magnitude.fr","77":"severine.v@magnitude.fr","78":"severine.v@magnitude.fr","80":"severine.v@magnitude.fr","88":"severine.v@magnitude.fr","89":"severine.v@magnitude.fr","91":"severine.v@magnitude.fr","92":"severine.v@magnitude.fr","93":"severine.v@magnitude.fr","94":"severine.v@magnitude.fr","95":"severine.v@magnitude.fr","75":"severine.v@magnitude.fr","09":"florian.d@magnitude.fr","11":"florian.d@magnitude.fr","12":"florian.d@magnitude.fr","13":"florian.d@magnitude.fr","15":"florian.d@magnitude.fr","19":"florian.d@magnitude.fr","23":"florian.d@magnitude.fr","24":"florian.d@magnitude.fr","30":"florian.d@magnitude.fr","31":"florian.d@magnitude.fr","32":"florian.d@magnitude.fr","33":"florian.d@magnitude.fr","34":"florian.d@magnitude.fr","40":"florian.d@magnitude.fr","46":"florian.d@magnitude.fr","47":"florian.d@magnitude.fr","64":"florian.d@magnitude.fr","65":"florian.d@magnitude.fr","66":"florian.d@magnitude.fr","79":"florian.d@magnitude.fr","81":"florian.d@magnitude.fr","82":"florian.d@magnitude.fr","87":"florian.d@magnitude.fr","01":"yoann.p@magnitude.fr","2A":"yoann.p@magnitude.fr","2B":"yoann.p@magnitude.fr","20":"yoann.p@magnitude.fr","03":"yoann.p@magnitude.fr","04":"yoann.p@magnitude.fr","05":"yoann.p@magnitude.fr","06":"yoann.p@magnitude.fr","07":"yoann.p@magnitude.fr","18":"yoann.p@magnitude.fr","21":"yoann.p@magnitude.fr","25":"yoann.p@magnitude.fr","26":"yoann.p@magnitude.fr","38":"yoann.p@magnitude.fr","39":"yoann.p@magnitude.fr","42":"yoann.p@magnitude.fr","43":"yoann.p@magnitude.fr","58":"yoann.p@magnitude.fr","63":"yoann.p@magnitude.fr","69":"yoann.p@magnitude.fr","70":"yoann.p@magnitude.fr","71":"yoann.p@magnitude.fr","73":"yoann.p@magnitude.fr","74":"yoann.p@magnitude.fr","83":"yoann.p@magnitude.fr","84":"yoann.p@magnitude.fr","90":"yoann.p@magnitude.fr"};
 
@@ -1479,6 +1482,7 @@ function recompute(){
     if(tva===0.20)ht20+=line;else ht55+=line;
   });
   const tva55=ht55*0.055,tva20=ht20*0.20,ttc=ht+tva55+tva20;
+  currentHT=ht;
   set('r_disp',disp);set('r_uc',uc);
   set('r_ht',fmt(ht));set('r_tva55',fmt(tva55));set('r_tva20',fmt(tva20));
   set('g_ht',fmt(ht)+' HT');set('g_ttc',fmt(ttc));set('bb_ttc',fmt(ttc));
@@ -1488,6 +1492,12 @@ function recompute(){
 const MAILER_URL='https://mailer.thomas-m-682.workers.dev';
 function submitOrder(){
   const btn=document.getElementById('btn_go');
+  if(currentHT<FRANCO_MIN){
+    const cpEarly=document.getElementById('c_cp').value.trim();
+    const contactEmail=commercialFor(cpEarly)||DESTINATAIRE;
+    alert('Le franco de port est fixé à '+FRANCO_MIN+' € HT. Merci d\'ajouter des produits pour atteindre ce montant avant d\'envoyer la commande.\n\nEn cas de question, merci d\'écrire à votre responsable commercial : '+contactEmail);
+    return;
+  }
   const name=document.getElementById('c_name').value.trim();
   if(!name){alert('Merci de renseigner le magasin.');document.getElementById('c_name').focus();return;}
   const cp=document.getElementById('c_cp').value.trim();
@@ -1509,7 +1519,9 @@ function submitOrder(){
     }
   });
   const subject='Commande Andros Sport — '+name+(cp?' ('+cp+')':'');
-  const body='BON DE COMMANDE ANDROS SPORT\n'+'='.repeat(32)+'\n\nCLIENT\nRaison sociale : '+name+'\nContact : '+(contact||'—')+'\nEmail : '+(email||'—')+'\nTéléphone : '+(phone||'—')+'\nCP / Ville : '+cp+' '+(ville||'')+'\n'+(commercial?'Secteur : '+NOMS[commercial]+'\n':'')+'\nCOMMANDE\n'+lignes.join('\n')+'\n\nRÉCAPITULATIF\nDisplays : '+document.getElementById('r_disp').textContent+'\nUC : '+document.getElementById('r_uc').textContent+'\nTotal HT : '+document.getElementById('r_ht').textContent+'\nTVA 5,5 % : '+document.getElementById('r_tva55').textContent+'\nTVA 20 % (gummies) : '+document.getElementById('r_tva20').textContent+'\nTOTAL TTC : '+document.getElementById('g_ttc').textContent+'\n';
+  const intro='Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
+  const outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant votre commande, contactez votre commercial : '+to+'\n';
+  const body=intro+'BON DE COMMANDE ANDROS SPORT\n'+'='.repeat(32)+'\n\nCLIENT\nRaison sociale : '+name+'\nContact : '+(contact||'—')+'\nEmail : '+(email||'—')+'\nTéléphone : '+(phone||'—')+'\nCP / Ville : '+cp+' '+(ville||'')+'\n'+(commercial?'Secteur : '+NOMS[commercial]+'\n':'')+'\nCOMMANDE\n'+lignes.join('\n')+'\n\nRÉCAPITULATIF\nDisplays : '+document.getElementById('r_disp').textContent+'\nUC : '+document.getElementById('r_uc').textContent+'\nTotal HT : '+document.getElementById('r_ht').textContent+'\nTVA 5,5 % : '+document.getElementById('r_tva55').textContent+'\nTVA 20 % (gummies) : '+document.getElementById('r_tva20').textContent+'\nTOTAL TTC : '+document.getElementById('g_ttc').textContent+outro;
   btn.disabled=true;
   const label=btn.textContent;
   btn.textContent='Envoi en cours…';
