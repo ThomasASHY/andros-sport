@@ -50,6 +50,14 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 .field input.required.filled{border-color:var(--lime)}
 .field.full{grid-column:1/-1}
 .req{color:var(--red);font-size:.8rem;margin-left:1px}
+.info-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--encre);color:#fff;font-size:.68rem;font-weight:700;font-style:italic;font-family:Georgia,serif;cursor:pointer;margin-left:5px;vertical-align:middle;line-height:1;user-select:none}
+.info-icon:hover{background:var(--encre-dk)}
+.bt49-modal{display:none;position:fixed;inset:0;background:rgba(13,46,53,.55);z-index:210;align-items:center;justify-content:center;padding:20px}
+.bt49-modal.open{display:flex}
+.bt49-card{background:#fff;border-radius:16px;max-width:560px;width:100%;padding:0;position:relative;box-shadow:0 12px 48px rgba(0,0,0,.3);overflow:hidden}
+.bt49-card img{display:block;width:100%;height:auto}
+.bt49-close{position:absolute;top:10px;right:10px;font-size:1.5rem;cursor:pointer;color:#fff;line-height:1;background:rgba(13,46,53,.6);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center}
+.bt49-close:hover{background:rgba(13,46,53,.85)}
 /* Bulle verte — magasin */
 .field-bulle input{border-radius:999px;padding:10px 18px;font-size:.98rem;font-weight:700;background:var(--lime-clair);border-color:var(--lime);border-width:2px}
 .field-bulle input:focus{border-color:var(--lime-dk);box-shadow:0 0 0 3px rgba(167,218,32,.25)}
@@ -371,6 +379,14 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 </head>
 <body>
 
+<!-- BT-49 INFO MODAL -->
+<div class="bt49-modal" id="bt49Modal" onclick="closeBt49Info(event)">
+  <div class="bt49-card" onclick="event.stopPropagation()">
+    <button class="bt49-close" onclick="closeBt49Info()">&times;</button>
+    <img src="actu/bt49.png" alt="Facturation électronique : le code BT-49 sera indispensable à partir du 1er septembre 2026 pour le routage de vos factures électroniques.">
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
   <span class="lightbox-close" onclick="closeLightbox()">×</span>
@@ -526,6 +542,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       <div class="field full field-bulle"><label>Nom du magasin <span class="req">*</span></label><input type="text" id="c_name" class="required" placeholder="ex : runbike 2000"></div>
       <div class="field field-green"><label>Code postal <span class="req">*</span></label><div class="cp-wrap"><input type="text" id="c_cp" class="required" inputmode="numeric" maxlength="5" placeholder="75000" oninput="cpInput()" autocomplete="off"><div id="cp-drop" class="cp-drop"></div></div></div>
       <div class="field field-green"><label>Ville</label><input type="text" id="c_ville" placeholder="Ville"></div>
+      <div class="field full field-green"><label>Code BT-49 <span class="info-icon" onclick="openBt49Info()" role="button" tabindex="0" aria-label="Qu'est-ce que le code BT-49 ?">i</span></label><input type="text" id="c_bt49" placeholder="Identifiant d'adressage de facture électronique" autocomplete="off"></div>
       <div class="field full field-bulle-blue"><label>Contact / Acheteur <span class="req">*</span></label><input type="text" id="c_contact" class="required" placeholder="Nom de la personne qui passe commande"></div>
       <div class="field field-blue"><label>Téléphone</label><input type="tel" id="c_phone" placeholder="06 00 00 00 00"></div>
       <div class="field field-blue"><label>Email <span class="req">*</span></label><input type="email" id="c_email" class="required" placeholder="contact@magasin.fr"></div>
@@ -1385,11 +1402,21 @@ document.getElementById('lb-img').addEventListener('touchend', function(e){
 });
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') closeLightbox();
+  if(e.key==='Escape'){ closeLightbox(); closeBt49Info(); }
   if(e.key==='+' || e.key==='=') lbZoom(1);
   if(e.key==='-') lbZoom(-1);
   if(e.key==='0') lbZoomReset();
 });
+
+function openBt49Info(){
+  document.getElementById('bt49Modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeBt49Info(e){
+  if(e&&e.target!==document.getElementById('bt49Modal')) return;
+  document.getElementById('bt49Modal').classList.remove('open');
+  document.body.style.overflow='';
+}
 
 const DESTINATAIRE="thomas.m@magnitude.fr";
 const FRANCO_MIN=200;
@@ -1448,6 +1475,7 @@ function routeSecteur(){
   if(email){info.className='secteur-info ok';info.textContent='Commande adressée à '+NOMS[email]+' ('+email+'), avec copie au service commandes.';}
   else{info.className='secteur-info warn';info.textContent='Département non reconnu — commande envoyée au service commandes uniquement.';}
 }
+let bt49Shown=false;
 function showTab(t){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -1455,6 +1483,7 @@ function showTab(t){
   document.querySelector('.tab[data-tab="'+t+'"]').classList.add('active');
   document.getElementById('bottombar').classList.toggle('hidden',t!=='bdc');
   window.scrollTo(0,0);
+  if(t==='bdc'&&!bt49Shown){bt49Shown=true;openBt49Info();}
 }
 document.querySelectorAll('.prod').forEach(prod=>{
   const inp=prod.querySelector('input');
@@ -1511,6 +1540,7 @@ function submitOrder(){
   const email=document.getElementById('c_email').value.trim();
   const phone=document.getElementById('c_phone').value.trim();
   const ville=document.getElementById('c_ville').value.trim();
+  const bt49=document.getElementById('c_bt49').value.trim();
   const notes=document.getElementById('c_notes').value.trim();
   const separateur='────────────────────────────────';
   let corpsCommande='';
@@ -1540,7 +1570,7 @@ function submitOrder(){
   const subject='Commande Andros Sport BtoB — '+name+(cp?' ('+cp+')':'')+' — '+dateJour;
   const intro='Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
   const outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant votre commande, contactez votre commercial : '+to+'\n';
-  const body=intro+'BON DE COMMANDE ANDROS SPORT\n'+'='.repeat(32)+'\n\nCLIENT\nRaison sociale : '+name+'\nContact : '+(contact||'—')+'\nEmail : '+(email||'—')+'\nTéléphone : '+(phone||'—')+'\nCP / Ville : '+cp+' '+(ville||'')+'\n'+(commercial?'Secteur : '+NOMS[commercial]+'\n':'')+(notes?'Notes : '+notes+'\n':'')+'\nCOMMANDE\n\n'+corpsCommande+'RÉCAPITULATIF\nDisplays : '+document.getElementById('r_disp').textContent+'\nUC : '+document.getElementById('r_uc').textContent+'\nTotal HT : '+document.getElementById('r_ht').textContent+'\nTVA 5,5 % : '+document.getElementById('r_tva55').textContent+'\nTVA 20 % (gummies) : '+document.getElementById('r_tva20').textContent+'\nTOTAL TTC : '+document.getElementById('g_ttc').textContent+outro;
+  const body=intro+'BON DE COMMANDE ANDROS SPORT\n'+'='.repeat(32)+'\n\nCLIENT\nRaison sociale : '+name+'\nContact : '+(contact||'—')+'\nEmail : '+(email||'—')+'\nTéléphone : '+(phone||'—')+'\nCP / Ville : '+cp+' '+(ville||'')+'\n'+(bt49?'Code BT-49 : '+bt49+'\n':'')+(commercial?'Secteur : '+NOMS[commercial]+'\n':'')+(notes?'Notes : '+notes+'\n':'')+'\nCOMMANDE\n\n'+corpsCommande+'RÉCAPITULATIF\nDisplays : '+document.getElementById('r_disp').textContent+'\nUC : '+document.getElementById('r_uc').textContent+'\nTotal HT : '+document.getElementById('r_ht').textContent+'\nTVA 5,5 % : '+document.getElementById('r_tva55').textContent+'\nTVA 20 % (gummies) : '+document.getElementById('r_tva20').textContent+'\nTOTAL TTC : '+document.getElementById('g_ttc').textContent+outro;
   btn.disabled=true;
   const label=btn.textContent;
   btn.textContent='Envoi en cours…';
