@@ -1571,13 +1571,16 @@ function submitOrder(){
   const intro='Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
   const outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant votre commande, contactez votre commercial : '+to+'\n';
   const body=intro+'BON DE COMMANDE ANDROS SPORT\n'+'='.repeat(32)+'\n\nCLIENT\nRaison sociale : '+name+'\nContact : '+(contact||'—')+'\nEmail : '+(email||'—')+'\nTéléphone : '+(phone||'—')+'\nCP / Ville : '+cp+' '+(ville||'')+'\n'+(bt49?'Code BT-49 : '+bt49+'\n':'')+(commercial?'Secteur : '+NOMS[commercial]+'\n':'')+(notes?'Notes : '+notes+'\n':'')+'\nCOMMANDE\n\n'+corpsCommande+'RÉCAPITULATIF\nDisplays : '+document.getElementById('r_disp').textContent+'\nUC : '+document.getElementById('r_uc').textContent+'\nTotal HT : '+document.getElementById('r_ht').textContent+'\nTVA 5,5 % : '+document.getElementById('r_tva55').textContent+'\nTVA 20 % (gummies) : '+document.getElementById('r_tva20').textContent+'\nTOTAL TTC : '+document.getElementById('g_ttc').textContent+outro;
+  const escHtml=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let html='<pre style="font-family:inherit;white-space:pre-wrap;margin:0">'+escHtml(body)+'</pre>';
+  if(bt49) html=html.replace('Code BT-49 : '+escHtml(bt49),'<strong style="color:#e11d2e">Code BT-49 : '+escHtml(bt49)+'</strong>');
   btn.disabled=true;
   const label=btn.textContent;
   btn.textContent='Envoi en cours…';
   fetch(MAILER_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({to,cc:[cc,email].filter(Boolean),subject,body,replyTo:email||undefined})
+    body:JSON.stringify({to,cc:[cc,email].filter(Boolean),subject,body,html,replyTo:email||undefined})
   }).then(res=>{
     if(!res.ok)throw new Error('send failed');
     return res.json();
