@@ -541,7 +541,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <div class="bdc-head">
     <div class="eyebrow">Bon de commande</div>
     <h1>Tarifs revendeurs 2026</h1>
-    <div class="meta"><span class="period">JUIN 2026</span><p>Saisie par display · Tarif HT net × PCB</p></div>
+    <div class="meta"><p>Saisie par display · Tarif HT net × PCB</p></div>
   </div>
 
   <!-- MODE COMMERCIAL : visible uniquement avec ?modecs dans l'URL -->
@@ -1559,6 +1559,10 @@ function applyCsMode(){
   document.querySelectorAll('.cs-opt').forEach(b=>b.classList.toggle('active', b.dataset.csmode===CS_MODE));
 }
 if(MODE_CS){
+  // Commerciaux : uniquement le bon de commande (Gammes / Actualités / Ressources et info BT-49 réservées aux clients)
+  bt49Shown = true;
+  document.querySelector('nav.tabs').style.display = 'none';
+  showTab('bdc');
   document.getElementById('csPanel').style.display = '';
   document.querySelectorAll('.cs-opt').forEach(b=>b.addEventListener('click',()=>{ CS_MODE = b.dataset.csmode; applyCsMode(); }));
   applyCsMode();
