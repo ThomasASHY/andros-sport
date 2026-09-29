@@ -21,9 +21,9 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 
 /* ONGLETS */
 .tabs{background:var(--white);display:flex;border-bottom:1px solid var(--ligne);position:sticky;top:0;z-index:40;box-shadow:0 2px 6px rgba(0,0,0,.05)}
-.tab{flex:1;border:none;background:none;padding:13px 6px 11px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;border-bottom:3px solid transparent;transition:.15s}
-.tab .ic{font-size:1.1rem}
-.tab .lb{font-size:.78rem;font-weight:700;color:var(--gris)}
+.tab{flex:1;border:none;background:none;padding:16px 10px 14px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:5px;border-bottom:3px solid transparent;transition:.15s}
+.tab .ic{font-size:1.35rem}
+.tab .lb{font-size:.86rem;font-weight:700;color:var(--gris)}
 .tab:hover .lb{color:var(--encre)}
 .tab.active{border-bottom-color:var(--lime)}
 .tab.active .lb{color:var(--encre)}
@@ -149,6 +149,14 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 
 /* RECAP */
 .recap{background:var(--white);border:1px solid var(--ligne);border-radius:14px;margin:24px 24px 0;overflow:hidden}
+/* MODE COMMERCIAL (?modecs) */
+.cs-panel{margin:12px 24px 0;padding:12px 14px;border:1.5px solid var(--lime-dk);border-radius:12px;background:var(--lime-clair)}
+.cs-panel-title{font-size:.72rem;font-weight:800;color:var(--encre);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.cs-options{display:flex;gap:8px;flex-wrap:wrap}
+.cs-opt{flex:1 1 140px;border:1.5px solid var(--ligne);background:#fff;color:var(--encre);border-radius:10px;padding:10px 12px;font:inherit;font-size:.84rem;font-weight:700;cursor:pointer;text-align:left}
+.cs-opt.active{border-color:var(--encre);background:var(--encre);color:#fff}
+.cs-note{margin-top:8px;font-size:.72rem;color:var(--gris);line-height:1.4}
+@media(max-width:600px){.cs-panel{margin:12px 16px 0}}
 .recap h3{background:var(--encre);color:#fff;font-size:.82rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px}
 .recap-body{padding:14px 16px}
 .rline{display:flex;justify-content:space-between;font-size:.88rem;padding:5px 0;font-variant-numeric:tabular-nums}
@@ -534,6 +542,16 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <div class="eyebrow">Bon de commande</div>
     <h1>Tarifs revendeurs 2026</h1>
     <div class="meta"><span class="period">JUIN 2026</span><p>Saisie par display · Tarif HT net × PCB</p></div>
+  </div>
+
+  <!-- MODE COMMERCIAL : visible uniquement avec ?modecs dans l'URL -->
+  <div class="cs-panel" id="csPanel" style="display:none">
+    <div class="cs-panel-title">🧑‍💼 Mode commercial — type de proposition</div>
+    <div class="cs-options">
+      <button type="button" class="cs-opt active" data-csmode="reassort">🔁 Proposition de réassort</button>
+      <button type="button" class="cs-opt" data-csmode="implantation">🏪 Proposition d'implantation</button>
+    </div>
+    <div class="cs-note">Le récapitulatif devient une proforma. L'e-mail est envoyé au magasin (copie au commercial) et n'a pas valeur de commande tant que le magasin ne l'a pas validé.</div>
   </div>
 
   <section class="client">
@@ -1211,7 +1229,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   </div>
 
   <section class="recap">
-    <h3>Récapitulatif</h3>
+    <h3 id="recapHead">Récapitulatif</h3>
     <div class="recap-body">
       <div class="rline"><span class="rl-lbl">Nombre de displays</span><span id="r_disp">0</span></div>
       <div class="rline"><span class="rl-lbl">Nombre d'UC</span><span id="r_uc">0</span></div>
@@ -1500,19 +1518,24 @@ document.querySelectorAll('input.required').forEach(inp=>{
   const u=()=>inp.classList.toggle('filled',inp.value.trim().length>0);
   inp.addEventListener('input',u); inp.addEventListener('change',u);
 });
+// Arrondi au centime de chaque ligne (comme sur la facture) : lignes et totaux tombent toujours juste.
+// Le tarif unitaire garde ses 3 décimales (ex. 0,498 €/UC).
+const round2 = n => Math.round(n*100)/100;
 function recompute(){
   let ht=0,ht55=0,ht20=0,disp=0,uc=0;
   document.querySelectorAll('.prod').forEach(prod=>{
     const net=parseFloat(prod.dataset.net),pcb=parseInt(prod.dataset.pcb),tva=parseFloat(prod.dataset.tva);
     const q=parseInt(prod.querySelector('input').value)||0;
-    const line=q*pcb*net;
+    const line=round2(q*pcb*net);
     const cell=prod.querySelector(`[data-linetotal="${prod.dataset.ref}"]`);
     cell.textContent=fmt(line); cell.classList.toggle('zero',q===0);
     ht+=line;disp+=q;uc+=q*pcb;
     if(tva===0.20)ht20+=line;else ht55+=line;
   });
-  const tva55=ht55*0.055,tva20=ht20*0.20,ttc=ht+tva55+tva20;
+  ht=round2(ht);
+  const tva55=round2(ht55*0.055),tva20=round2(ht20*0.20),ttc=round2(ht+tva55+tva20);
   currentHT=ht;
+  window.ORDER={ht,tva55,tva20,ttc,disp,uc};
   set('r_disp',disp);set('r_uc',uc);
   set('r_ht',fmt(ht));set('r_tva55',fmt(tva55));set('r_tva20',fmt(tva20));
   set('g_ht',fmt(ht)+' HT');set('g_ttc',fmt(ttc));set('bb_ttc',fmt(ttc));
@@ -1520,6 +1543,30 @@ function recompute(){
   document.getElementById('btn_go').disabled=ORDER_SENT?true:disp===0;
 }
 const MAILER_URL='https://mailer.thomas-m-682.workers.dev';
+
+// 🧑‍💼 MODE COMMERCIAL : ajoutez ?modecs à la fin de l'URL (ou &modecs si l'URL a déjà un « ? »,
+// ou #modecs). Donne accès aux propositions de réassort / d'implantation (récap = proforma).
+const MODE_CS = /(^|[?&#])modecs\b/i.test(window.location.search + window.location.hash);
+let CS_MODE = 'reassort'; // 'reassort' | 'implantation'
+const CS_LABELS = {
+  reassort:     {titre:'Proposition de réassort'},
+  implantation: {titre:"Proposition d'implantation"}
+};
+function applyCsMode(){
+  if(!MODE_CS) return;
+  document.getElementById('recapHead').textContent = CS_LABELS[CS_MODE].titre + ' — Proforma';
+  if(!ORDER_SENT) document.getElementById('btn_go').textContent = 'ENVOYER LA PROPOSITION';
+  document.querySelectorAll('.cs-opt').forEach(b=>b.classList.toggle('active', b.dataset.csmode===CS_MODE));
+}
+if(MODE_CS){
+  document.getElementById('csPanel').style.display = '';
+  document.querySelectorAll('.cs-opt').forEach(b=>b.addEventListener('click',()=>{ CS_MODE = b.dataset.csmode; applyCsMode(); }));
+  applyCsMode();
+}
+
+// Tarif unitaire : jusqu'à 3 décimales (0,498 €), montants : 2 décimales
+const fmtPU=n=>n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:3})+' €';
+
 function submitOrder(){
   const btn=document.getElementById('btn_go');
   if(ORDER_SENT)return;
@@ -1534,67 +1581,325 @@ function submitOrder(){
   const cp=document.getElementById('c_cp').value.trim();
   if(cp.length<2){alert('Merci de renseigner le code postal.');document.getElementById('c_cp').focus();return;}
   const commercial=commercialFor(cp);
-  const to=commercial||DESTINATAIRE;
-  const cc=commercial?DESTINATAIRE:'';
+  const emailCommercial=commercial||DESTINATAIRE;
   const contact=document.getElementById('c_contact').value.trim();
   const email=document.getElementById('c_email').value.trim();
+  // En mode commercial, la proposition part au magasin : son e-mail est indispensable
+  if(MODE_CS && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert("Merci de renseigner un e-mail valide pour le magasin : la proposition lui est envoyée.");
+    document.getElementById('c_email').focus();
+    return;
+  }
   const phone=document.getElementById('c_phone').value.trim();
   const ville=document.getElementById('c_ville').value.trim();
   const bt49=document.getElementById('c_bt49').value.trim();
   const notes=document.getElementById('c_notes').value.trim();
-  const separateur='────────────────────────────────';
-  let corpsCommande='';
+  const o=window.ORDER;
+  const escHtml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const plural=(n,s)=>`${n} ${s}${n>1?'s':''}`;
+
+  // Remise centrale Intersport (-3 %) : appliquée si le nom du magasin contient « Intersport » ou le mot « ITS ».
+  // Volontairement invisible sur le site (tarif public) : elle n'apparaît que dans le mail, le PDF
+  // et la confirmation. Le tarif remisé est arrondi à 3 décimales (0,498 € → 0,483 €).
+  const REMISE_ITS=0.03;
+  const IS_ITS=/inter\s*-?\s*sport|\bits\b/i.test(name);
+  const round3=n=>Math.round(n*1000)/1000;
+
+  // Sections / lignes commandées, lues dans la page :
+  // {name, uc, qte, sous, base (tarif €/UC), nn (votre prix €/UC), total, tva, ref, ean}
+  const sections=[];
   document.querySelectorAll('.section-title').forEach(st=>{
     const list=st.nextElementSibling;
     if(!list||!list.classList.contains('prod-list'))return;
     const pic=st.querySelector('.pic').textContent;
     const tvaTxt=st.querySelector('.tva-badge').textContent.trim();
     const label=st.textContent.replace(pic,'').replace(tvaTxt,'').trim().toUpperCase();
-    const lignesCat=[];
-    let sousDisp=0,sousHT=0;
+    const items=[];
     list.querySelectorAll('.prod').forEach(prod=>{
       const q=parseInt(prod.querySelector('input').value)||0;
-      if(q>0){
-        const nm=prod.querySelector('.prod-name').textContent.trim();
-        const net=parseFloat(prod.dataset.net),pcb=parseInt(prod.dataset.pcb);
-        const lineTotal=q*pcb*net;
-        lignesCat.push('  • '+nm+' — '+q+' display'+(q>1?'s':'')+' ('+(q*pcb)+' UC) = '+fmt(lineTotal));
-        sousDisp+=q;sousHT+=lineTotal;
-      }
+      if(q<=0)return;
+      const net=parseFloat(prod.dataset.net),pcb=parseInt(prod.dataset.pcb);
+      const ean=(prod.querySelector('.prod-meta')?.textContent.match(/EAN\s*(\d{13})/)||[])[1]||'';
+      const nn=IS_ITS?round3(net*(1-REMISE_ITS)):net;
+      items.push({name:prod.querySelector('.prod-name').textContent.trim(), uc:q*pcb, qte:`${q*pcb} UC`,
+        sous:`${plural(q,'display')} de ${pcb}`, base:net, nn, total:round2(q*pcb*nn),
+        tva:parseFloat(prod.dataset.tva), ref:prod.dataset.ref, ean});
     });
-    if(lignesCat.length){
-      corpsCommande+=separateur+'\n'+pic+' '+label+'\n'+lignesCat.join('\n')+'\n  Sous-total : '+sousDisp+' display'+(sousDisp>1?'s':'')+' — '+fmt(sousHT)+' HT\n\n';
-    }
+    if(items.length) sections.push({titre:`${pic} ${label} (${tvaTxt})`, famille:`${pic} ${label}`, items});
   });
-  const dateJour = new Date().toLocaleDateString('fr-FR');
-  const subject='Commande Andros Sport BtoB — '+name+(cp?' ('+cp+')':'')+' — '+dateJour;
-  const intro='Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
-  const outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant votre commande, contactez votre commercial : '+to+'\n';
-  const body=intro+'BON DE COMMANDE ANDROS SPORT\n'+'='.repeat(32)+'\n\nCLIENT\nRaison sociale : '+name+'\nContact : '+(contact||'—')+'\nEmail : '+(email||'—')+'\nTéléphone : '+(phone||'—')+'\nCP / Ville : '+cp+' '+(ville||'')+'\n'+(bt49?'Code BT-49 : '+bt49+'\n':'')+(commercial?'Secteur : '+NOMS[commercial]+'\n':'')+(notes?'Notes : '+notes+'\n':'')+'\nCOMMANDE\n\n'+corpsCommande+'RÉCAPITULATIF\nDisplays : '+document.getElementById('r_disp').textContent+'\nUC : '+document.getElementById('r_uc').textContent+'\nTotal HT : '+document.getElementById('r_ht').textContent+'\nTVA 5,5 % : '+document.getElementById('r_tva55').textContent+'\nTVA 20 % (gummies) : '+document.getElementById('r_tva20').textContent+'\nTOTAL TTC : '+document.getElementById('g_ttc').textContent+outro;
-  const escHtml=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  let html='<pre style="font-family:inherit;white-space:pre-wrap;margin:0">'+escHtml(body)+'</pre>';
-  if(bt49) html=html.replace('Code BT-49 : '+escHtml(bt49),'<strong style="color:#e11d2e">Code BT-49 : '+escHtml(bt49)+'</strong>');
+  const allItems=sections.flatMap(s=>s.items);
+  // Totaux recalculés à partir des lignes (identiques au site hors Intersport)
+  const sumBy=f=>round2(allItems.reduce((a,it)=>a+f(it),0));
+  const htNet=sumBy(it=>it.total);
+  const tva55=round2(sumBy(it=>it.tva===0.20?0:it.total)*0.055);
+  const tva20=round2(sumBy(it=>it.tva===0.20?it.total:0)*0.20);
+  const ttc=round2(htNet+tva55+tva20);
+  // Pas de ligne « remise » dans les totaux : la remise Intersport est déjà dans le prix de chaque ligne
+  // (l'afficher aussi en bas ferait croire à une double remise).
+  const totaux=[['Total HT',fmt(htNet)],['TVA 5,5 %',fmt(tva55)],['TVA 20 % (gummies)',fmt(tva20)],['Total TTC',fmt(ttc)]];
+  const remiseLbl='Remise Intersport';  // titre sans %, le -3 % est dans chaque cellule
+  const mentionDoc=MODE_CS
+    ? "Proforma établie par votre commercial Andros Sport. Ce document n'a pas valeur de commande."
+    : 'Commande passée depuis le bon de commande en ligne Andros Sport.';
+  const SEP='────────────────────────────────';
+
+  const docTitre=MODE_CS ? `${CS_LABELS[CS_MODE].titre.toUpperCase()} (PROFORMA) — ANDROS SPORT` : 'BON DE COMMANDE — ANDROS SPORT';
+  const enteteTxt=
+    docTitre+'\n\nCLIENT\n'+
+    '  Raison sociale : '+name+'\n'+
+    '  CP / Ville : '+cp+' '+(ville||'')+'\n'+
+    (bt49?'  Code BT-49 : '+bt49+'\n':'')+
+    '  Contact : '+(contact||'—')+'\n'+
+    '  Téléphone : '+(phone||'—')+'\n'+
+    '  Email : '+(email||'—')+'\n'+
+    (commercial?'  Secteur : '+NOMS[commercial]+'\n':'')+
+    (notes?'  Notes : '+notes+'\n':'');
+
+  // Récap compact — texte : Produit : UC · Prix HT net/UC · Total HT
+  const recapTxt=[
+    SEP,
+    ...sections.flatMap(s=>[s.titre, ...s.items.map(it=>`  • ${it.name} : ${it.qte} (${it.sous}) · `+
+      (IS_ITS
+        ? `Prix HT ${fmtPU(it.base)}/UC · ${remiseLbl} · Prix HT net ${fmtPU(it.nn)}/UC`
+        : `Prix HT net ${fmtPU(it.nn)}/UC`)+
+      ` · Total HT ${fmt(it.total)}`), '']),
+    SEP,
+    `Displays : ${o.disp} · UC : ${o.uc}`,
+    ...totaux.map(([k,val])=>`${k} : ${val}`),
+    '',
+    mentionDoc
+  ].join('\n');
+
+  // Récap compact — HTML : Produit | UC | Prix HT net / UC | Total HT
+  // Intersport : Produit | UC | Prix HT / UC | Remise -3 % Intersport | Prix HT net / UC | Total HT
+  const TD='padding:7px 8px;border-bottom:1px solid #DDE6E9;font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#133F49;';
+  const TH='padding:8px;background:#133F49;color:#fff;font-size:12px;font-family:Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.3px;';
+  const NCOL=IS_ITS?6:4;
+  const recapHtml=
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;margin:14px 0 0">'+
+    `<tr><th style="${TH}text-align:left">Produit</th><th style="${TH}text-align:center">UC</th>`+
+    (IS_ITS
+      ? `<th style="${TH}text-align:right">Prix HT / UC</th><th style="${TH}text-align:center">${remiseLbl}</th><th style="${TH}text-align:right">Prix HT net / UC</th>`
+      : `<th style="${TH}text-align:right">Prix HT net / UC</th>`)+
+    `<th style="${TH}text-align:right">Total HT</th></tr>`+
+    sections.map(s=>
+      `<tr><td colspan="${NCOL}" style="${TD}background:#F0F9D6;font-weight:800">${escHtml(s.titre)}</td></tr>`+
+      s.items.map(it=>
+        `<tr><td style="${TD}">${escHtml(it.name)}<br><span style="font-size:12px;color:#4A6570">${escHtml(it.sous)}</span></td>`+
+        `<td style="${TD}text-align:center;white-space:nowrap">${it.uc}</td>`+
+        (IS_ITS
+          ? `<td style="${TD}text-align:right;white-space:nowrap">${fmtPU(it.base)}</td>`+
+            `<td style="${TD}text-align:center;white-space:nowrap;color:#0a73c4;font-weight:700">-${Math.round(REMISE_ITS*100)} %</td>`
+          : '')+
+        `<td style="${TD}text-align:right;white-space:nowrap;color:#138a52;font-weight:700">${fmtPU(it.nn)}</td>`+
+        `<td style="${TD}text-align:right;font-weight:700;white-space:nowrap">${fmt(it.total)}</td></tr>`).join('')
+    ).join('')+
+    `<tr><td colspan="${NCOL}" style="${TD}color:#4A6570;font-size:13px">${o.disp} display${o.disp>1?'s':''} · ${o.uc} UC</td></tr>`+
+    totaux.map(([k,val],i)=>{
+      const st=(i===totaux.length-1?'background:#133F49;color:#fff;font-weight:800;':'font-weight:700;')+(i===0?'border-top:3px solid #133F49;padding-top:12px;':'');  // trait épais avant les totaux
+      return `<tr><td colspan="${NCOL-1}" style="${TD}${st}text-align:right">${k}</td><td style="${TD}${st}text-align:right;white-space:nowrap">${val}</td></tr>`;
+    }).join('')+
+    '</table>'+
+    `<p style="font-family:Segoe UI,Arial,sans-serif;font-size:12px;color:#4A6570;margin:8px 0 0">${escHtml(mentionDoc)}</p>`;
+  const preHtml=s=>'<pre style="font-family:inherit;white-space:pre-wrap;margin:0">'+escHtml(s)+'</pre>';
+
+  const dateJour=new Date().toLocaleDateString('fr-FR');
+  const subject=MODE_CS
+    ? CS_LABELS[CS_MODE].titre+' Andros Sport — '+name+(cp?' ('+cp+')':'')+' — '+dateJour
+    : 'Commande Andros Sport BtoB — '+name+(cp?' ('+cp+')':'')+' — '+dateJour;
+
+  let intro,outro;
+  if(!MODE_CS){
+    intro='Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
+    outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant votre commande, contactez votre commercial : '+emailCommercial+'\n';
+  } else if(CS_MODE==='implantation'){
+    intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à notre échange, je vous propose l\'implantation de la gamme Andros Sport dans votre magasin '+name+'.\n\nVous trouverez ci-dessous la proforma détaillant l\'assortiment de lancement conseillé, ainsi que les conditions tarifaires associées.\n\n';
+    outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition ». Pour l\'ajuster, répondez simplement à cet e-mail.\n\nJe reste à votre disposition pour organiser la mise en place en magasin.\n\nBien cordialement,\nVotre commercial Andros Sport\n'+emailCommercial+'\n';
+  } else {
+    intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à l\'analyse de vos ventes et de votre stock, je vous propose le réassort Andros Sport suivant pour votre magasin '+name+'.\n\nVous trouverez ci-dessous le récapitulatif de la proposition.\n\n';
+    outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition ». Pour modifier les quantités, répondez simplement à cet e-mail.\n\nBien cordialement,\nVotre commercial Andros Sport\n'+emailCommercial+'\n';
+  }
+
+  // Mode commercial : bouton « Je valide la proposition ». {{ACCEPT_URL}} est remplacé par le worker
+  // mailer par un lien signé qui renvoie la validation au commercial (client en copie).
+  const acceptBtnHtml=
+    '<table role="presentation" cellspacing="0" cellpadding="0" style="margin:22px 0"><tr><td style="background:#7EA818;border-radius:10px">'+
+    '<a href="{{ACCEPT_URL}}" target="_blank" style="display:inline-block;padding:14px 26px;color:#ffffff;font-weight:800;font-size:16px;text-decoration:none;font-family:Segoe UI,Arial,sans-serif">✅ Je valide la proposition</a>'+
+    '</td></tr></table>';
+  // Mention de la pièce jointe : ajoutée seulement si le PDF a bien été généré
+  const pjLigne=MODE_CS
+    ? '📎 Retrouvez la proforma détaillée (tarifs, références et gencodes) dans le PDF joint.'
+    : '📎 Le détail complet (tarifs, références et gencodes) figure dans le PDF joint, prêt à imprimer.';
+  const buildBody=avecPdf=>
+    intro+enteteTxt+'\n'+recapTxt+
+    (avecPdf?'\n\n'+pjLigne:'')+
+    (MODE_CS?'\n\n👉 Valider la proposition en un clic : {{ACCEPT_URL}}':'')+
+    outro;
+  const buildHtml=avecPdf=>{
+    let h=preHtml(intro)+preHtml(enteteTxt)+recapHtml+
+      (avecPdf?`<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:700;color:#133F49;background:#F0F9D6;border-radius:8px;padding:10px 12px;margin:14px 0 0;max-width:616px">${escHtml(pjLigne)}</p>`:'')+
+      (MODE_CS?acceptBtnHtml+preHtml(outro.replace(/^\n+/,'')):preHtml(outro));
+    if(bt49) h=h.replace('Code BT-49 : '+escHtml(bt49),'<strong style="color:#e11d2e">Code BT-49 : '+escHtml(bt49)+'</strong>');
+    return h;
+  };
+
+  // Récap simplifié (page de confirmation + mail « proposition validée »), groupé par famille de produit
+  const recapCourt={
+    lignes: sections.flatMap(s=>[{sec:s.famille}, ...s.items.map(it=>({n:it.name, uc:it.qte, pu:fmtPU(it.nn), t:fmt(it.total), off:false,
+      ...(IS_ITS?{pb:fmtPU(it.base), rm:`-${Math.round(REMISE_ITS*100)} %`}:{})}))]),
+    ...(IS_ITS?{remiseLbl}:{}),
+    plv: [],
+    totaux
+  };
+
+  // PDF joint au mail
+  const pdfData={
+    titre: MODE_CS?`${CS_LABELS[CS_MODE].titre} (proforma)`:'Bon de commande', date: dateJour,
+    infos: [['Raison sociale',name],['CP / Ville',`${cp} ${ville||''}`],...(bt49?[['Code BT-49',bt49]]:[]),
+            ['Contact',contact||'-'],['Téléphone',phone||'-'],['Email',email||'-'],...(notes?[['Notes',notes]]:[])],
+    sections, totaux, resume:`${o.disp} display${o.disp>1?'s':''} · ${o.uc} UC`, mention: mentionDoc, commercial: emailCommercial,
+    remiseIts: IS_ITS ? REMISE_ITS : 0
+  };
+  const pdfNom=`${MODE_CS?'Proforma':'Commande'}_Andros_Sport_${name}_${dateJour}`.replace(/[^\w\-]+/g,'_')+'.pdf';
+
   btn.disabled=true;
   const label=btn.textContent;
   btn.textContent='Envoi en cours…';
-  fetch(MAILER_URL,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({to,cc:[cc,email].filter(Boolean),subject,body,html,replyTo:email||undefined})
+  buildPdfBase64(pdfData).catch(err=>{ console.warn('PDF non généré', err); return null; }).then(pdf64=>{
+    const attachments=pdf64?[{name:pdfNom, content:pdf64}]:undefined;
+    const body=buildBody(!!pdf64), html=buildHtml(!!pdf64);
+    return fetch(MAILER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      // Mode commercial : la proposition part au magasin, copie au commercial (+ DESTINATAIRE pour traçabilité),
+      // et le magasin répond directement au commercial.
+      body:JSON.stringify(MODE_CS
+        ? {to:email,cc:[...new Set([emailCommercial,DESTINATAIRE])],subject,body,html,replyTo:emailCommercial,attachments,
+           accept:{commercial:emailCommercial,dest:DESTINATAIRE,magasin:name+(cp?' ('+cp+')':''),contact,titre:CS_LABELS[CS_MODE].titre,...recapCourt}}
+        : {to:emailCommercial,cc:[commercial?DESTINATAIRE:'',email].filter(Boolean),subject,body,html,replyTo:email||undefined,attachments})
+    });
   }).then(res=>{
     if(!res.ok)throw new Error('send failed');
     return res.json();
   }).then(data=>{
     if(!data.ok)throw new Error(data.error||'send failed');
     ORDER_SENT=true;
-    alert('Commande envoyée avec succès !');
-    btn.textContent='✓ Commande envoyée';
+    alert(MODE_CS?'Proposition envoyée au magasin avec succès !':'Commande envoyée avec succès !');
+    btn.textContent=MODE_CS?'✓ Proposition envoyée':'✓ Commande envoyée';
     btn.disabled=true;
   }).catch(()=>{
-    alert("Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial.");
+    alert(MODE_CS?"Erreur lors de l'envoi de la proposition. Merci de réessayer.":"Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial.");
     btn.disabled=false;
     btn.textContent=label;
   });
+}
+
+// ===== PDF (jsPDF 2.5.1 + autotable 3.8.2 + JsBarcode 3.11.6) =====
+// Fichiers hébergés avec la page (dossier lib/) : si la page s'affiche, ils se chargent aussi.
+// Le CDN ne sert que de secours. Chargement lancé dès l'ouverture de la page.
+const PDF_LIBS=[
+  ['lib/jspdf.umd.min.js',              'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',                       ()=>window.jspdf],
+  ['lib/jspdf.plugin.autotable.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js', ()=>window.jspdf?.jsPDF?.API?.autoTable],
+  ['lib/JsBarcode.all.min.js',          'https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js',              ()=>window.JsBarcode],
+];
+function loadScript(src){
+  return new Promise((ok,ko)=>{
+    const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=()=>{ s.remove(); ko(new Error('Chargement impossible : '+src)); };
+    document.head.appendChild(s);
+  });
+}
+let pdfLibsPromise=null;
+function loadPdfLibs(){
+  if(!pdfLibsPromise){
+    pdfLibsPromise=(async()=>{
+      for(const [local,cdn,ready] of PDF_LIBS){
+        if(ready()) continue;
+        try { await loadScript(local); } catch { await loadScript(cdn); }
+      }
+    })().catch(err=>{ pdfLibsPromise=null; throw err; }); // nouvel essai possible au prochain envoi
+  }
+  return pdfLibsPromise;
+}
+window.addEventListener('load',()=>loadPdfLibs().catch(()=>{}));
+// Les polices standard du PDF ne gèrent ni les emojis ni les espaces fines insécables
+const pdfTxt=s=>String(s??'').replace(/[  ]/g,' ').replace(/[^\n\x20-\x7E -ÿ€—–’…•]/g,'').replace(/[ \t]+/g,' ').trim();
+function barcodePng(ean){
+  const c=document.createElement('canvas');
+  JsBarcode(c, ean, {format:'EAN13', height:60, width:2, fontSize:16, margin:4, background:'#ffffff'});
+  return c.toDataURL('image/png');
+}
+async function buildPdfBase64(d){
+  await loadPdfLibs();
+  const doc=new window.jspdf.jsPDF({unit:'mm', format:'a4'});
+  const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight(), M=14;
+  const ENCRE=[19,63,73], GRIS=[74,101,112], LIME=[240,249,214], VERT=[19,138,82];
+
+  // En-tête
+  doc.setFillColor(...ENCRE); doc.rect(0,0,W,24,'F');
+  doc.setTextColor(255); doc.setFont('helvetica','bold'); doc.setFontSize(15);
+  doc.text('ANDROS SPORT', M, 10);
+  doc.setFontSize(11); doc.text(pdfTxt(d.titre), M, 17.5);
+  doc.setFont('helvetica','normal'); doc.setFontSize(9);
+  doc.text(pdfTxt('Date : '+d.date), W-M, 10, {align:'right'});
+
+  // Client
+  doc.autoTable({startY:30, margin:{left:M,right:M}, theme:'plain',
+    styles:{fontSize:9, cellPadding:1.1, textColor:ENCRE},
+    columnStyles:{0:{fontStyle:'bold', cellWidth:32, textColor:GRIS}},
+    body:d.infos.map(([k,v])=>[pdfTxt(k), pdfTxt(v)])});
+
+  // Produits : tarif net ; pour un Intersport, colonnes « Tarif HT / UC » puis « Remise ITS » avant votre prix
+  const its=d.remiseIts>0, pC=Math.round(d.remiseIts*100);
+  const NB_COL=its?7:5;
+  const body=[];
+  d.sections.forEach(s=>{
+    body.push([{content:pdfTxt(s.titre), colSpan:NB_COL, styles:{fillColor:LIME, fontStyle:'bold', textColor:ENCRE}}]);
+    s.items.forEach(it=>body.push([
+      pdfTxt(it.name)+'\n'+pdfTxt(it.sous)+'\nRéf. '+pdfTxt(it.ref),
+      String(it.uc),
+      ...(its?[pdfTxt(fmtPU(it.base)), {content:`-${pC} %`, styles:{halign:'center', textColor:[10,115,196], fontStyle:'bold'}}]:[]),
+      {content:pdfTxt(fmtPU(it.nn)), styles:{textColor:VERT, fontStyle:'bold'}},  // seul le prix HT net en vert
+      {content:pdfTxt(fmt(it.total)), styles:{fontStyle:'bold'}},
+      {content:'', ean:it.ean, styles:{minCellHeight:17}},
+    ]));
+  });
+  doc.autoTable({startY:doc.lastAutoTable.finalY+5, margin:{left:M,right:M}, rowPageBreak:'avoid',
+    head:[its
+      ? ['Produit','UC','Prix HT / UC','Remise Intersport','Prix HT net / UC','Total HT','Gencode']
+      : ['Produit','UC','Prix HT net / UC','Total HT','Gencode']],
+    body,
+    styles:{fontSize:8.5, cellPadding:1.8, valign:'middle', textColor:ENCRE, lineColor:[221,230,233], lineWidth:0.1},
+    headStyles:{fillColor:ENCRE, textColor:255, fontStyle:'bold', halign:'center', fontSize:8},
+    columnStyles: its
+      ? {1:{halign:'center',cellWidth:13},2:{halign:'right',cellWidth:20},3:{halign:'right',cellWidth:22},4:{halign:'right',cellWidth:22},
+         5:{halign:'right',cellWidth:23},6:{cellWidth:38}}
+      : {1:{halign:'center',cellWidth:15},2:{halign:'right',cellWidth:28},3:{halign:'right',cellWidth:26},4:{cellWidth:38}},
+    didDrawCell:data=>{
+      const r=data.cell.raw;
+      if(data.section!=='body' || !r || !r.ean) return;
+      const {x,y,width,height}=data.cell;
+      doc.addImage(barcodePng(r.ean), 'PNG', x+(width-32)/2, y+(height-14)/2, 32, 14);
+    }});
+  let y=doc.lastAutoTable.finalY+4;
+  doc.setFontSize(7.5); doc.setTextColor(...GRIS);
+  doc.text(pdfTxt(`${d.resume}. Tarifs HT nets revendeur 2026${its?', remise Intersport appliquée':''}. UC = unité consommateur.`), M, y);
+
+  // Totaux
+  const last=d.totaux.length-1;
+  doc.autoTable({startY:y+6, margin:{left:W-M-85, right:M}, theme:'plain', rowPageBreak:'avoid',
+    styles:{fontSize:10, cellPadding:1.8, textColor:ENCRE}, columnStyles:{1:{halign:'right'}},
+    body:d.totaux.map(([k,v],i)=> i===last
+      ? [{content:k, styles:{fontStyle:'bold', fillColor:ENCRE, textColor:255}}, {content:pdfTxt(v), styles:{fontStyle:'bold', fillColor:ENCRE, textColor:255, halign:'right'}}]
+      : [k, pdfTxt(v)])});
+  y=doc.lastAutoTable.finalY+9;
+  if(y>H-22){ doc.addPage(); y=20; }
+  doc.setFontSize(8.5); doc.setTextColor(...GRIS);
+  doc.text(pdfTxt(d.mention), M, y, {maxWidth:W-2*M});
+  doc.text(pdfTxt(`Franco de port : ${FRANCO_MIN} € HT minimum · Contact commercial : ${d.commercial}`), M, y+5, {maxWidth:W-2*M});
+
+  const n=doc.getNumberOfPages();
+  for(let i=1;i<=n;i++){ doc.setPage(i); doc.setFontSize(7.5); doc.setTextColor(...GRIS); doc.text(`Page ${i}/${n}`, W-M, H-8, {align:'right'}); }
+  return doc.output('datauristring').split(',')[1];
 }
 recompute();
 
