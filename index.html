@@ -123,6 +123,7 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 .prod-info{flex:1;min-width:0}
 .prod-name{font-weight:700;font-size:.95rem;line-height:1.2}
 .prod-meta{font-size:.72rem;color:var(--gris);margin-top:2px}
+.dluo{display:inline-block;background:var(--encre);color:#fff;font-weight:700;font-size:.68rem;padding:1px 7px;border-radius:5px;letter-spacing:.02em;white-space:nowrap;margin-right:6px}
 .prod-badges{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
 .badge{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:5px;white-space:nowrap}
 .badge.pa{background:#E8F2F5;color:var(--gris)}
@@ -156,6 +157,12 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 .cs-opt{flex:1 1 140px;border:1.5px solid var(--ligne);background:#fff;color:var(--encre);border-radius:10px;padding:10px 12px;font:inherit;font-size:.84rem;font-weight:700;cursor:pointer;text-align:left}
 .cs-opt.active{border-color:var(--encre);background:var(--encre);color:#fff}
 .cs-note{margin-top:8px;font-size:.72rem;color:var(--gris);line-height:1.4}
+/* Gratuits ligne par ligne (mode commercial uniquement) */
+.cs-free{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;padding:5px 10px;border:1.5px dashed var(--lime-dk);border-radius:9px;background:#fff;max-width:340px}
+.cs-free.on{background:var(--lime-clair);border-style:solid}
+.cs-free-lbl{font-size:.76rem;font-weight:800;color:var(--lime-dk)}
+.cs-free-lbl small{display:block;font-weight:600;color:var(--gris);font-size:.64rem}
+.cs-free .qty{height:30px}
 @media(max-width:600px){.cs-panel{margin:12px 16px 0}}
 .recap h3{background:var(--encre);color:#fff;font-size:.82rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:11px 16px}
 .recap-body{padding:14px 16px}
@@ -586,7 +593,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ABRICOT BANANE</div>
-        <div class="prod-meta">Réf. 50121867 · EAN 3608580114536 · <strong>DISPLAYS DE 32</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 31/10/2027</span>Réf. 50121867 · EAN 3608580114536 · <strong>DISPLAYS DE 32</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.498 € HT/UC</span>
           <span class="badge pv">PV 1.20 € TTC</span>
@@ -616,7 +623,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUIT ROUGES</div>
-        <div class="prod-meta">Réf. 50121866 · EAN 3608580114581 · <strong>DISPLAYS DE 32</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 15/12/2027</span>Réf. 50121866 · EAN 3608580114581 · <strong>DISPLAYS DE 32</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.498 € HT/UC</span>
           <span class="badge pv">PV 1.20 € TTC</span>
@@ -646,7 +653,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ETUI MIX DE 6 (3 FR + 3AB)</div>
-        <div class="prod-meta">Réf. 50120744 · EAN 3608580115311 · <strong>PCB DE 10</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 25/12/2027</span>Réf. 50120744 · EAN 3608580115311 · <strong>PCB DE 10</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 3.070 € HT/UC</span>
           <span class="badge pv">PV 5.90 € TTC</span>
@@ -676,7 +683,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ETUI X6 FRAISE BANANE GUARANA</div>
-        <div class="prod-meta">Réf. 50137700 · EAN 3608580207658 · <strong>PCB DE 10</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 30/11/2027</span>Réf. 50137700 · EAN 3608580207658 · <strong>PCB DE 10</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 3.310 € HT/UC</span>
           <span class="badge pv">PV 6.49 € TTC</span>
@@ -714,7 +721,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME MANGUE PASSION</div>
-        <div class="prod-meta">Réf. 50133117 · EAN 3608580187837 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 11/05/2027</span>Réf. 50133117 · EAN 3608580187837 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -744,7 +751,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME BANANE</div>
-        <div class="prod-meta">Réf. 50133116 · EAN 3608580187806 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 11/05/2027</span>Réf. 50133116 · EAN 3608580187806 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -774,7 +781,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME FRAISE CASSIS</div>
-        <div class="prod-meta">Réf. 50133118 · EAN 3608580187868 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 11/05/2027</span>Réf. 50133118 · EAN 3608580187868 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -812,7 +819,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME TOMATE POIVRON</div>
-        <div class="prod-meta">Réf. 50128308 · EAN 3608580159506 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 24/01/2027</span>Réf. 50128308 · EAN 3608580159506 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.555 € HT/UC</span>
           <span class="badge pv">PV 3.00 € TTC</span>
@@ -842,7 +849,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME BUTTERNUT CURCUMA</div>
-        <div class="prod-meta">Réf. 50128307 · EAN 3608580159476 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 25/01/2027</span>Réf. 50128307 · EAN 3608580159476 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.555 € HT/UC</span>
           <span class="badge pv">PV 3.00 € TTC</span>
@@ -880,7 +887,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">MYRTILLES CRANBERRIES</div>
-        <div class="prod-meta">Réf. 50134503 · EAN 3608580192930 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 23/06/2027</span>Réf. 50134503 · EAN 3608580192930 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -910,7 +917,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME POIRE ABRICOT</div>
-        <div class="prod-meta">Réf. 50119521 · EAN 3608580111962 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 16/09/2027</span>Réf. 50119521 · EAN 3608580111962 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -940,7 +947,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUITS ROUGES</div>
-        <div class="prod-meta">Réf. 50119519 · EAN 3608580111900 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 16/09/2027</span>Réf. 50119519 · EAN 3608580111900 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -970,7 +977,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">BANANE CHOCOLAT</div>
-        <div class="prod-meta">Réf. 50119520 · EAN 3608580111931 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 09/10/2027</span>Réf. 50119520 · EAN 3608580111931 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -1008,7 +1015,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ANANAS PASSION POMME</div>
-        <div class="prod-meta">Réf. 50132077 · EAN 3608580182450 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 30/09/2027</span>Réf. 50132077 · EAN 3608580182450 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.850 € HT/UC</span>
           <span class="badge pv">PV 1.69 € TTC</span>
@@ -1038,7 +1045,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUITS ROUGES</div>
-        <div class="prod-meta">Réf. 50129284 · EAN 3608580167471 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 30/07/2027</span>Réf. 50129284 · EAN 3608580167471 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.850 € HT/UC</span>
           <span class="badge pv">PV 1.69 € TTC</span>
@@ -1076,7 +1083,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL BOOST AGRUMES YUZU</div>
-        <div class="prod-meta">Réf. 50119284 · EAN 3608580109846 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 26/06/2027</span>Réf. 50119284 · EAN 3608580109846 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1106,7 +1113,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL ANTIOXYDANT CASSIS BETTERAVE</div>
-        <div class="prod-meta">Réf. 50119285 · EAN 3608580109877 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 11/08/2027</span>Réf. 50119285 · EAN 3608580109877 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1136,7 +1143,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL BOOST FRAISE CRANBERRY GOYAVE</div>
-        <div class="prod-meta">Réf. 50125944 · EAN 3608580144922 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 11/09/2027</span>Réf. 50125944 · EAN 3608580144922 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1174,7 +1181,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">MANGUE BANANE Sachet de 6 gummies</div>
-        <div class="prod-meta">Réf. 50127575 · EAN 3608580155133 · <strong>DISPLAYS DE 14</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 10/06/2027</span>Réf. 50127575 · EAN 3608580155133 · <strong>DISPLAYS DE 14</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.955 € HT/UC</span>
           <span class="badge pv">PV 2.00 € TTC</span>
@@ -1204,7 +1211,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRAISE  Sachet de 6 gummies</div>
-        <div class="prod-meta">Réf. 50132677 · EAN 3608580184973 · <strong>DISPLAYS DE 14</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO 30/11/2027</span>Réf. 50132677 · EAN 3608580184973 · <strong>DISPLAYS DE 14</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.955 € HT/UC</span>
           <span class="badge pv">PV 2.00 € TTC</span>
@@ -1233,6 +1240,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <div class="recap-body">
       <div class="rline"><span class="rl-lbl">Nombre de displays</span><span id="r_disp">0</span></div>
       <div class="rline"><span class="rl-lbl">Nombre d'UC</span><span id="r_uc">0</span></div>
+      <div class="rline" id="r_free_row" style="display:none"><span class="rl-lbl">🎁 Gratuits (en plus, 0 €)</span><span id="r_free">0</span></div>
       <div class="rline strong"><span class="rl-lbl">Total HT</span><span id="r_ht">0,00 €</span></div>
       <div class="rline"><span class="rl-lbl">TVA 5,5 %</span><span id="r_tva55">0,00 €</span></div>
       <div class="rline"><span class="rl-lbl">TVA 20 % (gummies)</span><span id="r_tva20">0,00 €</span></div>
@@ -1504,8 +1512,8 @@ function showTab(t){
   if(t==='bdc'&&!bt49Shown){bt49Shown=true;openBt49Info();}
 }
 document.querySelectorAll('.prod').forEach(prod=>{
-  const inp=prod.querySelector('input');
-  prod.querySelectorAll('.qty button').forEach(b=>{
+  const inp=prod.querySelector('.prod-right input');
+  prod.querySelectorAll('.prod-right .qty button').forEach(b=>{
     b.addEventListener('click',()=>{
       let v=Math.max(0,(parseInt(inp.value)||0)+(b.dataset.act==='plus'?1:-1));
       inp.value=v; recompute();
@@ -1521,11 +1529,14 @@ document.querySelectorAll('input.required').forEach(inp=>{
 // Arrondi au centime de chaque ligne (comme sur la facture) : lignes et totaux tombent toujours juste.
 // Le tarif unitaire garde ses 3 décimales (ex. 0,498 €/UC).
 const round2 = n => Math.round(n*100)/100;
+// Mode commercial : displays gratuits saisis sur la ligne « 🎁 Gratuit » du produit (en plus des payants)
+function freeQtyOf(prod){ return MODE_CS ? (parseInt(prod.querySelector('.cs-free input')?.value)||0) : 0; }
 function recompute(){
-  let ht=0,ht55=0,ht20=0,disp=0,uc=0;
+  let ht=0,ht55=0,ht20=0,disp=0,uc=0,dispFree=0,ucFree=0;
   document.querySelectorAll('.prod').forEach(prod=>{
     const net=parseFloat(prod.dataset.net),pcb=parseInt(prod.dataset.pcb),tva=parseFloat(prod.dataset.tva);
-    const q=parseInt(prod.querySelector('input').value)||0;
+    const q=parseInt(prod.querySelector('.prod-right input').value)||0;
+    const g=freeQtyOf(prod); dispFree+=g; ucFree+=g*pcb;
     const line=round2(q*pcb*net);
     const cell=prod.querySelector(`[data-linetotal="${prod.dataset.ref}"]`);
     cell.textContent=fmt(line); cell.classList.toggle('zero',q===0);
@@ -1535,8 +1546,10 @@ function recompute(){
   ht=round2(ht);
   const tva55=round2(ht55*0.055),tva20=round2(ht20*0.20),ttc=round2(ht+tva55+tva20);
   currentHT=ht;
-  window.ORDER={ht,tva55,tva20,ttc,disp,uc};
+  window.ORDER={ht,tva55,tva20,ttc,disp,uc,dispFree,ucFree};
   set('r_disp',disp);set('r_uc',uc);
+  document.getElementById('r_free_row').style.display=dispFree>0?'':'none';
+  set('r_free',dispFree+' display'+(dispFree>1?'s':'')+' ('+ucFree+' UC)');
   set('r_ht',fmt(ht));set('r_tva55',fmt(tva55));set('r_tva20',fmt(tva20));
   set('g_ht',fmt(ht)+' HT');set('g_ttc',fmt(ttc));set('bb_ttc',fmt(ttc));
   set('bb_sub',disp+(disp>1?' displays · ':' display · ')+fmt(ht)+' HT');
@@ -1566,6 +1579,21 @@ if(MODE_CS){
   document.getElementById('csPanel').style.display = '';
   document.querySelectorAll('.cs-opt').forEach(b=>b.addEventListener('click',()=>{ CS_MODE = b.dataset.csmode; applyCsMode(); }));
   applyCsMode();
+
+  // 🎁 GRATUITS : sur chaque produit, une quantité offerte en plus de la quantité payante.
+  // Le produit sort alors deux fois dans la proposition : ligne payante + ligne GRATUIT à 0 €.
+  document.querySelectorAll('.prod').forEach(prod=>{
+    prod.querySelector('.prod-info').insertAdjacentHTML('beforeend',
+      `<div class="cs-free"><span class="cs-free-lbl">🎁 Gratuit<small>en displays de ${prod.dataset.pcb}, en plus de la qté payante</small></span>`+
+      `<div class="qty"><button type="button" data-act="minus">−</button><input type="number" inputmode="numeric" min="0" value="0"><button type="button" data-act="plus">+</button></div></div>`);
+    const row=prod.querySelector('.cs-free'), inp=row.querySelector('input');
+    row.addEventListener('click',e=>e.stopPropagation()); // ne pas replier / déplier le détail produit
+    const upd=()=>{ row.classList.toggle('on',(parseInt(inp.value)||0)>0); recompute(); };
+    row.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      inp.value=Math.max(0,(parseInt(inp.value)||0)+(b.dataset.act==='plus'?1:-1)); upd();
+    }));
+    inp.addEventListener('input',()=>{ inp.value=Math.max(0,parseInt(inp.value)||0); upd(); });
+  });
 }
 
 // Tarif unitaire : jusqu'à 3 décimales (0,498 €), montants : 2 décimales
@@ -1620,14 +1648,23 @@ function submitOrder(){
     const label=st.textContent.replace(pic,'').replace(tvaTxt,'').trim().toUpperCase();
     const items=[];
     list.querySelectorAll('.prod').forEach(prod=>{
-      const q=parseInt(prod.querySelector('input').value)||0;
-      if(q<=0)return;
+      const q=parseInt(prod.querySelector('.prod-right input').value)||0;
+      const g=freeQtyOf(prod); // gratuits (mode commercial)
+      if(q<=0 && g<=0)return;
       const net=parseFloat(prod.dataset.net),pcb=parseInt(prod.dataset.pcb);
       const ean=(prod.querySelector('.prod-meta')?.textContent.match(/EAN\s*(\d{13})/)||[])[1]||'';
       const nn=IS_ITS?round3(net*(1-REMISE_ITS)):net;
-      items.push({name:prod.querySelector('.prod-name').textContent.trim(), uc:q*pcb, qte:`${q*pcb} UC`,
-        sous:`${plural(q,'display')} de ${pcb}`, base:net, nn, total:round2(q*pcb*nn),
+      const pname=prod.querySelector('.prod-name').textContent.trim();
+      // DLUO affichée sur la page (badge) : reprise dans le mail et le PDF, sous le nom du produit
+      const dluo=(prod.querySelector('.dluo')?.textContent.match(/\d\d\/\d\d\/\d{4}/)||[])[0]||'';
+      const dl=dluo?` · DLUO ${dluo}`:'';
+      if(q>0) items.push({name:pname, uc:q*pcb, qte:`${q*pcb} UC`,
+        sous:`${plural(q,'display')} de ${pcb}${dl}`, base:net, nn, total:round2(q*pcb*nn),
         tva:parseFloat(prod.dataset.tva), ref:prod.dataset.ref, ean});
+      // Ligne GRATUIT à 0 € juste sous la ligne payante du même produit
+      if(g>0) items.push({name:`${pname} — GRATUIT`, uc:g*pcb, qte:`${g*pcb} UC`,
+        sous:`${plural(g,'display')} de ${pcb} offert${g>1?'s':''}${dl}`, base:net, nn:0, total:0,
+        tva:parseFloat(prod.dataset.tva), ref:prod.dataset.ref, ean, free:true});
     });
     if(items.length) sections.push({titre:`${pic} ${label} (${tvaTxt})`, famille:`${pic} ${label}`, items});
   });
@@ -1646,6 +1683,8 @@ function submitOrder(){
     ? "Proforma établie par votre commercial Andros Sport. Ce document n'a pas valeur de commande."
     : 'Commande passée depuis le bon de commande en ligne Andros Sport.';
   const SEP='────────────────────────────────';
+  const resume=`${o.disp} display${o.disp>1?'s':''}`+
+    (o.dispFree?` + ${o.dispFree} gratuit${o.dispFree>1?'s':''}`:'')+` · ${o.uc+o.ucFree} UC`;
 
   const docTitre=MODE_CS ? `${CS_LABELS[CS_MODE].titre.toUpperCase()} (PROFORMA) — ANDROS SPORT` : 'BON DE COMMANDE — ANDROS SPORT';
   const enteteTxt=
@@ -1663,12 +1702,13 @@ function submitOrder(){
   const recapTxt=[
     SEP,
     ...sections.flatMap(s=>[s.titre, ...s.items.map(it=>`  • ${it.name} : ${it.qte} (${it.sous}) · `+
-      (IS_ITS
+      (it.free ? 'GRATUIT'
+        : IS_ITS
         ? `Prix HT ${fmtPU(it.base)}/UC · ${remiseLbl} · Prix HT net ${fmtPU(it.nn)}/UC`
         : `Prix HT net ${fmtPU(it.nn)}/UC`)+
       ` · Total HT ${fmt(it.total)}`), '']),
     SEP,
-    `Displays : ${o.disp} · UC : ${o.uc}`,
+    `Displays : ${resume}`,
     ...totaux.map(([k,val])=>`${k} : ${val}`),
     '',
     mentionDoc
@@ -1692,13 +1732,13 @@ function submitOrder(){
         `<tr><td style="${TD}">${escHtml(it.name)}<br><span style="font-size:12px;color:#4A6570">${escHtml(it.sous)}</span></td>`+
         `<td style="${TD}text-align:center;white-space:nowrap">${it.uc}</td>`+
         (IS_ITS
-          ? `<td style="${TD}text-align:right;white-space:nowrap">${fmtPU(it.base)}</td>`+
-            `<td style="${TD}text-align:center;white-space:nowrap;color:#0a73c4;font-weight:700">-${Math.round(REMISE_ITS*100)} %</td>`
+          ? `<td style="${TD}text-align:right;white-space:nowrap">${it.free?'-':fmtPU(it.base)}</td>`+
+            `<td style="${TD}text-align:center;white-space:nowrap;color:#0a73c4;font-weight:700">${it.free?'OFFERT':`-${Math.round(REMISE_ITS*100)} %`}</td>`
           : '')+
         `<td style="${TD}text-align:right;white-space:nowrap;color:#138a52;font-weight:700">${fmtPU(it.nn)}</td>`+
         `<td style="${TD}text-align:right;font-weight:700;white-space:nowrap">${fmt(it.total)}</td></tr>`).join('')
     ).join('')+
-    `<tr><td colspan="${NCOL}" style="${TD}color:#4A6570;font-size:13px">${o.disp} display${o.disp>1?'s':''} · ${o.uc} UC</td></tr>`+
+    `<tr><td colspan="${NCOL}" style="${TD}color:#4A6570;font-size:13px">${escHtml(resume)}</td></tr>`+
     totaux.map(([k,val],i)=>{
       const st=(i===totaux.length-1?'background:#133F49;color:#fff;font-weight:800;':'font-weight:700;')+(i===0?'border-top:3px solid #133F49;padding-top:12px;':'');  // trait épais avant les totaux
       return `<tr><td colspan="${NCOL-1}" style="${TD}${st}text-align:right">${k}</td><td style="${TD}${st}text-align:right;white-space:nowrap">${val}</td></tr>`;
@@ -1749,8 +1789,8 @@ function submitOrder(){
 
   // Récap simplifié (page de confirmation + mail « proposition validée »), groupé par famille de produit
   const recapCourt={
-    lignes: sections.flatMap(s=>[{sec:s.famille}, ...s.items.map(it=>({n:it.name, uc:it.qte, pu:fmtPU(it.nn), t:fmt(it.total), off:false,
-      ...(IS_ITS?{pb:fmtPU(it.base), rm:`-${Math.round(REMISE_ITS*100)} %`}:{})}))]),
+    lignes: sections.flatMap(s=>[{sec:s.famille}, ...s.items.map(it=>({n:it.name, uc:it.qte, pu:fmtPU(it.nn), t:fmt(it.total), off:!!it.free,
+      ...(IS_ITS?{pb:it.free?'-':fmtPU(it.base), rm:it.free?'OFFERT':`-${Math.round(REMISE_ITS*100)} %`}:{})}))]),
     ...(IS_ITS?{remiseLbl}:{}),
     plv: [],
     totaux
@@ -1761,7 +1801,7 @@ function submitOrder(){
     titre: MODE_CS?`${CS_LABELS[CS_MODE].titre} (proforma)`:'Bon de commande', date: dateJour,
     infos: [['Raison sociale',name],['CP / Ville',`${cp} ${ville||''}`],...(bt49?[['Code BT-49',bt49]]:[]),
             ['Contact',contact||'-'],['Téléphone',phone||'-'],['Email',email||'-'],...(notes?[['Notes',notes]]:[])],
-    sections, totaux, resume:`${o.disp} display${o.disp>1?'s':''} · ${o.uc} UC`, mention: mentionDoc, commercial: emailCommercial,
+    sections, totaux, resume, mention: mentionDoc, commercial: emailCommercial,
     remiseIts: IS_ITS ? REMISE_ITS : 0
   };
   const pdfNom=`${MODE_CS?'Proforma':'Commande'}_Andros_Sport_${name}_${dateJour}`.replace(/[^\w\-]+/g,'_')+'.pdf';
@@ -1861,7 +1901,7 @@ async function buildPdfBase64(d){
     s.items.forEach(it=>body.push([
       pdfTxt(it.name)+'\n'+pdfTxt(it.sous)+'\nRéf. '+pdfTxt(it.ref),
       String(it.uc),
-      ...(its?[pdfTxt(fmtPU(it.base)), {content:`-${pC} %`, styles:{halign:'center', textColor:[10,115,196], fontStyle:'bold'}}]:[]),
+      ...(its?[it.free?'-':pdfTxt(fmtPU(it.base)), {content:it.free?'OFFERT':`-${pC} %`, styles:{halign:'center', textColor:[10,115,196], fontStyle:'bold'}}]:[]),
       {content:pdfTxt(fmtPU(it.nn)), styles:{textColor:VERT, fontStyle:'bold'}},  // seul le prix HT net en vert
       {content:pdfTxt(fmt(it.total)), styles:{fontStyle:'bold'}},
       {content:'', ean:it.ean, styles:{minCellHeight:17}},
