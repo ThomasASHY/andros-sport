@@ -1765,6 +1765,13 @@ function submitOrder(){
     outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition ». Pour modifier les quantités, répondez simplement à cet e-mail.\n\nBien cordialement,\nVotre commercial Andros Sport\n'+emailCommercial+'\n';
   }
 
+  // Adresses des bons de commande en ligne, rappelées en bas de chaque mail :
+  // Andros Sport + Hydratis (site Intersport si le magasin est un Intersport, site général sinon)
+  const SITES_BTOB=[['Andros Sport','https://andros-sport.pages.dev'],['Hydratis',IS_ITS?'https://hydratis-its.pages.dev':'https://hydratis-bdc.pages.dev']];
+  const sitesTxt='\nVos bons de commande en ligne :\n'+SITES_BTOB.map(([n,u])=>`  • ${n} : ${u}`).join('\n')+'\n';
+  const sitesHtml='<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#133F49;margin:14px 0 0"><strong>Vos bons de commande en ligne :</strong><br>'+
+    SITES_BTOB.map(([n,u])=>`${n} : <a href="${u}" target="_blank" style="color:#133F49">${u}</a>`).join('<br>')+'</p>';
+
   // Mode commercial : bouton « Je valide la proposition ». {{ACCEPT_URL}} est remplacé par le worker
   // mailer par un lien signé qui renvoie la validation au commercial (client en copie).
   const acceptBtnHtml=
@@ -1779,11 +1786,11 @@ function submitOrder(){
     intro+enteteTxt+'\n'+recapTxt+
     (avecPdf?'\n\n'+pjLigne:'')+
     (MODE_CS?'\n\n👉 Valider la proposition en un clic : {{ACCEPT_URL}}':'')+
-    outro;
+    outro+sitesTxt;
   const buildHtml=avecPdf=>{
     let h=preHtml(intro)+preHtml(enteteTxt)+recapHtml+
       (avecPdf?`<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:700;color:#133F49;background:#F0F9D6;border-radius:8px;padding:10px 12px;margin:14px 0 0;max-width:616px">${escHtml(pjLigne)}</p>`:'')+
-      (MODE_CS?acceptBtnHtml+preHtml(outro.replace(/^\n+/,'')):preHtml(outro));
+      (MODE_CS?acceptBtnHtml+preHtml(outro.replace(/^\n+/,'')):preHtml(outro))+sitesHtml;
     if(bt49) h=h.replace('Code BT-49 : '+escHtml(bt49),'<strong style="color:#e11d2e">Code BT-49 : '+escHtml(bt49)+'</strong>');
     return h;
   };
