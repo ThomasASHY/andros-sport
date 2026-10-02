@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -150,6 +150,63 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 
 /* RECAP */
 .recap{background:var(--white);border:1px solid var(--ligne);border-radius:14px;margin:24px 24px 0;overflow:hidden}
+/* COMMANDE MULTI-MAGASINS (activée à la demande) */
+/* Encadré commun (fond #F2EBE5, palette #5EACA3) : choix un seul / plusieurs magasins, puis les onglets en dessous */
+.multi-group{margin:14px 14px 0;padding:10px;background:#F2EBE5;border:1.5px solid #5EACA3;border-radius:14px}
+.multi-group-title{font-size:.8rem;font-weight:800;color:#2f6660;margin:0 2px 8px}
+.cs-panel .multi-group{margin:10px 0 0}  /* mode commercial : rangé dans l'encart « type de proposition » */
+.multi-choix{display:flex;gap:6px;padding:4px;background:#fff;border:1.5px solid #5EACA3;border-radius:11px}
+.multi-choix button{flex:1;border:0;border-radius:8px;padding:10px 8px;background:transparent;color:#3d7f77;font:inherit;font-size:.86rem;font-weight:800;cursor:pointer}
+.multi-choix button.active{background:#5EACA3;color:#fff;box-shadow:0 1px 3px rgba(12,36,52,.2)}
+/* « Dupliquer » : dans la barre du bas, à côté du bouton de validation (multi-magasins uniquement) */
+/* même gabarit que le bouton de validation, fond #5EACA3 */
+.bb-dup{background:#5EACA3;color:#fff;border:none;border-radius:11px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 4px 12px rgba(94,172,163,.35)}
+.bb-dup:active{transform:scale(.97)}
+.bottombar.multi{gap:8px;padding:12px 10px}
+.bottombar.multi .bb-btn,.bb-dup{flex:1 1 0;padding:13px 10px;font-size:.85rem;line-height:1.15}
+.bottombar.multi .bb-info{flex:0 0 auto;white-space:nowrap}
+.bottombar.multi .bb-val{font-size:1.05rem}
+/* Proposition du commercial reprise par le magasin pour être modifiée (lien « Modifier » de la page de validation) */
+.reprise-info{margin-bottom:14px;padding:10px 12px;border-radius:9px;background:var(--vert-bg);border:1.5px solid #bce6cf;color:var(--vert);font-size:.82rem;font-weight:700;line-height:1.4}
+.multi-bar{margin-top:10px}
+.multi-bar-title{font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#3d7f77;margin-bottom:6px}
+.multi-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.multi-tab{flex:0 0 auto;max-width:190px;border:1.5px solid var(--ligne);background:#fff;color:var(--encre);border-radius:10px;padding:6px 10px;font:inherit;font-size:.78rem;font-weight:700;cursor:pointer;text-align:left;line-height:1.25}
+.multi-tab .mt-nom{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.multi-tab .mt-tot{display:block;font-size:.68rem;font-weight:600;color:var(--gris);font-variant-numeric:tabular-nums}
+.multi-tab.active{border-color:#5EACA3;background:#5EACA3;color:#fff}
+.multi-tab.active .mt-tot{color:#fff;opacity:.9}
+.multi-tab.add{border-style:dashed;border-color:#5EACA3;color:#3d7f77;align-self:stretch}
+.multi-acts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.multi-acts button{flex:1 1 150px;border:1.5px solid var(--ligne);background:#fff;color:var(--encre);border-radius:9px;padding:8px 10px;font:inherit;font-size:.76rem;font-weight:700;cursor:pointer}
+.multi-acts button.suppr{color:#c0390a;border-color:#ffbfa0}
+.multi-hint{font-size:.72rem;color:var(--gris);margin:-4px 0 12px;line-height:1.4}
+.multi-recap{margin:14px 12px 0;background:#fff;border-radius:14px;box-shadow:var(--ombre);overflow:hidden}
+.multi-recap-head{background:var(--encre);color:#fff;font-weight:800;font-size:.86rem;padding:11px 15px}
+.multi-recap .mr-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 15px;border-bottom:1px solid var(--gris-clair);font-size:.84rem;cursor:pointer}
+.multi-recap .mr-line.cur{background:var(--eau-clair)}
+.multi-recap .mr-nom{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.multi-recap .mr-warn{display:block;font-size:.7rem;font-weight:700;color:#c0390a;white-space:normal}
+.multi-recap .mr-val{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.multi-recap .mr-val small{display:block;font-weight:600;color:var(--gris);font-size:.68rem}
+.multi-recap .mr-total{display:flex;justify-content:space-between;padding:11px 15px;font-weight:800;background:var(--gris-clair)}
+
+/* Multi-magasins — adaptations Andros Sport */
+:root{--gris-clair:#EEF3F5;--eau-clair:var(--lime-clair);--vert:#138a52;--vert-bg:#e4f5ec;--ombre:0 1px 3px rgba(19,63,73,.08),0 4px 16px rgba(19,63,73,.06)}
+.multi-group{margin:14px 24px 0}
+.multi-recap{margin:24px 24px 0;border:1px solid var(--ligne);box-shadow:none}
+.bottombar.multi{padding:0}
+.bottombar.multi .bb-lbl{white-space:nowrap}
+/* Choix un seul / plusieurs magasins : bleu nuit, comme les boutons du mode commercial */
+.multi-choix{border-color:var(--encre)}
+.multi-choix button{color:var(--encre)}
+.multi-choix button.active{background:var(--encre);color:#fff}
+.bb-actions .bb-dup{flex:none;padding:12px 18px;font-size:.84rem;line-height:inherit;border-radius:10px;box-shadow:none;text-transform:uppercase}
+@media(max-width:600px){
+  .multi-group{margin:12px 14px 0}
+  .multi-recap{margin:18px 14px 0}
+  .bottombar.multi .btn{padding:10px 9px;font-size:.72rem}
+}
 /* MODE COMMERCIAL (?modecs) */
 .cs-panel{margin:12px 24px 0;padding:12px 14px;border:1.5px solid var(--lime-dk);border-radius:12px;background:var(--lime-clair)}
 .cs-panel-title{font-size:.72rem;font-weight:800;color:var(--encre);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
@@ -562,8 +619,27 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <div class="cs-note">Le récapitulatif devient une proforma. L'e-mail est envoyé au magasin (copie au commercial) et n'a pas valeur de commande tant que le magasin ne l'a pas validé.</div>
   </div>
 
+  <!-- MULTI-MAGASINS : un même encadré regroupe le choix « un seul / plusieurs magasins » et, en dessous,
+       les onglets (un panier par magasin), visibles une fois « Plusieurs magasins » choisi.
+       En mode commercial, l'encadré est rangé dans l'encart « type de proposition ». -->
+  <div class="multi-group" id="multiGroup">
+    <div class="multi-group-title" id="multiGroupTitle">Vous commandez pour</div>
+    <div class="multi-choix" id="multiChoix">
+      <button type="button" class="active" data-multi="0">Un seul magasin</button>
+      <button type="button" data-multi="1">Plusieurs magasins</button>
+    </div>
+    <div class="multi-bar" id="multiBar" style="display:none">
+      <div class="multi-bar-title" id="multiBarTitle">Vos magasins</div>
+      <div class="multi-tabs" id="multiTabs"></div>
+    </div>
+  </div>
+
   <section class="client">
-    <h2>Vos infos</h2>
+    <h2 id="clientTitle">Vos infos</h2>
+    <div class="reprise-info" id="repriseInfo" style="display:none"></div>
+    <div class="multi-acts" id="multiActs" style="display:none">
+      <button type="button" id="multiDel" class="suppr">✕ Retirer ce magasin</button>
+    </div>
     <div class="fgrid">
       <div class="field full field-bulle"><label>Nom du magasin <span class="req">*</span></label><input type="text" id="c_name" class="required" placeholder="ex : runbike 2000"></div>
       <div class="field field-green"><label>Code postal <span class="req">*</span></label><div class="cp-wrap"><input type="text" id="c_cp" class="required" inputmode="numeric" maxlength="5" placeholder="75000" oninput="cpInput()" autocomplete="off"><div id="cp-drop" class="cp-drop"></div></div></div>
@@ -578,6 +654,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       <textarea id="c_notes" placeholder="Commentaires / infos / n° de commande"></textarea>
     </div>
     <div id="secteur-info" class="secteur-info">Renseignez le code postal pour adresser la commande au bon commercial.</div>
+    <p class="multi-hint" id="multiHint" style="display:none;margin:10px 0 0">Contact, téléphone et e-mail sont communs à tous les magasins. Le nom, le code postal, le code BT-49, les notes et le panier sont propres à chaque magasin.</p>
   </section>
 
   <div class="section-title">
@@ -1249,9 +1326,16 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
         <div><div class="g-lbl">Total TTC</div><div class="grand-ht" id="g_ht">— HT</div></div>
         <div class="grand-ttc" id="g_ttc">0,00 €</div>
       </div>
-      <div class="rline"><span class="rl-lbl">Franco de port</span><span>200,00 € HT minimum</span></div>
+      <div class="rline"><span class="rl-lbl">Franco de port</span><span id="francoVal">200,00 € HT minimum</span></div>
     </div>
   </section>
+
+  <!-- MULTI-MAGASINS : total par magasin + total général -->
+  <div class="multi-recap" id="multiRecap" style="display:none">
+    <div class="multi-recap-head" id="multiRecapHead">Tous vos magasins</div>
+    <div id="multiRecapList"></div>
+    <div class="mr-total"><span>Total général TTC</span><span id="multiRecapTtc">0,00 €</span></div>
+  </div>
   <footer>Total HT ligne = nb displays × PCB × tarif HT net · TVA 5,5 % sur la gamme, 20 % sur les gummies · Andros Sport tarifs 2026</footer>
 </section>
 
@@ -1319,7 +1403,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       <span class="bb-sub" id="bb_sub">0 display · 0,00 € HT</span>
     </div>
     <div class="bb-actions">
-      <button class="btn btn-pdf" onclick="window.print()">PDF</button>
+      <button type="button" class="btn bb-dup" id="multiDup" style="display:none" title="Copier ce panier vers un nouveau magasin">DUPLIQUER LA COMMANDE</button>
       <button class="btn btn-go" id="btn_go" disabled onclick="submitOrder()">VALIDER LA COMMANDE</button>
     </div>
   </div>
@@ -1555,6 +1639,7 @@ function recompute(){
   set('g_ht',fmt(ht)+' HT');set('g_ttc',fmt(ttc));set('bb_ttc',fmt(ttc));
   set('bb_sub',disp+(disp>1?' displays · ':' display · ')+fmt(ht)+' HT');
   document.getElementById('btn_go').disabled=ORDER_SENT?true:disp===0;
+  multiRefresh();
 }
 const MAILER_URL='https://mailer.thomas-m-682.workers.dev';
 
@@ -1578,7 +1663,7 @@ if(MODE_CS){
   document.querySelector('nav.tabs').style.display = 'none';
   showTab('bdc');
   document.getElementById('csPanel').style.display = '';
-  document.querySelectorAll('.cs-opt').forEach(b=>b.addEventListener('click',()=>{ CS_MODE = b.dataset.csmode; applyCsMode(); }));
+  document.querySelectorAll('.cs-opt').forEach(b=>b.addEventListener('click',()=>{ CS_MODE = b.dataset.csmode; applyCsMode(); multiRefresh(); }));
   applyCsMode();
 
   // 🎁 GRATUITS : sur chaque produit, une quantité offerte en plus de la quantité payante.
@@ -1600,36 +1685,46 @@ if(MODE_CS){
 // Tarif unitaire : jusqu'à 3 décimales (0,498 €), montants : 2 décimales
 const fmtPU=n=>n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:3})+' €';
 
-function submitOrder(){
-  const btn=document.getElementById('btn_go');
-  if(ORDER_SENT)return;
-  if(currentHT<FRANCO_MIN){
-    const cpEarly=document.getElementById('c_cp').value.trim();
-    const contactEmail=commercialFor(cpEarly)||DESTINATAIRE;
-    alert('Le franco de port est fixé à '+FRANCO_MIN+' € HT. Merci d\'ajouter des produits pour atteindre ce montant avant d\'envoyer la commande.\n\nEn cas de question, merci d\'écrire à votre responsable commercial : '+contactEmail);
-    return;
-  }
-  const name=document.getElementById('c_name').value.trim();
-  if(!name){alert('Merci de renseigner le magasin.');document.getElementById('c_name').focus();return;}
-  const cp=document.getElementById('c_cp').value.trim();
-  if(cp.length<2){alert('Merci de renseigner le code postal.');document.getElementById('c_cp').focus();return;}
+// ===== ENVOI =====
+const escHtml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const preHtml=s=>'<pre style="font-family:inherit;white-space:pre-wrap;margin:0">'+escHtml(s)+'</pre>';
+const fieldVal=id=>document.getElementById(id).value.trim();
+const plural=(n,s)=>`${n} ${s}${n>1?'s':''}`;
+const SEP='────────────────────────────────';
+const TD='padding:7px 8px;border-bottom:1px solid #DDE6E9;font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#133F49;';
+const TH='padding:8px;background:#133F49;color:#fff;font-size:12px;font-family:Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.3px;';
+
+// Contrôles du magasin affiché (franco, nom, code postal). `onglet` : libellé de l'onglet en multi-magasins.
+function checkStore(onglet){
+  const pre=onglet?onglet+' : ':'';
+  const franco=()=>{
+    if(currentHT>=FRANCO_MIN)return true;
+    const contactEmail=commercialFor(fieldVal('c_cp'))||DESTINATAIRE;
+    alert((onglet?onglet+' : le':'Le')+' franco de port est fixé à '+FRANCO_MIN+' € HT'+(onglet?' par magasin':'')+'. Merci d\'ajouter des produits pour atteindre ce montant avant d\'envoyer la commande.\n\nEn cas de question, merci d\'écrire à votre responsable commercial : '+contactEmail);
+    return false;
+  };
+  const mag=()=>{
+    if(!fieldVal('c_name')){alert(pre+(onglet?'merci de renseigner le magasin, ou de retirer cet onglet.':'Merci de renseigner le magasin.'));document.getElementById('c_name').focus();return false;}
+    if(fieldVal('c_cp').length<2){alert(pre+(onglet?'merci de renseigner le code postal.':'Merci de renseigner le code postal.'));document.getElementById('c_cp').focus();return false;}
+    return true;
+  };
+  return onglet ? mag()&&franco() : franco()&&mag();
+}
+
+// Document du magasin affiché : lignes, récap du mail (texte + HTML), récap court et données du PDF.
+// pos : {n, nb} en multi-magasins (magasin n sur nb), null pour une commande classique.
+function buildStoreDoc(pos){
+  const name=fieldVal('c_name');
+  const cp=fieldVal('c_cp');
   const commercial=commercialFor(cp);
   const emailCommercial=commercial||DESTINATAIRE;
-  const contact=document.getElementById('c_contact').value.trim();
-  const email=document.getElementById('c_email').value.trim();
-  // En mode commercial, la proposition part au magasin : son e-mail est indispensable
-  if(MODE_CS && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    alert("Merci de renseigner un e-mail valide pour le magasin : la proposition lui est envoyée.");
-    document.getElementById('c_email').focus();
-    return;
-  }
-  const phone=document.getElementById('c_phone').value.trim();
-  const ville=document.getElementById('c_ville').value.trim();
-  const bt49=document.getElementById('c_bt49').value.trim();
-  const notes=document.getElementById('c_notes').value.trim();
+  const contact=fieldVal('c_contact');
+  const email=fieldVal('c_email');
+  const phone=fieldVal('c_phone');
+  const ville=fieldVal('c_ville');
+  const bt49=fieldVal('c_bt49');
+  const notes=fieldVal('c_notes');
   const o=window.ORDER;
-  const escHtml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const plural=(n,s)=>`${n} ${s}${n>1?'s':''}`;
 
   // Remise centrale Intersport (-3 %) : appliquée si le nom du magasin contient « Intersport » ou le mot « ITS ».
   // Volontairement invisible sur le site (tarif public) : elle n'apparaît que dans le mail, le PDF
@@ -1682,24 +1777,28 @@ function submitOrder(){
   const remiseLbl='Remise Intersport';  // titre sans %, le -3 % est dans chaque cellule
   const mentionDoc=MODE_CS
     ? "Proforma établie par votre commercial Andros Sport. Ce document n'a pas valeur de commande."
-    : 'Commande passée depuis le bon de commande en ligne Andros Sport.';
-  const SEP='────────────────────────────────';
+    : (REPRISE ? 'Commande passée depuis le bon de commande en ligne Andros Sport, à partir d\'une proposition du commercial modifiée par le magasin.'
+               : 'Commande passée depuis le bon de commande en ligne Andros Sport.');
   const resume=`${o.disp} display${o.disp>1?'s':''}`+
     (o.dispFree?` + ${o.dispFree} gratuit${o.dispFree>1?'s':''}`:'')+` · ${o.uc+o.ucFree} UC`;
 
   const docTitre=MODE_CS ? `${CS_LABELS[CS_MODE].titre.toUpperCase()} (PROFORMA) — ANDROS SPORT` : 'BON DE COMMANDE — ANDROS SPORT';
-  const enteteTxt=
-    docTitre+'\n\nCLIENT\n'+
+  // En-tête : magasin (propre à chaque onglet), contact (commun à tous les magasins), puis secteur et notes du magasin
+  const magTxt=
     '  Raison sociale : '+name+'\n'+
     '  CP / Ville : '+cp+' '+(ville||'')+'\n'+
-    (bt49?'  Code BT-49 : '+bt49+'\n':'')+
+    (bt49?'  Code BT-49 : '+bt49+'\n':'');
+  const contactTxt=
     '  Contact : '+(contact||'—')+'\n'+
     '  Téléphone : '+(phone||'—')+'\n'+
-    '  Email : '+(email||'—')+'\n'+
+    '  Email : '+(email||'—')+'\n';
+  const apresTxt=
     (commercial?'  Secteur : '+NOMS[commercial]+'\n':'')+
     (notes?'  Notes : '+notes+'\n':'');
+  const enteteTxt=docTitre+'\n\nCLIENT\n'+magTxt+contactTxt+apresTxt;
 
   // Récap compact — texte : Produit : UC · Prix HT net/UC · Total HT
+  // (en multi-magasins, la mention du document n'est écrite qu'une fois, à la fin du mail)
   const recapTxt=[
     SEP,
     ...sections.flatMap(s=>[s.titre, ...s.items.map(it=>`  • ${it.name} : ${it.qte} (${it.sous}) · `+
@@ -1711,14 +1810,11 @@ function submitOrder(){
     SEP,
     `Displays : ${resume}`,
     ...totaux.map(([k,val])=>`${k} : ${val}`),
-    '',
-    mentionDoc
+    ...(pos ? [] : ['', mentionDoc])
   ].join('\n');
 
   // Récap compact — HTML : Produit | UC | Prix HT net / UC | Total HT
   // Intersport : Produit | UC | Prix HT / UC | Remise -3 % Intersport | Prix HT net / UC | Total HT
-  const TD='padding:7px 8px;border-bottom:1px solid #DDE6E9;font-size:14px;font-family:Segoe UI,Arial,sans-serif;color:#133F49;';
-  const TH='padding:8px;background:#133F49;color:#fff;font-size:12px;font-family:Segoe UI,Arial,sans-serif;text-transform:uppercase;letter-spacing:.3px;';
   const NCOL=IS_ITS?6:4;
   const recapHtml=
     '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;margin:14px 0 0">'+
@@ -1745,29 +1841,89 @@ function submitOrder(){
       return `<tr><td colspan="${NCOL-1}" style="${TD}${st}text-align:right">${k}</td><td style="${TD}${st}text-align:right;white-space:nowrap">${val}</td></tr>`;
     }).join('')+
     '</table>'+
-    `<p style="font-family:Segoe UI,Arial,sans-serif;font-size:12px;color:#4A6570;margin:8px 0 0">${escHtml(mentionDoc)}</p>`;
-  const preHtml=s=>'<pre style="font-family:inherit;white-space:pre-wrap;margin:0">'+escHtml(s)+'</pre>';
+    (pos ? '' : `<p style="font-family:Segoe UI,Arial,sans-serif;font-size:12px;color:#4A6570;margin:8px 0 0">${escHtml(mentionDoc)}</p>`);
 
   const dateJour=new Date().toLocaleDateString('fr-FR');
-  const subject=MODE_CS
-    ? CS_LABELS[CS_MODE].titre+' Andros Sport — '+name+(cp?' ('+cp+')':'')+' — '+dateJour
-    : 'Commande Andros Sport BtoB — '+name+(cp?' ('+cp+')':'')+' — '+dateJour;
 
+  // Récap simplifié (page de confirmation + mail « proposition validée »), groupé par famille de produit
+  const recapCourt={
+    lignes: sections.flatMap(s=>[{sec:s.famille}, ...s.items.map(it=>({n:it.name, uc:it.qte, pu:fmtPU(it.nn), t:fmt(it.total), off:!!it.free,
+      ...(IS_ITS?{pb:it.free?'-':fmtPU(it.base), rm:it.free?'OFFERT':`-${Math.round(REMISE_ITS*100)} %`}:{})}))]),
+    ...(IS_ITS?{remiseLbl}:{}),
+    plv: [],
+    // Page de validation : lien « Modifier » (panier à reprendre), ou renvoi vers le commercial s'il y a des gratuits (gestes commerciaux)
+    ...(MODE_CS ? (o.dispFree>0 ? {geste:true} : {edit:repriseCode()}) : {}),
+    totaux
+  };
+
+  // PDF joint au mail — un par magasin
+  const pdfData={
+    titre: MODE_CS?`${CS_LABELS[CS_MODE].titre} (proforma)`:'Bon de commande', date: dateJour,
+    infos: [['Raison sociale',name],['CP / Ville',`${cp} ${ville||''}`],...(bt49?[['Code BT-49',bt49]]:[]),
+            ['Contact',contact||'-'],['Téléphone',phone||'-'],['Email',email||'-'],...(notes?[['Notes',notes]]:[])],
+    sections, totaux, resume, mention: mentionDoc, commercial: emailCommercial,
+    remiseIts: IS_ITS ? REMISE_ITS : 0
+  };
+  const pdfNom=`${MODE_CS?'Proforma':'Commande'}_Andros_Sport_${name}${pos?'_'+cp:''}_${dateJour}`.replace(/[^\w\-]+/g,'_')+'.pdf';
+
+  return {name, magLbl:name+(cp?' ('+cp+')':''), IS_ITS, tot:{htNet,tva55,tva20,ttc}, docTitre, magTxt, contactTxt, apresTxt, enteteTxt,
+          recapTxt, recapHtml, recapCourt, mentionDoc, dateJour, commercial, emailCommercial, bt49, pdfNom, pdfData};
+}
+
+async function submitOrder(){
+  const btn=document.getElementById('btn_go');
+  if(ORDER_SENT)return;
+  // Multi-magasins : chaque onglet est contrôlé puis mis en forme à tour de rôle (un seul onglet = commande classique)
+  if(MULTI) STORES[STORE_CUR]=snapStore();
+  const nb=STORES.length, multi=nb>1, retour=STORE_CUR;
+  const onglet=i=>`Magasin ${i+1}${fieldVal('c_name')?` (${fieldVal('c_name')})`:''}`;
+
+  for(let i=0;i<nb;i++){
+    if(multi) showStore(i);
+    if(!checkStore(multi?onglet(i):'')) return;
+  }
+  const contact=fieldVal('c_contact');
+  const email=fieldVal('c_email');
+  // En mode commercial, la proposition part au magasin : son e-mail est indispensable
+  if(MODE_CS && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert("Merci de renseigner un e-mail valide pour le magasin : la proposition lui est envoyée.");
+    document.getElementById('c_email').focus();
+    return;
+  }
+  const docs=[];
+  for(let i=0;i<nb;i++){
+    if(multi) showStore(i);
+    docs.push(buildStoreDoc(multi?{n:i+1,nb}:null));
+  }
+  if(multi) showStore(retour);
+
+  const d0=docs[0], dateJour=d0.dateJour;
+  // Un commercial par secteur : le premier est destinataire, tous les autres sont en copie
+  const commerciaux=[...new Set(docs.map(d=>d.emailCommercial))];
+  const emailCommercial=commerciaux[0];
+  const noms=docs.map(d=>d.name).join(', ');
+  const lieux=`${nb} magasins (${noms.length>90?noms.slice(0,88)+'…':noms})`;
+  const subject=(MODE_CS ? CS_LABELS[CS_MODE].titre+' Andros Sport' : 'Commande Andros Sport BtoB')+
+    ' — '+(multi?lieux:d0.magLbl)+' — '+dateJour;
+
+  const signature=`\n\nBien cordialement,\n${commerciaux.length>1?'Vos commerciaux':'Votre commercial'} Andros Sport\n${commerciaux.join(', ')}\n`;
   let intro,outro;
   if(!MODE_CS){
-    intro='Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
-    outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant votre commande, contactez votre commercial : '+emailCommercial+'\n';
+    intro=multi
+      ? `Bonjour,\n\nMerci pour vos commandes.\n\nVotre demande a bien été transmise pour vos ${nb} magasins. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif magasin par magasin, puis le total général.\n\n`
+      : 'Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
+    outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant '+(multi?'vos commandes':'votre commande')+', contactez votre commercial : '+commerciaux.join(', ')+'\n';
   } else if(CS_MODE==='implantation'){
-    intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à notre échange, je vous propose l\'implantation de la gamme Andros Sport dans votre magasin '+name+'.\n\nVous trouverez ci-dessous la proforma détaillant l\'assortiment de lancement conseillé, ainsi que les conditions tarifaires associées.\n\n';
-    outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition ». Pour l\'ajuster, répondez simplement à cet e-mail.\n\nJe reste à votre disposition pour organiser la mise en place en magasin.\n\nBien cordialement,\nVotre commercial Andros Sport\n'+emailCommercial+'\n';
+    intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à notre échange, je vous propose l\'implantation de la gamme Andros Sport dans '+(multi?'vos '+lieux:'votre magasin '+d0.name)+'.\n\nVous trouverez ci-dessous'+(multi?', magasin par magasin,':'')+' la proforma détaillant l\'assortiment de lancement conseillé, ainsi que les conditions tarifaires associées.\n\n';
+    outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition »'+(multi?' : vous choisirez les magasins à valider, un par un ou tous ensemble':'')+'. Pour l\'ajuster, répondez simplement à cet e-mail.\n\nJe reste à votre disposition pour organiser la mise en place en magasin.'+signature;
   } else {
-    intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à l\'analyse de vos ventes et de votre stock, je vous propose le réassort Andros Sport suivant pour votre magasin '+name+'.\n\nVous trouverez ci-dessous le récapitulatif de la proposition.\n\n';
-    outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition ». Pour modifier les quantités, répondez simplement à cet e-mail.\n\nBien cordialement,\nVotre commercial Andros Sport\n'+emailCommercial+'\n';
+    intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à l\'analyse de vos ventes et de votre stock, je vous propose le réassort Andros Sport suivant pour '+(multi?'vos '+lieux:'votre magasin '+d0.name)+'.\n\nVous trouverez ci-dessous le récapitulatif de la proposition'+(multi?', magasin par magasin, puis le total général':'')+'.\n\n';
+    outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition »'+(multi?' : vous choisirez les magasins à valider, un par un ou tous ensemble':'')+'. Pour modifier les quantités, répondez simplement à cet e-mail.'+signature;
   }
 
   // Adresses des bons de commande en ligne, rappelées en bas de chaque mail :
-  // Andros Sport + Hydratis (site Intersport si le magasin est un Intersport, site général sinon)
-  const SITES_BTOB=[['Andros Sport','https://andros-sport.pages.dev'],['Hydratis',IS_ITS?'https://hydratis-its.pages.dev':'https://hydratis-bdc.pages.dev']];
+  // Andros Sport + Hydratis (site Intersport si tous les magasins sont des Intersport, site général sinon)
+  const SITES_BTOB=[['Andros Sport','https://andros-sport.pages.dev'],['Hydratis',docs.every(d=>d.IS_ITS)?'https://hydratis-its.pages.dev':'https://hydratis-bdc.pages.dev']];
   const sitesTxt='\nVos bons de commande en ligne :\n'+SITES_BTOB.map(([n,u])=>`  • ${n} : ${u}`).join('\n')+'\n';
   const sitesHtml='<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#133F49;margin:14px 0 0"><strong>Vos bons de commande en ligne :</strong><br>'+
     SITES_BTOB.map(([n,u])=>`${n} : <a href="${u}" target="_blank" style="color:#133F49">${u}</a>`).join('<br>')+'</p>';
@@ -1779,71 +1935,88 @@ function submitOrder(){
     '<a href="{{ACCEPT_URL}}" target="_blank" style="display:inline-block;padding:14px 26px;color:#ffffff;font-weight:800;font-size:16px;text-decoration:none;font-family:Segoe UI,Arial,sans-serif">✅ Je valide la proposition</a>'+
     '</td></tr></table>';
   // Mention de la pièce jointe : ajoutée seulement si le PDF a bien été généré
-  const pjLigne=MODE_CS
-    ? '📎 Retrouvez la proforma détaillée (tarifs, références et gencodes) dans le PDF joint.'
-    : '📎 Le détail complet (tarifs, références et gencodes) figure dans le PDF joint, prêt à imprimer.';
+  const pjLigne=multi
+    ? (MODE_CS ? '📎 Retrouvez la proforma détaillée de chaque magasin (tarifs, références et gencodes) dans les PDF joints.'
+               : '📎 Le détail complet de chaque magasin (tarifs, références et gencodes) figure dans les PDF joints, prêts à imprimer.')
+    : (MODE_CS ? '📎 Retrouvez la proforma détaillée (tarifs, références et gencodes) dans le PDF joint.'
+               : '📎 Le détail complet (tarifs, références et gencodes) figure dans le PDF joint, prêt à imprimer.');
+  const bt49Rouge=(h,bt49)=>bt49 ? h.replace('Code BT-49 : '+escHtml(bt49),'<strong style="color:#e11d2e">Code BT-49 : '+escHtml(bt49)+'</strong>') : h;
+
+  // Multi-magasins : contact commun en tête, un bloc par magasin, puis le total général
+  const somme=k=>round2(docs.reduce((n,d)=>n+d.tot[k],0));
+  const totauxGen=[['Total HT',fmt(somme('htNet'))],['TVA 5,5 %',fmt(somme('tva55'))],['TVA 20 % (gummies)',fmt(somme('tva20'))],['Total TTC',fmt(somme('ttc'))]];
+  const titreMag=(d,i)=>`MAGASIN ${i+1}/${nb} — ${d.magLbl}`;
+  const corpsTxt=!multi ? d0.enteteTxt+'\n'+d0.recapTxt :
+    `${d0.docTitre}\n\nCONTACT\n${d0.contactTxt}\n`+
+    docs.map((d,i)=>`${SEP}\n${titreMag(d,i)}\n${d.magTxt}${d.apresTxt}\n${d.recapTxt}\n\n`).join('')+
+    `${SEP}\nTOTAL GÉNÉRAL — ${nb} MAGASINS\n`+
+    docs.map(d=>`  • ${d.magLbl} : ${fmt(d.tot.htNet)} HT · ${fmt(d.tot.ttc)} TTC`).join('\n')+'\n'+SEP+'\n'+
+    totauxGen.map(([k,val])=>`${k} : ${val}`).join('\n')+'\n\n'+d0.mentionDoc;
+  const corpsHtml=!multi ? preHtml(d0.enteteTxt)+d0.recapHtml :
+    preHtml(`${d0.docTitre}\n\nCONTACT\n${d0.contactTxt}`)+
+    docs.map((d,i)=>
+      `<p style="font-family:Segoe UI,Arial,sans-serif;max-width:616px;background:#7EA818;color:#fff;font-weight:800;font-size:15px;padding:10px 12px;border-radius:8px;margin:26px 0 8px">${escHtml(titreMag(d,i))}</p>`+
+      bt49Rouge(preHtml(d.magTxt+d.apresTxt), d.bt49)+d.recapHtml).join('')+
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;margin:30px 0 0">'+
+    `<tr><th style="${TH}text-align:left">Total général — ${nb} magasins</th><th style="${TH}text-align:right">Total HT</th><th style="${TH}text-align:right">Total TTC</th></tr>`+
+    docs.map(d=>`<tr><td style="${TD}">${escHtml(d.magLbl)}</td><td style="${TD}text-align:right;white-space:nowrap">${fmt(d.tot.htNet)}</td><td style="${TD}text-align:right;white-space:nowrap;font-weight:700">${fmt(d.tot.ttc)}</td></tr>`).join('')+
+    totauxGen.map(([k,val],i)=>{
+      const st=(i===totauxGen.length-1?'background:#133F49;color:#fff;font-weight:800;':'font-weight:700;')+(i===0?'border-top:3px solid #133F49;padding-top:12px;':'');
+      return `<tr><td colspan="2" style="${TD}${st}text-align:right">${k}</td><td style="${TD}${st}text-align:right;white-space:nowrap">${val}</td></tr>`;
+    }).join('')+
+    '</table>'+
+    `<p style="font-family:Segoe UI,Arial,sans-serif;font-size:12px;color:#4A6570;margin:8px 0 0">${escHtml(d0.mentionDoc)}</p>`;
+
   const buildBody=avecPdf=>
-    intro+enteteTxt+'\n'+recapTxt+
+    intro+corpsTxt+
     (avecPdf?'\n\n'+pjLigne:'')+
     (MODE_CS?'\n\n👉 Valider la proposition en un clic : {{ACCEPT_URL}}':'')+
     outro+sitesTxt;
   const buildHtml=avecPdf=>{
-    let h=preHtml(intro)+preHtml(enteteTxt)+recapHtml+
+    const h=preHtml(intro)+corpsHtml+
       (avecPdf?`<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:700;color:#133F49;background:#F0F9D6;border-radius:8px;padding:10px 12px;margin:14px 0 0;max-width:616px">${escHtml(pjLigne)}</p>`:'')+
       (MODE_CS?acceptBtnHtml+preHtml(outro.replace(/^\n+/,'')):preHtml(outro))+sitesHtml;
-    if(bt49) h=h.replace('Code BT-49 : '+escHtml(bt49),'<strong style="color:#e11d2e">Code BT-49 : '+escHtml(bt49)+'</strong>');
-    return h;
+    return multi ? h : bt49Rouge(h, d0.bt49);
   };
-
-  // Récap simplifié (page de confirmation + mail « proposition validée »), groupé par famille de produit
-  const recapCourt={
-    lignes: sections.flatMap(s=>[{sec:s.famille}, ...s.items.map(it=>({n:it.name, uc:it.qte, pu:fmtPU(it.nn), t:fmt(it.total), off:!!it.free,
-      ...(IS_ITS?{pb:it.free?'-':fmtPU(it.base), rm:it.free?'OFFERT':`-${Math.round(REMISE_ITS*100)} %`}:{})}))]),
-    ...(IS_ITS?{remiseLbl}:{}),
-    plv: [],
-    totaux
-  };
-
-  // PDF joint au mail
-  const pdfData={
-    titre: MODE_CS?`${CS_LABELS[CS_MODE].titre} (proforma)`:'Bon de commande', date: dateJour,
-    infos: [['Raison sociale',name],['CP / Ville',`${cp} ${ville||''}`],...(bt49?[['Code BT-49',bt49]]:[]),
-            ['Contact',contact||'-'],['Téléphone',phone||'-'],['Email',email||'-'],...(notes?[['Notes',notes]]:[])],
-    sections, totaux, resume, mention: mentionDoc, commercial: emailCommercial,
-    remiseIts: IS_ITS ? REMISE_ITS : 0
-  };
-  const pdfNom=`${MODE_CS?'Proforma':'Commande'}_Andros_Sport_${name}_${dateJour}`.replace(/[^\w\-]+/g,'_')+'.pdf';
 
   btn.disabled=true;
   const label=btn.textContent;
   btn.textContent='Envoi en cours…';
-  buildPdfBase64(pdfData).catch(err=>{ console.warn('PDF non généré', err); return null; }).then(pdf64=>{
-    const attachments=pdf64?[{name:pdfNom, content:pdf64}]:undefined;
-    const body=buildBody(!!pdf64), html=buildHtml(!!pdf64);
-    return fetch(MAILER_URL,{
+  try{
+    // Un PDF par magasin, générés l'un après l'autre
+    const attachments=[];
+    for(const d of docs){
+      const pdf64=await buildPdfBase64(d.pdfData).catch(err=>{ console.warn('PDF non généré', err); return null; });
+      if(pdf64) attachments.push({name:d.pdfNom, content:pdf64});
+    }
+    const avecPdf=attachments.length>0;
+    const body=buildBody(avecPdf), html=buildHtml(avecPdf);
+    // Récap de la page de validation : un magasin = récap direct ; plusieurs = un récap par magasin (validés un par un)
+    const recapAccept=multi
+      ? {stores:docs.map(d=>({magasin:d.magLbl, commercial:d.emailCommercial, ...d.recapCourt})), totaux:totauxGen}
+      : d0.recapCourt;
+    const res=await fetch(MAILER_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      // Mode commercial : la proposition part au magasin, copie au commercial (+ DESTINATAIRE pour traçabilité),
+      // Mode commercial : la proposition part au magasin, copie au(x) commercial(aux) (+ DESTINATAIRE pour traçabilité),
       // et le magasin répond directement au commercial.
       body:JSON.stringify(MODE_CS
-        ? {to:email,cc:[...new Set([emailCommercial,DESTINATAIRE])],subject,body,html,replyTo:emailCommercial,attachments,
-           accept:{commercial:emailCommercial,dest:DESTINATAIRE,magasin:name+(cp?' ('+cp+')':''),contact,titre:CS_LABELS[CS_MODE].titre,...recapCourt}}
-        : {to:emailCommercial,cc:[commercial?DESTINATAIRE:'',email].filter(Boolean),subject,body,html,replyTo:email||undefined,attachments})
+        ? {to:email,cc:[...new Set([...commerciaux,DESTINATAIRE])],subject,body,html,replyTo:emailCommercial,attachments:avecPdf?attachments:undefined,
+           accept:{commercial:emailCommercial,dest:DESTINATAIRE,magasin:multi?`${nb} magasins : ${noms}`:d0.magLbl,contact,titre:CS_LABELS[CS_MODE].titre,...recapAccept}}
+        : {to:emailCommercial,cc:[...new Set([...commerciaux.slice(1),DESTINATAIRE,email])].filter(e=>e&&e!==emailCommercial),subject,body,html,replyTo:email||undefined,attachments:avecPdf?attachments:undefined})
     });
-  }).then(res=>{
     if(!res.ok)throw new Error('send failed');
-    return res.json();
-  }).then(data=>{
+    const data=await res.json();
     if(!data.ok)throw new Error(data.error||'send failed');
     ORDER_SENT=true;
-    alert(MODE_CS?'Proposition envoyée au magasin avec succès !':'Commande envoyée avec succès !');
-    btn.textContent=MODE_CS?'✓ Proposition envoyée':'✓ Commande envoyée';
+    alert(MODE_CS?'Proposition envoyée au magasin avec succès !':(multi?'Commandes envoyées avec succès !':'Commande envoyée avec succès !'));
+    btn.textContent=MODE_CS?'✓ Proposition envoyée':(multi?'✓ Commandes envoyées':'✓ Commande envoyée');
     btn.disabled=true;
-  }).catch(()=>{
+  }catch{
     alert(MODE_CS?"Erreur lors de l'envoi de la proposition. Merci de réessayer.":"Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial.");
     btn.disabled=false;
     btn.textContent=label;
-  });
+  }
 }
 
 // ===== PDF (jsPDF 2.5.1 + autotable 3.8.2 + JsBarcode 3.11.6) =====
@@ -1882,7 +2055,7 @@ function barcodePng(ean){
 }
 async function buildPdfBase64(d){
   await loadPdfLibs();
-  const doc=new window.jspdf.jsPDF({unit:'mm', format:'a4'});
+  const doc=new window.jspdf.jsPDF({unit:'mm', format:'a4', compress:true});  // compressé : une commande multi-magasins joint un PDF par magasin
   const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight(), M=14;
   const ENCRE=[19,63,73], GRIS=[74,101,112], LIME=[240,249,214], VERT=[19,138,82];
 
@@ -1953,6 +2126,197 @@ async function buildPdfBase64(d){
   for(let i=1;i<=n;i++){ doc.setPage(i); doc.setFontSize(7.5); doc.setTextColor(...GRIS); doc.text(`Page ${i}/${n}`, W-M, H-8, {align:'right'}); }
   return doc.output('datauristring').split(',')[1];
 }
+
+// ===== COMMANDE MULTI-MAGASINS =====
+// Activée à la demande (choix « Un seul magasin / Plusieurs magasins ») : par défaut la page reste un bon de commande pour un seul magasin.
+// Le formulaire affiche toujours le magasin courant (STORE_CUR) ; les autres onglets sont rangés dans STORES.
+// Contact, téléphone et e-mail sont communs ; nom du magasin, code postal, ville, BT-49, notes et panier sont propres
+// à chaque onglet, tout comme le franco et la remise Intersport (selon le nom du magasin).
+const MULTI_MAX=12;
+let MULTI=false, STORE_CUR=0;
+const STORES=[null];  // STORES[STORE_CUR] n'est à jour qu'au moment où l'on quitte l'onglet (snapStore)
+const MAG_VIDE={nom:'', cp:'', ville:''};
+const magFields=()=>({nom:fieldVal('c_name'), cp:fieldVal('c_cp'), ville:fieldVal('c_ville')});
+const qtyInput=prod=>prod.querySelector('.prod-right input');
+const freeInput=prod=>prod.querySelector('.cs-free input');  // mode commercial uniquement
+
+function snapStore(){
+  const q={}, g={};
+  document.querySelectorAll('.prod').forEach(prod=>{
+    const ref=prod.dataset.ref, n=parseInt(qtyInput(prod).value)||0, f=freeQtyOf(prod);
+    if(n>0) q[ref]=n;
+    if(f>0) g[ref]=f;
+  });
+  return {mag:magFields(), bt49:document.getElementById('c_bt49').value, notes:document.getElementById('c_notes').value,
+          q, g, ht:window.ORDER.ht, ttc:window.ORDER.ttc};
+}
+// Remet un onglet dans le formulaire (s = null : onglet vierge)
+function loadStore(s){
+  document.querySelectorAll('.prod').forEach(prod=>{
+    const ref=prod.dataset.ref;
+    qtyInput(prod).value=s ? (s.q[ref]||0) : 0;
+    const f=freeInput(prod);
+    if(f){ f.value=s ? (s.g[ref]||0) : 0; f.closest('.cs-free').classList.toggle('on', f.value>0); }
+  });
+  const mag=s ? s.mag : MAG_VIDE;
+  document.getElementById('c_name').value=mag.nom;
+  document.getElementById('c_cp').value=mag.cp;
+  document.getElementById('c_ville').value=mag.ville;
+  document.getElementById('cp-drop').classList.remove('open');
+  document.getElementById('c_bt49').value=s ? s.bt49 : '';
+  document.getElementById('c_notes').value=s ? s.notes : '';
+  document.querySelectorAll('input.required').forEach(inp=>inp.classList.toggle('filled', inp.value.trim().length>0));
+  routeSecteur();
+  recompute();
+}
+function showStore(i){
+  if(i===STORE_CUR) return;
+  STORES[STORE_CUR]=snapStore();
+  STORE_CUR=i;
+  loadStore(STORES[i]);
+}
+// Nouvel onglet : vierge, ou copie du panier affiché (le magasin, le BT-49 et les notes restent à saisir)
+function addStore(dupliquer){
+  if(STORES.length>=MULTI_MAX){ alert(`Vous pouvez regrouper jusqu'à ${MULTI_MAX} magasins par envoi.`); return; }
+  STORES[STORE_CUR]=snapStore();
+  STORES.push(dupliquer ? {...STORES[STORE_CUR], mag:MAG_VIDE, bt49:'', notes:''} : null);
+  STORE_CUR=STORES.length-1;
+  loadStore(STORES[STORE_CUR]);
+  document.getElementById('multiGroup').scrollIntoView({block:'center'});
+  document.getElementById('c_name').focus({preventScroll:true});
+}
+function removeStore(){
+  if(STORES.length<2) return;
+  const info=storeInfo(STORE_CUR);
+  if((info.mag.nom || info.ht>0) && !confirm(`Retirer ${info.nom} et son panier de ${MODE_CS?'la proposition':'la commande'} ?`)) return;
+  STORES.splice(STORE_CUR,1);
+  STORE_CUR=Math.min(STORE_CUR, STORES.length-1);
+  loadStore(STORES[STORE_CUR]);
+}
+// Magasin et totaux de l'onglet i (valeurs en direct pour l'onglet affiché)
+function storeInfo(i){
+  const cur=i===STORE_CUR, s=STORES[i];
+  const mag=cur ? magFields() : (s ? s.mag : MAG_VIDE);
+  return {mag, nom: mag.nom || `Magasin ${i+1}`,
+          ht: cur ? window.ORDER.ht : (s ? s.ht : 0), ttc: cur ? window.ORDER.ttc : (s ? s.ttc : 0)};
+}
+// Onglets, récap par magasin et total général : appelé à chaque recompute() et à chaque changement de magasin
+function multiRefresh(){
+  if(!MULTI) return;
+  const infos=STORES.map((_,i)=>storeInfo(i));
+  const nb=infos.length;
+  document.getElementById('multiTabs').innerHTML=
+    infos.map((s,i)=>`<button type="button" class="multi-tab${i===STORE_CUR?' active':''}" data-store="${i}">`+
+      `<span class="mt-nom">${i+1} · ${s.mag.nom ? escHtml(s.nom) : 'À renseigner'}</span><span class="mt-tot">${fmt(s.ht)} HT</span></button>`).join('')+
+    (nb<MULTI_MAX ? '<button type="button" class="multi-tab add" data-store="add">+ Ajouter un magasin</button>' : '');
+  document.getElementById('multiBarTitle').textContent=`${MODE_CS?'Magasins de la proposition':'Vos magasins'} (${nb})`;
+  document.getElementById('clientTitle').textContent=nb>1 ? `Magasin ${STORE_CUR+1} sur ${nb}` : 'Vos infos';
+  document.getElementById('multiActs').style.display=nb>1 ? '' : 'none';
+  document.getElementById('recapHead').textContent=
+    (MODE_CS ? CS_LABELS[CS_MODE].titre+' — Proforma' : 'Récapitulatif')+(nb>1 ? ' — '+infos[STORE_CUR].nom : '');
+  document.getElementById('francoVal').textContent=fmt(FRANCO_MIN)+' HT minimum'+(nb>1?' par magasin':'');
+  // Récap général (dès 2 magasins) : une ligne par magasin, cliquable pour y revenir
+  document.getElementById('multiRecap').style.display=nb>1 ? '' : 'none';
+  document.getElementById('multiRecapHead').textContent=`${MODE_CS?'Proposition':'Commande'} groupée — ${nb} magasins`;
+  document.getElementById('multiRecapList').innerHTML=infos.map((s,i)=>{
+    const alerte=!s.mag.nom || s.mag.cp.length<2 ? 'Nom et code postal à renseigner' : s.ht<FRANCO_MIN ? `Franco de ${fmt(FRANCO_MIN)} HT non atteint` : '';
+    return `<div class="mr-line${i===STORE_CUR?' cur':''}" data-store="${i}"><span class="mr-nom">${i+1} · ${escHtml(s.nom)}`+
+      (alerte ? `<span class="mr-warn">⚠️ ${alerte}</span>` : '')+
+      `</span><span class="mr-val">${fmt(s.ttc)}<small>${fmt(s.ht)} HT</small></span></div>`;
+  }).join('');
+  const ttcGen=round2(infos.reduce((n,s)=>n+s.ttc,0)), htGen=round2(infos.reduce((n,s)=>n+s.ht,0));
+  set('multiRecapTtc', fmt(ttcGen));
+  if(nb>1){
+    document.querySelector('.bottombar .bb-lbl').textContent=`Total TTC · ${nb} mag.`;
+    set('bb_ttc', fmt(ttcGen));
+    set('bb_sub', `${nb} magasins · ${fmt(htGen)} HT`);
+    document.getElementById('btn_go').disabled=ORDER_SENT || ttcGen<=0;
+  } else document.querySelector('.bottombar .bb-lbl').textContent='Total TTC';
+}
+function onStoreClick(e){
+  const cible=e.target.closest('[data-store]');
+  if(!cible) return;
+  if(cible.dataset.store==='add') return addStore(false);
+  showStore(parseInt(cible.dataset.store));
+  // Onglet sans magasin : on remonte au nom du magasin ; sinon on reste où l'on est (comparer deux paniers)
+  if(!fieldVal('c_name') || cible.classList.contains('mr-line')) document.getElementById('multiGroup').scrollIntoView({block:'center'});
+}
+document.getElementById('multiTabs').addEventListener('click', onStoreClick);
+document.getElementById('multiRecapList').addEventListener('click', onStoreClick);
+document.getElementById('multiDup').addEventListener('click', ()=>addStore(true));
+document.getElementById('multiDel').addEventListener('click', removeStore);
+['c_name','c_cp'].forEach(id=>document.getElementById(id).addEventListener('input', multiRefresh));  // le nom saisi devient le libellé de l'onglet
+// Choix « Un seul magasin / Plusieurs magasins »
+function setMulti(on){
+  if(on===MULTI) return;
+  if(!on){
+    // Retour à un seul magasin : seul l'onglet affiché est conservé
+    if(STORES.length>1 && !confirm(`Revenir à un seul magasin ? Seul ${storeInfo(STORE_CUR).nom} est conservé, les autres paniers sont retirés.`)) return;
+    STORES.splice(0, STORES.length, null);
+    STORE_CUR=0;
+    multiRefresh();  // remet les titres et la barre du bas comme pour une commande classique
+  }
+  MULTI=on;
+  ['multiBar','multiHint','multiDup'].forEach(id=>document.getElementById(id).style.display=on ? '' : 'none');
+  if(!on) document.getElementById('multiActs').style.display='none';
+  document.getElementById('bottombar').classList.toggle('multi', on);
+  document.querySelectorAll('#multiChoix button').forEach(b=>b.classList.toggle('active', (b.dataset.multi==='1')===on));
+  recompute();
+}
+// Mode commercial : le choix est rangé dans l'encart « type de proposition »
+if(MODE_CS) document.getElementById('multiGroupTitle').textContent='Vous faites cette proposition pour';
+if(MODE_CS) document.getElementById('multiDup').textContent='DUPLIQUER LA PROPOSITION';
+if(MODE_CS) document.getElementById('csPanel').insertBefore(document.getElementById('multiGroup'), document.querySelector('#csPanel .cs-note'));
+document.getElementById('multiChoix').addEventListener('click', e=>{
+  const b=e.target.closest('[data-multi]');
+  if(b) setMulti(b.dataset.multi==='1');
+});
+
+// ===== REPRISE D'UNE PROPOSITION PAR LE MAGASIN =====
+// La page de validation d'une proposition offre un lien « Modifier » : il ouvre ce bon de commande avec
+// ?reprise=<magasin>|<magasin>… où chaque magasin vaut « identité;REF:displays;… » (voir repriseCode) ;
+// l'identité est « nom, ville, code postal » séparés par une tabulation, le tout encodé.
+// Le magasin ajuste puis envoie une commande classique. Les propositions avec gratuits (gestes commerciaux)
+// ne sont pas reprises : leur modification passe par le commercial.
+function repriseCode(){
+  const mag=magFields();
+  const lots=[encodeURIComponent([mag.nom, mag.ville, mag.cp].join('\t'))];
+  document.querySelectorAll('.prod').forEach(prod=>{
+    const n=parseInt(qtyInput(prod).value)||0;
+    if(n>0) lots.push(`${prod.dataset.ref}:${n}`);
+  });
+  return lots.join(';');
+}
+let REPRISE=false;
+(function chargeReprise(){
+  const P=new URLSearchParams(location.search);
+  const code=P.get('reprise');
+  if(!code || MODE_CS) return;
+  const stores=code.split('|').slice(0, MULTI_MAX).map(bloc=>{
+    const [id, ...lots]=bloc.split(';');
+    let mag;
+    try { const [nom='', ville='', cp='']=decodeURIComponent(id).split('\t'); mag={nom, cp, ville}; } catch { return null; }
+    const s={mag, bt49:'', notes:'', q:{}, g:{}, ht:0, ttc:0};
+    lots.forEach(lot=>{ const [ref, n]=lot.split(':'); s.q[ref]=Math.max(0, parseInt(n)||0); });
+    return s;
+  }).filter(s=>s && s.mag.nom);
+  if(!stores.length) return;
+  REPRISE=true;
+  bt49Shown=true;  // pas de fenêtre d'accueil : on arrive directement sur la commande
+  showTab('bdc');
+  if(P.get('rc')) document.getElementById('c_contact').value=P.get('rc');
+  if(P.get('re')) document.getElementById('c_email').value=P.get('re');
+  window.ORDER={ht:0, ttc:0};  // lu par snapStore() avant le premier calcul
+  STORES.splice(0, STORES.length, ...stores);
+  if(stores.length>1){
+    setMulti(true);
+    // Chaque onglet est affiché une fois pour calculer ses totaux, puis on revient au premier
+    for(let i=stores.length-1;i>=0;i--){ STORE_CUR=i; loadStore(STORES[i]); STORES[i]=snapStore(); }
+  } else loadStore(stores[0]);
+  const info=document.getElementById('repriseInfo');
+  info.textContent=`Proposition de votre commercial reprise${stores.length>1?` pour vos ${stores.length} magasins`:''} : ajustez les quantités, puis validez la commande.`;
+  info.style.display='';
+})();
 recompute();
 
 // ── CARROUSEL ACTUALITÉS ─────────────────────────────────────
