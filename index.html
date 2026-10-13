@@ -1726,10 +1726,11 @@ function buildStoreDoc(pos){
   const notes=fieldVal('c_notes');
   const o=window.ORDER;
 
-  // Remise centrale Intersport (-3 %) : appliquée si le nom du magasin contient « Intersport » ou le mot « ITS ».
+  // Remise centrale Intersport (-2,5 %) : appliquée si le nom du magasin contient « Intersport » ou le mot « ITS ».
   // Volontairement invisible sur le site (tarif public) : elle n'apparaît que dans le mail, le PDF
-  // et la confirmation. Le tarif remisé est arrondi à 3 décimales (0,498 € → 0,483 €).
-  const REMISE_ITS=0.03;
+  // et la confirmation. Le tarif remisé est arrondi à 3 décimales (0,498 € → 0,486 €).
+  const REMISE_ITS=0.025;
+  const PCT_ITS=String(Math.round(REMISE_ITS*1000)/10).replace('.',',');  // « 2,5 »
   const IS_ITS=/inter\s*-?\s*sport|\bits\b/i.test(name);
   const round3=n=>Math.round(n*1000)/1000;
 
@@ -1774,7 +1775,7 @@ function buildStoreDoc(pos){
   // Pas de ligne « remise » dans les totaux : la remise Intersport est déjà dans le prix de chaque ligne
   // (l'afficher aussi en bas ferait croire à une double remise).
   const totaux=[['Total HT',fmt(htNet)],['TVA 5,5 %',fmt(tva55)],['TVA 20 % (gummies)',fmt(tva20)],['Total TTC',fmt(ttc)]];
-  const remiseLbl='Remise Intersport';  // titre sans %, le -3 % est dans chaque cellule
+  const remiseLbl='Remise Intersport';  // titre sans %, le -2,5 % est dans chaque cellule
   const mentionDoc=MODE_CS
     ? "Proforma établie par votre commercial Andros Sport. Ce document n'a pas valeur de commande."
     : (REPRISE ? 'Commande passée depuis le bon de commande en ligne Andros Sport, à partir d\'une proposition du commercial modifiée par le magasin.'
@@ -1814,7 +1815,7 @@ function buildStoreDoc(pos){
   ].join('\n');
 
   // Récap compact — HTML : Produit | UC | Prix HT net / UC | Total HT
-  // Intersport : Produit | UC | Prix HT / UC | Remise -3 % Intersport | Prix HT net / UC | Total HT
+  // Intersport : Produit | UC | Prix HT / UC | Remise -2,5 % Intersport | Prix HT net / UC | Total HT
   const NCOL=IS_ITS?6:4;
   const recapHtml=
     '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;border-collapse:collapse;margin:14px 0 0">'+
@@ -1830,7 +1831,7 @@ function buildStoreDoc(pos){
         `<td style="${TD}text-align:center;white-space:nowrap">${it.uc}</td>`+
         (IS_ITS
           ? `<td style="${TD}text-align:right;white-space:nowrap">${it.free?'-':fmtPU(it.base)}</td>`+
-            `<td style="${TD}text-align:center;white-space:nowrap;color:#0a73c4;font-weight:700">${it.free?'OFFERT':`-${Math.round(REMISE_ITS*100)} %`}</td>`
+            `<td style="${TD}text-align:center;white-space:nowrap;color:#0a73c4;font-weight:700">${it.free?'OFFERT':`-${PCT_ITS} %`}</td>`
           : '')+
         `<td style="${TD}text-align:right;white-space:nowrap;color:#138a52;font-weight:700">${fmtPU(it.nn)}</td>`+
         `<td style="${TD}text-align:right;font-weight:700;white-space:nowrap">${fmt(it.total)}</td></tr>`).join('')
@@ -1848,7 +1849,7 @@ function buildStoreDoc(pos){
   // Récap simplifié (page de confirmation + mail « proposition validée »), groupé par famille de produit
   const recapCourt={
     lignes: sections.flatMap(s=>[{sec:s.famille}, ...s.items.map(it=>({n:it.name, uc:it.qte, pu:fmtPU(it.nn), t:fmt(it.total), off:!!it.free,
-      ...(IS_ITS?{pb:it.free?'-':fmtPU(it.base), rm:it.free?'OFFERT':`-${Math.round(REMISE_ITS*100)} %`}:{})}))]),
+      ...(IS_ITS?{pb:it.free?'-':fmtPU(it.base), rm:it.free?'OFFERT':`-${PCT_ITS} %`}:{})}))]),
     ...(IS_ITS?{remiseLbl}:{}),
     plv: [],
     // Page de validation : lien « Modifier » (panier à reprendre), ou renvoi vers le commercial s'il y a des gratuits (gestes commerciaux)
@@ -2074,7 +2075,7 @@ async function buildPdfBase64(d){
     body:d.infos.map(([k,v])=>[pdfTxt(k), pdfTxt(v)])});
 
   // Produits : tarif net ; pour un Intersport, colonnes « Tarif HT / UC » puis « Remise ITS » avant votre prix
-  const its=d.remiseIts>0, pC=Math.round(d.remiseIts*100);
+  const its=d.remiseIts>0, pC=String(Math.round(d.remiseIts*1000)/10).replace('.',',');
   const NB_COL=its?7:5;
   const body=[];
   d.sections.forEach(s=>{
