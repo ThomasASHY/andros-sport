@@ -615,6 +615,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
     <div class="cs-options">
       <button type="button" class="cs-opt active" data-csmode="reassort">🔁 Proposition de réassort</button>
       <button type="button" class="cs-opt" data-csmode="implantation">🏪 Proposition d'implantation</button>
+      <button type="button" class="cs-opt" data-csmode="reliquat">📦 Proposition de reliquat</button>
     </div>
     <div class="cs-note">Le récapitulatif devient une proforma. L'e-mail est envoyé au magasin (copie au commercial) et n'a pas valeur de commande tant que le magasin ne l'a pas validé.</div>
   </div>
@@ -1642,14 +1643,80 @@ function recompute(){
   multiRefresh();
 }
 const MAILER_URL='https://mailer.thomas-m-682.workers.dev';
+// ===== Suivi des commandes (dashboard /commandes) : AJOUT =====
+// Joint à l'envoi les lignes de commande structurées (réf, EAN, quantités, prix). Le mail et le PDF ne changent pas.
+// Si ce bloc échoue, l'envoi de la commande continue exactement comme avant.
+const ORDER_CID = (window.crypto&&crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random().toString(16).slice(2)).replace(/[^\w-]/g,'').slice(0,40);
+function commandesPayload(docs){
+  return docs.map((d,i)=>{
+    const pd=d.pdfData||{};
+    const info=k=>{const v=((pd.infos||[]).find(x=>x[0]===k)||[])[1]; return (v==null||v==='-')?'':String(v);};
+    let cp='', ville='';
+    const cv=info('CP / Ville');
+    if(cv){ const m=cv.match(/^(\d{4,5})\s*(.*)$/); cp=m?m[1]:''; ville=m?m[2]:cv; }
+    else { const m=info('Ville').match(/^(.*?)\s*\((\d{4,5})\)\s*$/); if(m){ ville=m[1]==='-'?'':m[1]; cp=m[2]; } }
+    const lignes=(pd.sections||[]).flatMap(s=>s.items||[]).map(it=>{
+      const mq=String(it.sous||'').match(/^(\d+)\s+display/i); const q=mq?+mq[1]:it.uc;
+      return {ref:it.ref||'', ean:it.ean||'', nom:it.name, uc:it.uc, q, pcb:q?Math.round(it.uc/q):1, pu:it.nn, base:it.base, total:it.total, free:!!it.free};
+    });
+    const noms=(typeof PLV_NOMS!=='undefined')?PLV_NOMS:{};
+    const plv=(pd.plv||[]).map(p=>({ref:Object.keys(noms).find(k=>noms[k]===p.n)||'', nom:p.n, q:p.q}));
+    return {
+      cid:ORDER_CID+'-'+i,
+      label:d.magLbl||'',
+      proposition:!!MODE_CS,
+      type:MODE_CS?CS_MODE:'',
+      commercial:d.emailCommercial||'',
+      magasin:{nom:d.nom||d.name||d.magasin||info('Point de vente')||info('Raison sociale')||info('Magasin'), cp, ville, contact:info('Contact'), tel:info('Téléphone'), email:info('Email'), notes:info('Notes'), bt49:d.bt49Val||d.bt49||''},
+      lignes, plv,
+      totaux:{ttc:(d.o&&d.o.ttc)||(d.tot&&d.tot.ttc)||0},
+      pdf:d.pdfNom||''
+    };
+  });
+}
+function stringifyWithCommandes(docs, payload){
+  try{ payload.commandes=commandesPayload(docs); }catch(err){ console.warn('Suivi des commandes : lignes non jointes', err); }
+  return JSON.stringify(payload);
+}
+
+/* Mode commercial : le commercial choisit le magasin dans la table GLN (liste du serveur). Le nom, le code postal et la ville se remplissent
+   avec les valeurs exactes de la table : le GLN suit tout seul à la validation du client. Sans effet hors mode commercial. */
+(function(){
+  function init(){
+    if(typeof MODE_CS==='undefined'||!MODE_CS) return;
+    const inp=document.getElementById('c_name'); if(!inp||inp.dataset.glnPick) return; inp.dataset.glnPick='1';
+    const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const list=document.createElement('div');
+    list.style.cssText='display:none;position:absolute;left:0;right:0;top:100%;z-index:60;background:#fff;border:1px solid #c9d6de;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);max-height:260px;overflow:auto';
+    inp.parentNode.style.position='relative'; inp.parentNode.appendChild(list);
+    const hint=document.createElement('small'); hint.style.cssText='display:block;margin-top:4px;color:#566;font-size:.7rem';
+    hint.textContent='Mode commercial : tapez le nom puis choisissez le magasin dans la liste (le GLN suit automatiquement).'; inp.parentNode.appendChild(hint);
+    function setV(id,v){ const e=document.getElementById(id); if(!e||v==null||v==='') return; e.value=v; e.dispatchEvent(new Event('input',{bubbles:true})); e.dispatchEvent(new Event('change',{bubbles:true})); }
+    function pick(m){ setV('c_name',m.nom); setV('c_cp',m.cp); setV('c_ville',m.ville); list.style.display='none'; }
+    function show(ms){
+      list.innerHTML=''; if(!ms.length){ list.style.display='none'; return; }
+      ms.forEach(m=>{ const b=document.createElement('button'); b.type='button';
+        b.style.cssText='display:block;width:100%;text-align:left;padding:9px 12px;border:0;border-bottom:1px solid #eef2f5;background:#fff;cursor:pointer;font:inherit;font-size:.85rem;color:#0c2434';
+        b.innerHTML='<b>'+esc(m.nom)+'</b> <span style="color:#667">'+esc([m.cp,m.ville].filter(Boolean).join(' '))+'</span>';
+        b.addEventListener('mousedown',e=>{ e.preventDefault(); pick(m); }); list.appendChild(b); });
+      list.style.display='block';
+    }
+    let t;
+    inp.addEventListener('input',()=>{ clearTimeout(t); const q=inp.value.trim(); if(q.length<2){ list.style.display='none'; return; }
+      t=setTimeout(async()=>{ try{ const r=await fetch(MAILER_URL+'/commandes/api/magasins-cs?q='+encodeURIComponent(q)); const j=await r.json(); if(inp.value.trim()===q) show(j.magasins||[]); }catch(e){} },250); });
+    inp.addEventListener('blur',()=>setTimeout(()=>{ list.style.display='none'; },150));
+  }
+  window.addEventListener('load',init);
+})();
 
 // 🧑‍💼 MODE COMMERCIAL : ajoutez ?modecs à la fin de l'URL (ou &modecs si l'URL a déjà un « ? »,
 // ou #modecs). Donne accès aux propositions de réassort / d'implantation (récap = proforma).
 const MODE_CS = /(^|[?&#])modecs\b/i.test(window.location.search + window.location.hash);
-let CS_MODE = 'reassort'; // 'reassort' | 'implantation'
+let CS_MODE = 'reassort'; // 'reassort' | 'implantation' | 'reliquat'
 const CS_LABELS = {
   reassort:     {titre:'Proposition de réassort'},
-  implantation: {titre:"Proposition d'implantation"}
+  implantation: {titre:"Proposition d'implantation"},
+  reliquat:     {titre:'Proposition de reliquat'}
 };
 function applyCsMode(){
   if(!MODE_CS) return;
@@ -1885,9 +1952,9 @@ async function submitOrder(){
   }
   const contact=fieldVal('c_contact');
   const email=fieldVal('c_email');
-  // En mode commercial, la proposition part au magasin : son e-mail est indispensable
-  if(MODE_CS && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    alert("Merci de renseigner un e-mail valide pour le magasin : la proposition lui est envoyée.");
+  // L'e-mail du magasin est indispensable (proposition ou commande)
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert("Merci de renseigner un e-mail valide pour le magasin : sans e-mail, la commande ne peut pas être envoyée.");
     document.getElementById('c_email').focus();
     return;
   }
@@ -1918,7 +1985,7 @@ async function submitOrder(){
     intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à notre échange, je vous propose l\'implantation de la gamme Andros Sport dans '+(multi?'vos '+lieux:'votre magasin '+d0.name)+'.\n\nVous trouverez ci-dessous'+(multi?', magasin par magasin,':'')+' la proforma détaillant l\'assortiment de lancement conseillé, ainsi que les conditions tarifaires associées.\n\n';
     outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition »'+(multi?' : vous choisirez les magasins à valider, un par un ou tous ensemble':'')+'. Pour l\'ajuster, répondez simplement à cet e-mail.\n\nJe reste à votre disposition pour organiser la mise en place en magasin.'+signature;
   } else {
-    intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à l\'analyse de vos ventes et de votre stock, je vous propose le réassort Andros Sport suivant pour '+(multi?'vos '+lieux:'votre magasin '+d0.name)+'.\n\nVous trouverez ci-dessous le récapitulatif de la proposition'+(multi?', magasin par magasin, puis le total général':'')+'.\n\n';
+    intro='Bonjour'+(contact?' '+contact:'')+',\n\n'+(CS_MODE==='reliquat'?'Suite à notre échange, je vous propose le reliquat de votre commande Andros Sport pour ':'Suite à l\'analyse de vos ventes et de votre stock, je vous propose le réassort Andros Sport suivant pour ')+''+(multi?'vos '+lieux:'votre magasin '+d0.name)+'.\n\nVous trouverez ci-dessous le récapitulatif de la proposition'+(multi?', magasin par magasin, puis le total général':'')+'.\n\n';
     outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition »'+(multi?' : vous choisirez les magasins à valider, un par un ou tous ensemble':'')+'. Pour modifier les quantités, répondez simplement à cet e-mail.'+signature;
   }
 
@@ -2001,7 +2068,7 @@ async function submitOrder(){
       headers:{'Content-Type':'application/json'},
       // Mode commercial : la proposition part au magasin, copie au(x) commercial(aux) (+ DESTINATAIRE pour traçabilité),
       // et le magasin répond directement au commercial.
-      body:JSON.stringify(MODE_CS
+      body:stringifyWithCommandes(docs, MODE_CS
         ? {to:email,cc:[...new Set([...commerciaux,DESTINATAIRE])],subject,body,html,replyTo:emailCommercial,attachments:avecPdf?attachments:undefined,
            accept:{commercial:emailCommercial,dest:DESTINATAIRE,magasin:multi?`${nb} magasins : ${noms}`:d0.magLbl,contact,titre:CS_LABELS[CS_MODE].titre,...recapAccept}}
         : {to:emailCommercial,cc:[...new Set([...commerciaux.slice(1),DESTINATAIRE,email])].filter(e=>e&&e!==emailCommercial),subject,body,html,replyTo:email||undefined,attachments:avecPdf?attachments:undefined})
