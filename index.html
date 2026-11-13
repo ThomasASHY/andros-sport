@@ -1413,6 +1413,39 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   <button type="button" class="cs-msg-reset" id="csMsgReset">Revenir au texte standard</button>
 </div>
 <style>
+#csMsgOv{position:fixed;inset:0;z-index:99999;background:rgba(10,30,45,.62);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:4vh 12px}
+#csMsgOv.on{display:flex}
+#csMsgBox{background:#fff;border-radius:14px;max-width:780px;width:100%;box-shadow:0 18px 60px rgba(0,0,0,.4);overflow:hidden}
+#csMsgBox .cs-msg{margin:0;border:0;border-radius:0;max-width:none;padding:16px 18px}
+.csMsgHead{background:#0673a3;color:#fff;padding:12px 18px;font-weight:800;font-size:16px}
+.csMsgHead small{display:block;font-weight:500;font-size:13px;opacity:.9;margin-top:2px}
+.csMsgFoot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;padding:12px 18px;border-top:1px solid #e1e8ee;background:#f8fafb;position:sticky;bottom:0}
+.csMsgFoot button{font:inherit;font-weight:800;font-size:15px;padding:11px 20px;border-radius:10px;border:2px solid #0673a3;cursor:pointer}
+#csMsgBack{background:#fff;color:#0673a3}
+#csMsgGo{background:#7EA818;border-color:#7EA818;color:#fff}
+</style>
+<div id="csMsgOv"><div id="csMsgBox"><div class="csMsgHead">✉️ Message au client avant envoi<small>Choisissez ou modifiez le texte d'introduction, puis cliquez sur Envoyer.</small></div><div id="csMsgSlot"></div><div class="csMsgFoot"><button type="button" id="csMsgBack">← Retour</button><button type="button" id="csMsgGo">✅ Envoyer</button></div></div></div>
+<script>
+(function(){
+  var home=null;
+  function closeM(){var ov=document.getElementById('csMsgOv'),box=document.getElementById('csMsg');ov.classList.remove('on');if(home&&box){home.parentNode.insertBefore(box,home);}}
+  window.csMsgModalOpen=function(){
+    var box=document.getElementById('csMsg'),ov=document.getElementById('csMsgOv'),slot=document.getElementById('csMsgSlot');
+    if(!box)return false;
+    if(!home){home=document.createComment('csMsgHome');box.parentNode.insertBefore(home,box);}
+    if(typeof csMsgRefresh==='function')csMsgRefresh();
+    slot.appendChild(box);box.style.display='';
+    var t=box.querySelector('.cs-panel-title');if(t)t.style.display='none';
+    ov.classList.add('on');ov.scrollTop=0;
+    return true;
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    document.getElementById('csMsgBack').addEventListener('click',closeM);
+    document.getElementById('csMsgGo').addEventListener('click',function(){closeM();window.CS_MSG_OK=true;submitOrder();});
+  });
+})();
+</script>
+<style>
 .cs-msg{margin:14px 16px 90px;padding:12px 14px;border:1.5px solid var(--eau,#0a9bd4);border-radius:12px;background:#fff;max-width:760px}
 .cs-msg-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
 .cs-msg-chips button{font:inherit;font-size:13px;font-weight:700;padding:6px 11px;border-radius:999px;border:1.5px solid #0673a3;background:#fff;color:#0673a3;cursor:pointer}
@@ -2056,6 +2089,9 @@ async function submitOrder(){
     document.getElementById('c_email').focus();
     return;
   }
+  // Mode commercial : la fenêtre « Message au client » s'ouvre à la validation
+  if(MODE_CS && !window.CS_MSG_OK){ if(csMsgModalOpen()) return; }
+  window.CS_MSG_OK=false;
   const docs=[];
   for(let i=0;i<nb;i++){
     if(multi) showStore(i);
