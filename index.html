@@ -213,6 +213,10 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 .cs-options{display:flex;gap:8px;flex-wrap:wrap}
 .cs-opt{flex:1 1 140px;border:1.5px solid var(--ligne);background:#fff;color:var(--encre);border-radius:10px;padding:10px 12px;font:inherit;font-size:.84rem;font-weight:700;cursor:pointer;text-align:left}
 .cs-opt.active{border-color:var(--encre);background:var(--encre);color:#fff}
+  .cs-conf.active{border-color:#138a52;background:#138a52}
+  .cs-types{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:.8rem;font-weight:700}
+  .cs-ty{border:1.5px solid var(--ligne);background:#fff;color:inherit;border-radius:999px;padding:6px 14px;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
+  .cs-ty.active{border-color:#138a52;background:#e6f6ee;color:#0b6b3f}
 .cs-note{margin-top:8px;font-size:.72rem;color:var(--gris);line-height:1.4}
 /* Gratuits ligne par ligne (mode commercial uniquement) */
 .cs-free{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:8px;padding:6px 8px 6px 10px;border:1px solid var(--ligne);border-radius:9px;background:#fff;max-width:340px}
@@ -611,13 +615,15 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 
   <!-- MODE COMMERCIAL : visible uniquement avec ?modecs dans l'URL -->
   <div class="cs-panel" id="csPanel" style="display:none">
-    <div class="cs-panel-title">🧑‍💼 Mode commercial — type de proposition</div>
+    <div class="cs-panel-title">🧑‍💼 Mode commercial — type de dossier</div>
     <div class="cs-options">
       <button type="button" class="cs-opt active" data-csmode="reassort">🔁 Proposition de réassort</button>
       <button type="button" class="cs-opt" data-csmode="implantation">🏪 Proposition d'implantation</button>
       <button type="button" class="cs-opt" data-csmode="reliquat">📦 Proposition de reliquat</button>
+      <button type="button" class="cs-opt cs-conf" data-csmode="confirmee">✅ Commande confirmée</button>
     </div>
-    <div class="cs-note">Le récapitulatif devient une proforma. L'e-mail est envoyé au magasin (copie au commercial) et n'a pas valeur de commande tant que le magasin ne l'a pas validé.</div>
+    <div class="cs-types" id="csType" style="display:none"><span>Type de commande :</span><button type="button" class="cs-ty active" data-csty="reassort">Réassort</button><button type="button" class="cs-ty" data-csty="implantation">Implantation</button><button type="button" class="cs-ty" data-csty="reliquat">Reliquat</button></div>
+    <div class="cs-note" id="csNote">Le récapitulatif devient une proposition. L'e-mail est envoyé au magasin (copie au commercial) et n'a pas valeur de commande tant que le magasin ne l'a pas validé.</div>
   </div>
 
   <!-- MULTI-MAGASINS : un même encadré regroupe le choix « un seul / plusieurs magasins » et, en dessous,
@@ -672,7 +678,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ABRICOT BANANE</div>
-        <div class="prod-meta"><span class="dluo">DLUO 31/10/2027</span>Réf. 50121867 · EAN 3608580114536 · <strong>DISPLAYS DE 32</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50121867 · EAN 3608580114536 · <strong>DISPLAYS DE 32</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.498 € HT/UC</span>
           <span class="badge pv">PV 1.20 € TTC</span>
@@ -702,7 +708,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUIT ROUGES</div>
-        <div class="prod-meta"><span class="dluo">DLUO 15/12/2027</span>Réf. 50121866 · EAN 3608580114581 · <strong>DISPLAYS DE 32</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50121866 · EAN 3608580114581 · <strong>DISPLAYS DE 32</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.498 € HT/UC</span>
           <span class="badge pv">PV 1.20 € TTC</span>
@@ -732,7 +738,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ETUI MIX DE 6 (3 FR + 3AB)</div>
-        <div class="prod-meta"><span class="dluo">DLUO 25/12/2027</span>Réf. 50120744 · EAN 3608580115311 · <strong>PCB DE 10</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50120744 · EAN 3608580115311 · <strong>PCB DE 10</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 3.070 € HT/UC</span>
           <span class="badge pv">PV 5.90 € TTC</span>
@@ -762,7 +768,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ETUI X6 FRAISE BANANE GUARANA</div>
-        <div class="prod-meta"><span class="dluo">DLUO 30/11/2027</span>Réf. 50137700 · EAN 3608580207658 · <strong>PCB DE 10</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50137700 · EAN 3608580207658 · <strong>PCB DE 10</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 3.310 € HT/UC</span>
           <span class="badge pv">PV 6.49 € TTC</span>
@@ -800,7 +806,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME MANGUE PASSION</div>
-        <div class="prod-meta"><span class="dluo">DLUO 11/05/2027</span>Réf. 50133117 · EAN 3608580187837 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50133117 · EAN 3608580187837 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -830,7 +836,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME BANANE</div>
-        <div class="prod-meta"><span class="dluo">DLUO 11/05/2027</span>Réf. 50133116 · EAN 3608580187806 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50133116 · EAN 3608580187806 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -860,7 +866,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME FRAISE CASSIS</div>
-        <div class="prod-meta"><span class="dluo">DLUO 11/05/2027</span>Réf. 50133118 · EAN 3608580187868 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50133118 · EAN 3608580187868 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.250 € HT/UC</span>
           <span class="badge pv">PV 2.50 € TTC</span>
@@ -898,7 +904,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME TOMATE POIVRON</div>
-        <div class="prod-meta"><span class="dluo">DLUO 24/01/2027</span>Réf. 50128308 · EAN 3608580159506 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50128308 · EAN 3608580159506 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.555 € HT/UC</span>
           <span class="badge pv">PV 3.00 € TTC</span>
@@ -928,7 +934,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME BUTTERNUT CURCUMA</div>
-        <div class="prod-meta"><span class="dluo">DLUO 25/01/2027</span>Réf. 50128307 · EAN 3608580159476 · <strong>DISPLAYS DE 18</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50128307 · EAN 3608580159476 · <strong>DISPLAYS DE 18</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.555 € HT/UC</span>
           <span class="badge pv">PV 3.00 € TTC</span>
@@ -966,7 +972,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">MYRTILLES CRANBERRIES</div>
-        <div class="prod-meta"><span class="dluo">DLUO 23/06/2027</span>Réf. 50134503 · EAN 3608580192930 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50134503 · EAN 3608580192930 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -996,7 +1002,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">POMME POIRE ABRICOT</div>
-        <div class="prod-meta"><span class="dluo">DLUO 16/09/2027</span>Réf. 50119521 · EAN 3608580111962 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50119521 · EAN 3608580111962 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -1026,7 +1032,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUITS ROUGES</div>
-        <div class="prod-meta"><span class="dluo">DLUO 16/09/2027</span>Réf. 50119519 · EAN 3608580111900 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50119519 · EAN 3608580111900 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -1056,7 +1062,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">BANANE CHOCOLAT</div>
-        <div class="prod-meta"><span class="dluo">DLUO 09/10/2027</span>Réf. 50119520 · EAN 3608580111931 · <strong>DISPLAYS DE 16</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50119520 · EAN 3608580111931 · <strong>DISPLAYS DE 16</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.400 € HT/UC</span>
           <span class="badge pv">PV 2.75 € TTC</span>
@@ -1094,7 +1100,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">ANANAS PASSION POMME</div>
-        <div class="prod-meta"><span class="dluo">DLUO 30/09/2027</span>Réf. 50132077 · EAN 3608580182450 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50132077 · EAN 3608580182450 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.850 € HT/UC</span>
           <span class="badge pv">PV 1.69 € TTC</span>
@@ -1124,7 +1130,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRUITS ROUGES</div>
-        <div class="prod-meta"><span class="dluo">DLUO 30/07/2027</span>Réf. 50129284 · EAN 3608580167471 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50129284 · EAN 3608580167471 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.850 € HT/UC</span>
           <span class="badge pv">PV 1.69 € TTC</span>
@@ -1162,7 +1168,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL BOOST AGRUMES YUZU</div>
-        <div class="prod-meta"><span class="dluo">DLUO 26/06/2027</span>Réf. 50119284 · EAN 3608580109846 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50119284 · EAN 3608580109846 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1192,7 +1198,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL ANTIOXYDANT CASSIS BETTERAVE</div>
-        <div class="prod-meta"><span class="dluo">DLUO 11/08/2027</span>Réf. 50119285 · EAN 3608580109877 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50119285 · EAN 3608580109877 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1222,7 +1228,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">GEL BOOST FRAISE CRANBERRY GOYAVE</div>
-        <div class="prod-meta"><span class="dluo">DLUO 11/09/2027</span>Réf. 50125944 · EAN 3608580144922 · <strong>DISPLAYS DE 30</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50125944 · EAN 3608580144922 · <strong>DISPLAYS DE 30</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 1.150 € HT/UC</span>
           <span class="badge pv">PV 2.30 € TTC</span>
@@ -1260,7 +1266,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">MANGUE BANANE Sachet de 6 gummies</div>
-        <div class="prod-meta"><span class="dluo">DLUO 10/06/2027</span>Réf. 50127575 · EAN 3608580155133 · <strong>DISPLAYS DE 14</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50127575 · EAN 3608580155133 · <strong>DISPLAYS DE 14</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.955 € HT/UC</span>
           <span class="badge pv">PV 2.00 € TTC</span>
@@ -1290,7 +1296,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
       </div>
       <div class="prod-info">
         <div class="prod-name">FRAISE  Sachet de 6 gummies</div>
-        <div class="prod-meta"><span class="dluo">DLUO 30/11/2027</span>Réf. 50132677 · EAN 3608580184973 · <strong>DISPLAYS DE 14</strong></div>
+        <div class="prod-meta"><span class="dluo">DLUO NC</span>Réf. 50132677 · EAN 3608580184973 · <strong>DISPLAYS DE 14</strong></div>
         <div class="prod-badges">
           <span class="badge pa">PA 0.955 € HT/UC</span>
           <span class="badge pv">PV 2.00 € TTC</span>
@@ -1396,6 +1402,29 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
   </div>
 </section>
 
+<div class="cs-msg" id="csMsg" style="display:none">
+  <div class="cs-panel-title">✉️ Message au client</div>
+  <div class="cs-msg-chips" id="csMsgChips"></div>
+  <label for="csMsgTxt" class="cs-msg-lbl">Texte d'introduction du mail (modifiable)</label>
+  <textarea id="csMsgTxt" maxlength="1200" rows="5"></textarea>
+  <div class="cs-msg-cnt" id="csMsgCnt"></div>
+  <div class="cs-msg-lock">🔒 <b>Ajoutés automatiquement, non modifiables :</b> le récapitulatif, le PDF joint, <span id="csMsgLockBtn">le bouton « Valider ou modifier »</span> et votre signature.</div>
+  <div class="cs-msg-prev"><b>Aperçu</b><div id="csMsgPrev"></div></div>
+  <button type="button" class="cs-msg-reset" id="csMsgReset">Revenir au texte standard</button>
+</div>
+<style>
+.cs-msg{margin:14px 16px 90px;padding:12px 14px;border:1.5px solid var(--eau,#0a9bd4);border-radius:12px;background:#fff;max-width:760px}
+.cs-msg-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.cs-msg-chips button{font:inherit;font-size:13px;font-weight:700;padding:6px 11px;border-radius:999px;border:1.5px solid #0673a3;background:#fff;color:#0673a3;cursor:pointer}
+.cs-msg-chips button.on{background:#0673a3;color:#fff}
+.cs-msg-lbl{display:block;font-size:13px;font-weight:700;margin:6px 0 4px}
+.cs-msg textarea{width:100%;box-sizing:border-box;font:inherit;font-size:14px;line-height:1.45;padding:9px 10px;border:1.5px solid #c9d6de;border-radius:8px;resize:vertical}
+.cs-msg-cnt{font-size:12px;color:#5d7080;text-align:right}
+.cs-msg-lock{font-size:12.5px;background:#f2f6f9;border-radius:8px;padding:8px 10px;margin:6px 0;color:#34495a}
+.cs-msg-prev{font-size:13px;background:#f8fafb;border:1px dashed #c9d6de;border-radius:8px;padding:8px 10px;margin:6px 0}
+.cs-msg-prev div{white-space:pre-wrap;margin-top:4px}
+.cs-msg-reset{font:inherit;font-size:13px;background:none;border:0;color:#0673a3;text-decoration:underline;cursor:pointer;padding:4px 0}
+</style>
 <div class="bottombar hidden" id="bottombar">
   <div class="bb-in">
     <div class="bb-tot">
@@ -1530,7 +1559,7 @@ function closeBt49Info(e){
   document.body.style.overflow='';
 }
 
-const DESTINATAIRE="thomas.m@magnitude.fr";
+const DESTINATAIRE = "thomas.m@magnitude.fr";
 const FRANCO_MIN=200;
 let ORDER_SENT=false;
 let currentHT=0;
@@ -1663,9 +1692,15 @@ function commandesPayload(docs){
     const plv=(pd.plv||[]).map(p=>({ref:Object.keys(noms).find(k=>noms[k]===p.n)||'', nom:p.n, q:p.q}));
     return {
       cid:ORDER_CID+'-'+i,
+      edit:d.editCode||'',
+      remplace:(i===0&&window.REMPLACE)?window.REMPLACE:'',
+      pdfBon: (window.CS_BONS&&window.CS_BONS[i]) ? window.CS_BONS[i].pdf : undefined,
+      pdfBonNom: (window.CS_BONS&&window.CS_BONS[i]) ? window.CS_BONS[i].nom : undefined,
+      message: !MODE_CS ? '' : (CONF() ? csMsgResolved(docs.length>1 ? 'vos '+docs.length+' magasins' : 'votre magasin '+(d.magLbl||'')) : (window.CS_MSG_FINAL||'')),
       label:d.magLbl||'',
-      proposition:!!MODE_CS,
-      type:MODE_CS?CS_MODE:'',
+      proposition:!!MODE_CS&&!CONF(),
+      confirmee:CONF(),
+      type:CONF()?CS_TYPE:(MODE_CS?CS_MODE:''),
       commercial:d.emailCommercial||'',
       magasin:{nom:d.nom||d.name||d.magasin||info('Point de vente')||info('Raison sociale')||info('Magasin'), cp, ville, contact:info('Contact'), tel:info('Téléphone'), email:info('Email'), notes:info('Notes'), bt49:d.bt49Val||d.bt49||''},
       lignes, plv,
@@ -1712,17 +1747,79 @@ function stringifyWithCommandes(docs, payload){
 // 🧑‍💼 MODE COMMERCIAL : ajoutez ?modecs à la fin de l'URL (ou &modecs si l'URL a déjà un « ? »,
 // ou #modecs). Donne accès aux propositions de réassort / d'implantation (récap = proforma).
 const MODE_CS = /(^|[?&#])modecs\b/i.test(window.location.search + window.location.hash);
-let CS_MODE = 'reassort'; // 'reassort' | 'implantation' | 'reliquat'
+let CS_TYPE = 'reassort'; // type de la commande confirmée
+const CONF = () => MODE_CS && CS_MODE==='confirmee';
+let CS_MODE = 'reassort'; // 'reassort' | 'implantation' | 'reliquat' | 'confirmee'
 const CS_LABELS = {
   reassort:     {titre:'Proposition de réassort'},
   implantation: {titre:"Proposition d'implantation"},
-  reliquat:     {titre:'Proposition de reliquat'}
+  reliquat:     {titre:'Proposition de reliquat'},
+  confirmee:    {titre:'Commande confirmée', court:'commande'}
 };
+// ===== Message au client (mode commercial) =====
+const CS_MARQUE = 'Andros Sport';
+const CS_MSG = {
+  reassort:[
+    ['Réassort standard',"Suite à l'analyse de vos ventes et de votre stock, je vous propose le réassort "+CS_MARQUE+" suivant pour {magasins}."],
+    ['Stock bas constaté',"En regardant vos stocks de cette semaine, j'ai constaté que plusieurs références arrivent à rupture. Je vous propose le réassort ci-dessous pour {magasins}, à valider rapidement pour une livraison dans les délais."],
+    ['Offre en cours',"Comme convenu lors de notre échange, voici le réassort "+CS_MARQUE+" qui intègre l'offre en cours pour {magasins}."],
+    ['Message court perso',"Voici comme promis ma proposition de réassort pour {magasins}. N'hésitez pas à me dire si une quantité doit bouger, je l'ajuste tout de suite."]],
+  implantation:[
+    ['Implantation standard',"Suite à notre échange, je vous propose l'implantation de la gamme "+CS_MARQUE+" dans {magasins}."],
+    ['Gamme de lancement',"Pour bien démarrer, je vous propose un assortiment de lancement conseillé de la gamme "+CS_MARQUE+" pour {magasins}, avec les conditions tarifaires associées."],
+    ['Offre en cours',"Comme convenu lors de notre échange, voici la proposition d'implantation "+CS_MARQUE+" qui intègre l'offre en cours pour {magasins}."],
+    ['Message court perso',"Voici comme promis ma proposition d'implantation pour {magasins}. Dites-moi si vous souhaitez ajuster l'assortiment."]],
+  reliquat:[
+    ['Reliquat standard',"Suite à notre échange, je vous propose le reliquat de votre commande "+CS_MARQUE+" pour {magasins}."],
+    ['Livraison à confirmer',"Suite à votre dernière commande, certains produits n'ont pas pu être livrés. Je vous propose le reliquat ci-dessous pour {magasins}."],
+    ['Offre en cours',"Comme convenu lors de notre échange, voici le reliquat de votre commande "+CS_MARQUE+" pour {magasins}."],
+    ['Message court perso',"Voici comme promis le reliquat de votre commande pour {magasins}. Dites-moi si une quantité doit bouger."]],
+  confirmee:[
+    ['Suite à notre échange',"Suite à notre échange, voici le récapitulatif de votre commande "+CS_MARQUE+" pour {magasins}. Elle est enregistrée et part en préparation : inutile de la saisir à nouveau sur le site."],
+    ['Suite à ma visite',"Merci pour l'accueil lors de ma visite. Comme convenu, j'ai enregistré votre commande "+CS_MARQUE+" pour {magasins}. Voici le récapitulatif : vous n'avez rien à ressaisir."],
+    ['Commande ajustée',"Après votre saisie sur le site, j'ai ajusté votre commande "+CS_MARQUE+" pour {magasins}. Voici le récapitulatif à jour : elle est enregistrée et part en préparation."],
+    ['Message court perso',"Votre commande pour {magasins} est bien enregistrée, voici le récapitulatif. Je reste disponible pour toute question."]]
+};
+let csMsgEdited = false, csMsgModeShown = '';
+function csMsgResolved(lieux){
+  const el = document.getElementById('csMsgTxt'); if(!MODE_CS || !el) return '';
+  return el.value.replace(/\{magasins\}/g, lieux).replace(/[ \t]+\n/g,'\n').trim();
+}
+function csMsgPreview(){
+  const el = document.getElementById('csMsgTxt'); if(!el) return;
+  document.getElementById('csMsgCnt').textContent = el.value.length+' / 1200';
+  document.getElementById('csMsgPrev').textContent = 'Bonjour,\n\n'+(el.value.replace(/\{magasins\}/g,'votre magasin / vos magasins').trim()||'(aucun message : le texte standard sera utilisé)');
+}
+function csMsgRefresh(){
+  const box = document.getElementById('csMsg'); if(!box || !MODE_CS) return;
+  box.style.display = '';
+  const lock = document.getElementById('csMsgLockBtn'); if(lock) lock.textContent = CONF() ? "le bon de commande PDF et la mention « rien à ressaisir »" : "le bouton « Valider ou modifier »";
+  const list = CS_MSG[CS_MODE] || CS_MSG.reassort;
+  if(csMsgModeShown !== CS_MODE){
+    csMsgModeShown = CS_MODE;
+    const ch = document.getElementById('csMsgChips'); ch.innerHTML = '';
+    list.forEach((m,i)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=m[0]; b.addEventListener('click',()=>{ document.getElementById('csMsgTxt').value=m[1]; csMsgEdited=false; ch.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); csMsgPreview(); }); ch.appendChild(b); });
+    if(!csMsgEdited){ document.getElementById('csMsgTxt').value = list[0][1]; ch.firstChild.classList.add('on'); }
+  }
+  csMsgPreview();
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const el = document.getElementById('csMsgTxt'); if(!el) return;
+  el.addEventListener('input', ()=>{ csMsgEdited = true; document.querySelectorAll('#csMsgChips button').forEach(x=>x.classList.remove('on')); csMsgPreview(); });
+  document.getElementById('csMsgReset').addEventListener('click', ()=>{ csMsgEdited=false; csMsgModeShown=''; csMsgRefresh(); });
+  csMsgRefresh();
+});
 function applyCsMode(){
   if(!MODE_CS) return;
-  document.getElementById('recapHead').textContent = CS_LABELS[CS_MODE].titre + ' — Proforma';
-  if(!ORDER_SENT) document.getElementById('btn_go').textContent = 'ENVOYER LA PROPOSITION';
+  document.getElementById('recapHead').textContent = CS_LABELS[CS_MODE].titre + (CONF()?' — Bon de commande':' — Proposition');
+  if(!ORDER_SENT) document.getElementById('btn_go').textContent = (CONF()?'ENREGISTRER LA COMMANDE':'ENVOYER LA PROPOSITION');
   document.querySelectorAll('.cs-opt').forEach(b=>b.classList.toggle('active', b.dataset.csmode===CS_MODE));
+  const _ct=document.getElementById('csType'); if(_ct) _ct.style.display = CONF()?'':'none';
+  document.querySelectorAll('.cs-ty').forEach(b=>b.classList.toggle('active', b.dataset.csty===CS_TYPE));
+  const _cn=document.getElementById('csNote'); if(_cn){ if(!_cn.dataset.p) _cn.dataset.p=_cn.textContent; _cn.textContent = CONF() ? "Commande déjà acceptée par le client (appel, e-mail, visite). Elle est enregistrée et validée automatiquement si le magasin est dans la liste. Le client reçoit un seul e-mail, avec son bon de commande PDF, et n'a rien à saisir ni à valider ; vous recevez le récapitulatif." : _cn.dataset.p; }
+  const _mt=document.getElementById('multiGroupTitle'); if(_mt) _mt.textContent = CONF()?'Vous enregistrez cette commande pour':'Vous faites cette proposition pour';
+  const _md=document.getElementById('multiDup'); if(_md) _md.textContent = CONF()?'DUPLIQUER LA COMMANDE':'DUPLIQUER LA PROPOSITION';
+  if(typeof csMsgRefresh==='function') csMsgRefresh();
 }
 if(MODE_CS){
   // Commerciaux : uniquement le bon de commande (Gammes / Actualités / Ressources et info BT-49 réservées aux clients)
@@ -1731,6 +1828,7 @@ if(MODE_CS){
   showTab('bdc');
   document.getElementById('csPanel').style.display = '';
   document.querySelectorAll('.cs-opt').forEach(b=>b.addEventListener('click',()=>{ CS_MODE = b.dataset.csmode; applyCsMode(); multiRefresh(); }));
+  document.querySelectorAll('.cs-ty').forEach(b=>b.addEventListener('click',()=>{ CS_TYPE = b.dataset.csty; applyCsMode(); }));
   applyCsMode();
 
   // 🎁 GRATUITS : sur chaque produit, une quantité offerte en plus de la quantité payante.
@@ -1843,14 +1941,14 @@ function buildStoreDoc(pos){
   // (l'afficher aussi en bas ferait croire à une double remise).
   const totaux=[['Total HT',fmt(htNet)],['TVA 5,5 %',fmt(tva55)],['TVA 20 % (gummies)',fmt(tva20)],['Total TTC',fmt(ttc)]];
   const remiseLbl='Remise Intersport';  // titre sans %, le -2,5 % est dans chaque cellule
-  const mentionDoc=MODE_CS
-    ? "Proforma établie par votre commercial Andros Sport. Ce document n'a pas valeur de commande."
+  const mentionDoc = CONF() ? (window.REMPLACE ? 'Commande saisie sur le site, puis ajustée par votre commercial.' : 'Commande enregistrée par votre commercial suite à votre accord.') : MODE_CS
+    ? "Proposition établie par votre commercial Andros Sport. Ce document n'a pas valeur de commande."
     : (REPRISE ? 'Commande passée depuis le bon de commande en ligne Andros Sport, à partir d\'une proposition du commercial modifiée par le magasin.'
                : 'Commande passée depuis le bon de commande en ligne Andros Sport.');
   const resume=`${o.disp} display${o.disp>1?'s':''}`+
     (o.dispFree?` + ${o.dispFree} gratuit${o.dispFree>1?'s':''}`:'')+` · ${o.uc+o.ucFree} UC`;
 
-  const docTitre=MODE_CS ? `${CS_LABELS[CS_MODE].titre.toUpperCase()} (PROFORMA) — ANDROS SPORT` : 'BON DE COMMANDE — ANDROS SPORT';
+  const docTitre = (MODE_CS&&!CONF()) ? `${CS_LABELS[CS_MODE].titre.toUpperCase()} — ANDROS SPORT` : 'BON DE COMMANDE — ANDROS SPORT';
   // En-tête : magasin (propre à chaque onglet), contact (commun à tous les magasins), puis secteur et notes du magasin
   const magTxt=
     '  Raison sociale : '+name+'\n'+
@@ -1920,22 +2018,22 @@ function buildStoreDoc(pos){
     ...(IS_ITS?{remiseLbl}:{}),
     plv: [],
     // Page de validation : lien « Modifier » (panier à reprendre), ou renvoi vers le commercial s'il y a des gratuits (gestes commerciaux)
-    ...(MODE_CS ? (o.dispFree>0 ? {geste:true} : {edit:repriseCode()}) : {}),
+    ...(MODE_CS&&!CONF() ? (o.dispFree>0 ? {geste:true} : {edit:repriseCode()}) : {}),
     totaux
   };
 
   // PDF joint au mail — un par magasin
   const pdfData={
-    titre: MODE_CS?`${CS_LABELS[CS_MODE].titre} (proforma)`:'Bon de commande', date: dateJour,
+    titre: (MODE_CS&&!CONF())?CS_LABELS[CS_MODE].titre:'Bon de commande', date: dateJour,
     infos: [['Raison sociale',name],['CP / Ville',`${cp} ${ville||''}`],...(bt49?[['Code BT-49',bt49]]:[]),
             ['Contact',contact||'-'],['Téléphone',phone||'-'],['Email',email||'-'],...(notes?[['Notes',notes]]:[])],
     sections, totaux, resume, mention: mentionDoc, commercial: emailCommercial,
     remiseIts: IS_ITS ? REMISE_ITS : 0
   };
-  const pdfNom=`${MODE_CS?'Proforma':'Commande'}_Andros_Sport_${name}${pos?'_'+cp:''}_${dateJour}`.replace(/[^\w\-]+/g,'_')+'.pdf';
+  const pdfNom=`${(MODE_CS&&!CONF())?'Proposition':'Commande'}_Andros_Sport_${name}${pos?'_'+cp:''}_${dateJour}`.replace(/[^\w\-]+/g,'_')+'.pdf';
 
   return {name, magLbl:name+(cp?' ('+cp+')':''), IS_ITS, tot:{htNet,tva55,tva20,ttc}, docTitre, magTxt, contactTxt, apresTxt, enteteTxt,
-          recapTxt, recapHtml, recapCourt, mentionDoc, dateJour, commercial, emailCommercial, bt49, pdfNom, pdfData};
+          recapTxt, recapHtml, recapCourt, mentionDoc, dateJour, commercial, emailCommercial, bt49, pdfNom, pdfData, editCode:(typeof repriseCode==='function'?repriseCode():'')};
 }
 
 async function submitOrder(){
@@ -1981,6 +2079,8 @@ async function submitOrder(){
       ? `Bonjour,\n\nMerci pour vos commandes.\n\nVotre demande a bien été transmise pour vos ${nb} magasins. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif magasin par magasin, puis le total général.\n\n`
       : 'Bonjour,\n\nMerci pour votre commande.\n\nVotre demande a bien été transmise. Notre équipe commerciale la traitera dans les meilleurs délais.\n\nVous trouverez ci-dessous le récapitulatif de votre commande.\n\n';
     outro='\n\nCet e-mail est généré automatiquement.\nMerci de ne pas y répondre.\n\nPour toute question concernant '+(multi?'vos commandes':'votre commande')+', contactez votre commercial : '+commerciaux.join(', ')+'\n';
+  } else if(CONF()){
+    intro=''; outro='';
   } else if(CS_MODE==='implantation'){
     intro='Bonjour'+(contact?' '+contact:'')+',\n\nSuite à notre échange, je vous propose l\'implantation de la gamme Andros Sport dans '+(multi?'vos '+lieux:'votre magasin '+d0.name)+'.\n\nVous trouverez ci-dessous'+(multi?', magasin par magasin,':'')+' la proforma détaillant l\'assortiment de lancement conseillé, ainsi que les conditions tarifaires associées.\n\n';
     outro='\n\nCette proposition n\'a pas valeur de commande.\nPour la valider, cliquez sur le bouton « Je valide la proposition »'+(multi?' : vous choisirez les magasins à valider, un par un ou tous ensemble':'')+'. Pour l\'ajuster, répondez simplement à cet e-mail.\n\nJe reste à votre disposition pour organiser la mise en place en magasin.'+signature;
@@ -1991,6 +2091,14 @@ async function submitOrder(){
 
   // Adresses des bons de commande en ligne, rappelées en bas de chaque mail :
   // Andros Sport + Hydratis (site Intersport si tous les magasins sont des Intersport, site général sinon)
+  window.CS_MSG_FINAL = '';
+  if(MODE_CS && !CONF()){
+    const _lx = multi ? 'vos '+lieux : 'votre magasin '+d0.name;
+    const _m = csMsgResolved(_lx) || CS_MSG[CS_MODE][0][1].replace(/\{magasins\}/g, _lx);
+    window.CS_MSG_FINAL = _m;
+    intro = 'Bonjour'+(contact?' '+contact:'')+',\n\n'+_m+'\n\n'; outro = '';
+  }
+
   const SITES_BTOB=[['Andros Sport','https://andros-sport.pages.dev'],['Hydratis',docs.every(d=>d.IS_ITS)?'https://hydratis-its.pages.dev':'https://hydratis-bdc.pages.dev']];
   const sitesTxt='\nVos bons de commande en ligne :\n'+SITES_BTOB.map(([n,u])=>`  • ${n} : ${u}`).join('\n')+'\n';
   const sitesHtml='<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#133F49;margin:14px 0 0"><strong>Vos bons de commande en ligne :</strong><br>'+
@@ -2004,9 +2112,9 @@ async function submitOrder(){
     '</td></tr></table>';
   // Mention de la pièce jointe : ajoutée seulement si le PDF a bien été généré
   const pjLigne=multi
-    ? (MODE_CS ? '📎 Retrouvez la proforma détaillée de chaque magasin (tarifs, références et gencodes) dans les PDF joints.'
+    ? (MODE_CS&&!CONF() ? '📎 Retrouvez la proforma détaillée de chaque magasin (tarifs, références et gencodes) dans les PDF joints.'
                : '📎 Le détail complet de chaque magasin (tarifs, références et gencodes) figure dans les PDF joints, prêts à imprimer.')
-    : (MODE_CS ? '📎 Retrouvez la proforma détaillée (tarifs, références et gencodes) dans le PDF joint.'
+    : (MODE_CS&&!CONF() ? '📎 Retrouvez la proforma détaillée (tarifs, références et gencodes) dans le PDF joint.'
                : '📎 Le détail complet (tarifs, références et gencodes) figure dans le PDF joint, prêt à imprimer.');
   const bt49Rouge=(h,bt49)=>bt49 ? h.replace('Code BT-49 : '+escHtml(bt49),'<strong style="color:#e11d2e">Code BT-49 : '+escHtml(bt49)+'</strong>') : h;
 
@@ -2035,24 +2143,82 @@ async function submitOrder(){
     '</table>'+
     `<p style="font-family:Segoe UI,Arial,sans-serif;font-size:12px;color:#4A6570;margin:8px 0 0">${escHtml(d0.mentionDoc)}</p>`;
 
-  const buildBody=avecPdf=>
+  const buildBody_orig=avecPdf=>
     intro+corpsTxt+
     (avecPdf?'\n\n'+pjLigne:'')+
-    (MODE_CS?'\n\n👉 Valider la proposition en un clic : {{ACCEPT_URL}}':'')+
-    outro+sitesTxt;
-  const buildHtml=avecPdf=>{
+    (MODE_CS&&!CONF()?'\n\n👉 Valider la proposition en un clic : {{ACCEPT_URL}}':'')+
+    outro + (CONF()?'':sitesTxt);
+  const buildHtml_orig=avecPdf=>{
     const h=preHtml(intro)+corpsHtml+
       (avecPdf?`<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:700;color:#133F49;background:#F0F9D6;border-radius:8px;padding:10px 12px;margin:14px 0 0;max-width:616px">${escHtml(pjLigne)}</p>`:'')+
-      (MODE_CS?acceptBtnHtml+preHtml(outro.replace(/^\n+/,'')):preHtml(outro))+sitesHtml;
+      (MODE_CS&&!CONF()?acceptBtnHtml+preHtml(outro.replace(/^\n+/,'')):preHtml(outro)) + (CONF()?'':sitesHtml);
     return multi ? h : bt49Rouge(h, d0.bt49);
   };
 
   btn.disabled=true;
+  // ===== Mail de proposition compact (mode commercial) : une ligne par magasin + total, détail dans le PDF et à l'étape suivante =====
+  const PROP = MODE_CS && !CONF();
+  const propNbRefs = d => (d.recapCourt.lignes||[]).filter(l=>!l.sec).length;
+  const propPlv = d => { const q = d.recapCourt.plvOp ? Math.floor(Number(d.recapCourt.plvOp.q)||0) : 0; return q>0 ? ` · ${q} PLV de sol offerte${q>1?'s':''}` : ((d.recapCourt.plv||[]).length ? ' · PLV incluse' : ''); };
+  const propSub = d => `${propNbRefs(d)} référence${propNbRefs(d)>1?'s':''}${propPlv(d)}`;
+  const propHT = d => fmt(d.tot.htNet) + ' HT';
+  const propTotalHT = fmt(round2(docs.reduce((n,d)=>n+(d.tot.htNet),0)));
+  const propRefs = docs.reduce((n,d)=>n+propNbRefs(d),0);
+  const propTitre = 'Votre ' + CS_LABELS[CS_MODE].titre.toLowerCase();
+  const propPj = pjNom => (multi
+    ? '📎 <b>Dans le PDF joint à ce mail</b> ('+escHtml(pjNom)+')<br>👉 <b>À l\'étape suivante</b>, en cliquant sur le bouton ci-dessous : le détail s\'ouvre magasin par magasin'
+    : '📎 <b>Dans le PDF joint à ce mail</b> ('+escHtml(pjNom)+')<br>👉 <b>À l\'étape suivante</b>, en cliquant sur le bouton ci-dessous : le détail s\'affiche avant validation');
+  const propBody = (avecPdf, pjNom) =>
+    intro +
+    propTitre + (multi ? ` — ${nb} magasins` : '') + '\n' +
+    docs.map(d => `  • ${d.magLbl} — ${propSub(d)} — ${propHT(d)}`).join('\n') + '\n' +
+    (multi ? `Total général : ${propTotalHT} HT (${propRefs} références)\n` : '') +
+    '\nOù trouver le détail des produits ?\n' +
+    (avecPdf ? `  - Dans le PDF joint à ce mail (${pjNom})\n` : '') +
+    `  - À l'étape suivante, en cliquant sur le lien ci-dessous\n\n` +
+    `Valider ou modifier ${multi ? 'mes propositions' : 'ma proposition'} : {{ACCEPT_URL}}\n` +
+    (multi ? 'Vous pourrez valider tout ou une partie des magasins, ou modifier les quantités.\n' : 'Vous pourrez valider la proposition ou modifier les quantités.\n') +
+    'Vous pouvez aussi répondre à cet e-mail.\n\n' +
+    `Pensez à valider ${multi ? 'vos propositions' : 'votre proposition'} via le lien ci-dessus : ${multi ? 'elles n\'ont' : 'elle n\'a'} pas valeur de commande tant que vous ne l'avez pas validée.` +
+    signature;
+  const propHtml = (avecPdf, pjNom) => {
+    const F = 'font-family:Segoe UI,Arial,sans-serif;';
+    const ligne = d => `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:8px 0;border:1px solid #d6dee3;border-radius:9px"><tr><td style="${F}padding:11px 12px;color:#133F49"><b>${escHtml(d.magLbl)}</b><br><span style="font-size:13px;color:#5a6b75">${escHtml(propSub(d))}</span></td><td align="right" style="${F}padding:11px 12px;white-space:nowrap;font-weight:800;color:#133F49">${escHtml(propHT(d))}</td></tr></table>`;
+    return preHtml(intro) +
+      `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:616px;margin:18px 0 0"><tr><td style="${F}background:#7EA818;color:#fff;border-radius:9px 9px 0 0;padding:11px 13px"><b style="font-size:16px">${escHtml(propTitre)}</b><br><span style="font-size:13px">${multi ? nb+' magasins · ' : ''}à valider par vos soins</span></td></tr>` +
+      `<tr><td style="border:1px solid #7EA818;border-top:0;border-radius:0 0 9px 9px;padding:2px 10px 8px">${docs.map(ligne).join('')}` +
+      (multi ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:10px 0 0;background:#f6f9fb;border-radius:8px"><tr><td style="${F}padding:10px 12px;font-weight:800;color:#133F49">Total général · ${nb} magasins · ${propRefs} références</td><td align="right" style="${F}padding:10px 12px;font-weight:800;white-space:nowrap;color:#133F49">${escHtml(propTotalHT)} HT</td></tr></table>` : '') +
+      `</td></tr></table>` +
+      `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:616px;margin:14px 0"><tr><td style="${F}background:#F0F9D6;border-radius:9px;padding:13px 14px;color:#133F49"><div style="font-weight:800;color:#133F49;font-size:15px;margin-bottom:8px">Où trouver le détail des produits ?</div><div style="font-size:14px;line-height:1.6">${avecPdf ? propPj(pjNom) : '👉 <b>À l\'étape suivante</b>, en cliquant sur le bouton ci-dessous : le détail s\'ouvre'+(multi?' magasin par magasin':'')}</div></td></tr></table>` +
+      `<table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin:8px auto 0"><tr><td style="background:#7EA818;border-radius:10px"><a href="{{ACCEPT_URL}}" target="_blank" style="display:inline-block;padding:14px 26px;color:#ffffff;font-weight:800;font-size:16px;text-decoration:none;${F}">✅ Valider ou modifier ${multi ? 'mes propositions' : 'ma proposition'}</a></td></tr></table>` +
+      `<p style="${F}font-size:13px;color:#445;text-align:center;margin:8px 0 0">${multi ? 'Vous pourrez valider tout ou une partie des magasins, ou modifier les quantités.' : 'Vous pourrez valider la proposition ou modifier les quantités.'}<br>Vous pouvez aussi répondre à cet e-mail.</p>` +
+      `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:616px;margin:12px 0 4px"><tr><td align="center" style="${F}background:#fff7e6;border:1px solid #f0c36d;color:#7a5200;border-radius:9px;padding:10px 13px;font-size:14px">💡 <b>Pensez à valider ${multi ? 'vos propositions' : 'votre proposition'} via le bouton ci-dessus.</b><br>${multi ? 'Elles n\'ont' : 'Elle n\'a'} pas valeur de commande tant que vous ne l'avez pas validée${multi ? 's' : 'e'}.</td></tr></table>` +
+      preHtml(signature.replace(/^\n+/,''));
+  };
+  const buildBody_prop = propBody, buildHtml_prop = propHtml;
+
+  const pjJoint = multi ? ('Proposition_'+CS_LABELS[CS_MODE].court+'_'+nb+'_magasins_'+dateJour).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\-]+/g,'_')+'.pdf' : d0.pdfNom;
+  const buildBody = avecPdf => PROP ? buildBody_prop(avecPdf, pjJoint) : buildBody_orig(avecPdf);
+  const buildHtml = avecPdf => PROP ? buildHtml_prop(avecPdf, pjJoint) : buildHtml_orig(avecPdf);
+
   const label=btn.textContent;
   btn.textContent='Envoi en cours…';
   try{
     // Un PDF par magasin, générés l'un après l'autre
     const attachments=[];
+    window.CS_BONS = [];
+    if(MODE_CS && !CONF()){
+      // Proposition : UN PDF joint (un magasin par page), et un bon de commande par magasin conservé pour l'envoi après validation
+      try{
+        const sh = {doc:null, last:false}; let joint = null;
+        for(let k=0;k<docs.length;k++){ sh.last = (k===docs.length-1); joint = await buildPdfBase64(docs[k].pdfData, sh); }
+        if(joint) attachments.push({name:pjJoint, content:joint});
+      }catch(err){ console.warn('PDF non généré', err); }
+      for(const d of docs){
+        const bon = await buildPdfBase64(Object.assign({}, d.pdfData, {titre:'Bon de commande', mention:'Bon de commande établi à partir de la proposition de votre commercial, validée par vos soins.'})).catch(()=>null);
+        window.CS_BONS.push(bon ? {nom:d.pdfNom.replace(/^Proposition_/,'Commande_'), pdf:bon} : null);
+      }
+    } else
     for(const d of docs){
       const pdf64=await buildPdfBase64(d.pdfData).catch(err=>{ console.warn('PDF non généré', err); return null; });
       if(pdf64) attachments.push({name:d.pdfNom, content:pdf64});
@@ -2068,20 +2234,20 @@ async function submitOrder(){
       headers:{'Content-Type':'application/json'},
       // Mode commercial : la proposition part au magasin, copie au(x) commercial(aux) (+ DESTINATAIRE pour traçabilité),
       // et le magasin répond directement au commercial.
-      body:stringifyWithCommandes(docs, MODE_CS
+      body:stringifyWithCommandes(docs, MODE_CS&&!CONF()
         ? {to:email,cc:[...new Set([...commerciaux,DESTINATAIRE])],subject,body,html,replyTo:emailCommercial,attachments:avecPdf?attachments:undefined,
            accept:{commercial:emailCommercial,dest:DESTINATAIRE,magasin:multi?`${nb} magasins : ${noms}`:d0.magLbl,contact,titre:CS_LABELS[CS_MODE].titre,...recapAccept}}
-        : {to:emailCommercial,cc:[...new Set([...commerciaux.slice(1),DESTINATAIRE,email])].filter(e=>e&&e!==emailCommercial),subject,body,html,replyTo:email||undefined,attachments:avecPdf?attachments:undefined})
+        : {to:emailCommercial,cc:[...new Set([...commerciaux.slice(1),DESTINATAIRE,CONF()?'':email])].filter(e=>e&&e!==emailCommercial),subject,body,html,replyTo:email||undefined,attachments:avecPdf?attachments:undefined})
     });
     if(!res.ok)throw new Error('send failed');
     const data=await res.json();
     if(!data.ok)throw new Error(data.error||'send failed');
     ORDER_SENT=true;
-    alert(MODE_CS?'Proposition envoyée au magasin avec succès !':(multi?'Commandes envoyées avec succès !':'Commande envoyée avec succès !'));
-    btn.textContent=MODE_CS?'✓ Proposition envoyée':(multi?'✓ Commandes envoyées':'✓ Commande envoyée');
+    alert(CONF()?'Commande enregistrée : le client reçoit son bon de commande par e-mail.':MODE_CS?'Proposition envoyée au magasin avec succès !':(multi?'Commandes envoyées avec succès !':'Commande envoyée avec succès !'));
+    btn.textContent=CONF()?'✓ Commande enregistrée':MODE_CS?'✓ Proposition envoyée':(multi?'✓ Commandes envoyées':'✓ Commande envoyée');
     btn.disabled=true;
   }catch{
-    alert(MODE_CS?"Erreur lors de l'envoi de la proposition. Merci de réessayer.":"Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial.");
+    alert(MODE_CS&&!CONF()?"Erreur lors de l'envoi de la proposition. Merci de réessayer.":"Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial.");
     btn.disabled=false;
     btn.textContent=label;
   }
@@ -2121,9 +2287,10 @@ function barcodePng(ean){
   JsBarcode(c, ean, {format:'EAN13', height:60, width:2, fontSize:16, margin:4, background:'#ffffff'});
   return c.toDataURL('image/png');
 }
-async function buildPdfBase64(d){
+async function buildPdfBase64(d, sh){
   await loadPdfLibs();
-  const doc=new window.jspdf.jsPDF({unit:'mm', format:'a4', compress:true});  // compressé : une commande multi-magasins joint un PDF par magasin
+  const doc = (sh && sh.doc) || new window.jspdf.jsPDF({unit:'mm', format:'a4', compress:true});
+  if(sh){ if(sh.doc) doc.addPage(); else sh.doc = doc; }  // PDF unique : un magasin par page (mode proposition)  // compressé : une commande multi-magasins joint un PDF par magasin
   const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight(), M=14;
   const ENCRE=[19,63,73], GRIS=[74,101,112], LIME=[240,249,214], VERT=[19,138,82];
 
@@ -2190,6 +2357,7 @@ async function buildPdfBase64(d){
   doc.text(pdfTxt(d.mention), M, y, {maxWidth:W-2*M});
   doc.text(pdfTxt(`Franco de port : ${FRANCO_MIN} € HT minimum · Contact commercial : ${d.commercial}`), M, y+5, {maxWidth:W-2*M});
 
+  if(sh && !sh.last) return null;  // magasins suivants à ajouter avant de numéroter
   const n=doc.getNumberOfPages();
   for(let i=1;i<=n;i++){ doc.setPage(i); doc.setFontSize(7.5); doc.setTextColor(...GRIS); doc.text(`Page ${i}/${n}`, W-M, H-8, {align:'right'}); }
   return doc.output('datauristring').split(',')[1];
@@ -2256,7 +2424,7 @@ function addStore(dupliquer){
 function removeStore(){
   if(STORES.length<2) return;
   const info=storeInfo(STORE_CUR);
-  if((info.mag.nom || info.ht>0) && !confirm(`Retirer ${info.nom} et son panier de ${MODE_CS?'la proposition':'la commande'} ?`)) return;
+  if((info.mag.nom || info.ht>0) && !confirm(`Retirer ${info.nom} et son panier de ${MODE_CS&&!CONF()?'la proposition':'la commande'} ?`)) return;
   STORES.splice(STORE_CUR,1);
   STORE_CUR=Math.min(STORE_CUR, STORES.length-1);
   loadStore(STORES[STORE_CUR]);
@@ -2277,15 +2445,15 @@ function multiRefresh(){
     infos.map((s,i)=>`<button type="button" class="multi-tab${i===STORE_CUR?' active':''}" data-store="${i}">`+
       `<span class="mt-nom">${i+1} · ${s.mag.nom ? escHtml(s.nom) : 'À renseigner'}</span><span class="mt-tot">${fmt(s.ht)} HT</span></button>`).join('')+
     (nb<MULTI_MAX ? '<button type="button" class="multi-tab add" data-store="add">+ Ajouter un magasin</button>' : '');
-  document.getElementById('multiBarTitle').textContent=`${MODE_CS?'Magasins de la proposition':'Vos magasins'} (${nb})`;
+  document.getElementById('multiBarTitle').textContent=`${MODE_CS&&!CONF()?'Magasins de la proposition':'Vos magasins'} (${nb})`;
   document.getElementById('clientTitle').textContent=nb>1 ? `Magasin ${STORE_CUR+1} sur ${nb}` : 'Vos infos';
   document.getElementById('multiActs').style.display=nb>1 ? '' : 'none';
   document.getElementById('recapHead').textContent=
-    (MODE_CS ? CS_LABELS[CS_MODE].titre+' — Proforma' : 'Récapitulatif')+(nb>1 ? ' — '+infos[STORE_CUR].nom : '');
+    (MODE_CS&&!CONF() ? CS_LABELS[CS_MODE].titre+' — Proposition' : 'Récapitulatif')+(nb>1 ? ' — '+infos[STORE_CUR].nom : '');
   document.getElementById('francoVal').textContent=fmt(FRANCO_MIN)+' HT minimum'+(nb>1?' par magasin':'');
   // Récap général (dès 2 magasins) : une ligne par magasin, cliquable pour y revenir
   document.getElementById('multiRecap').style.display=nb>1 ? '' : 'none';
-  document.getElementById('multiRecapHead').textContent=`${MODE_CS?'Proposition':'Commande'} groupée — ${nb} magasins`;
+  document.getElementById('multiRecapHead').textContent=`${MODE_CS&&!CONF()?'Proposition':'Commande'} groupée — ${nb} magasins`;
   document.getElementById('multiRecapList').innerHTML=infos.map((s,i)=>{
     const alerte=!s.mag.nom || s.mag.cp.length<2 ? 'Nom et code postal à renseigner' : s.ht<FRANCO_MIN ? `Franco de ${fmt(FRANCO_MIN)} HT non atteint` : '';
     return `<div class="mr-line${i===STORE_CUR?' cur':''}" data-store="${i}"><span class="mr-nom">${i+1} · ${escHtml(s.nom)}`+
@@ -2358,8 +2526,8 @@ function repriseCode(){
 let REPRISE=false;
 (function chargeReprise(){
   const P=new URLSearchParams(location.search);
-  const code=P.get('reprise');
-  if(!code || MODE_CS) return;
+  const code = P.get('reprise'), MODIF = (P.get('modif')||'').replace(/[^\w-]/g,'').slice(0,64);
+  if(!code || (MODE_CS && !MODIF)) return;
   const stores=code.split('|').slice(0, MULTI_MAX).map(bloc=>{
     const [id, ...lots]=bloc.split(';');
     let mag;
@@ -2383,6 +2551,10 @@ let REPRISE=false;
   } else loadStore(stores[0]);
   const info=document.getElementById('repriseInfo');
   info.textContent=`Proposition de votre commercial reprise${stores.length>1?` pour vos ${stores.length} magasins`:''} : ajustez les quantités, puis validez la commande.`;
+  if(MODIF){
+    window.REMPLACE = MODIF; CS_MODE = 'confirmee'; applyCsMode();
+    info.textContent = "Commande saisie par votre client : ajustez les quantités puis cliquez sur « ENREGISTRER LA COMMANDE ». Elle sera validée d'office, le client recevra son bon de commande à jour et la commande d'origine sera remplacée.";
+  }
   info.style.display='';
 })();
 recompute();
@@ -2475,6 +2647,34 @@ recompute();
 document.querySelectorAll('.carousel-pair img,.actu-slide img').forEach(function(img){
   img.addEventListener('click',function(){openLightbox(img.currentSrc || img.src);});
 });
+
+/* ===== Disponibilités et DLUO : saisies dans le dashboard Magnitude, lues à l'ouverture (échec silencieux = affichage normal) ===== */
+(function(){
+  const css=document.createElement('style');
+  css.textContent='.dispo-bdg{display:inline-block;margin:4px 0 2px;padding:3px 9px;border-radius:6px;font-size:.72rem;font-weight:800;line-height:1.3}.dispo-bdg.rupture{background:#fde8e6;color:#b3261e;border:1px solid #f1b3ad}.dispo-bdg.limite{background:#fff4e0;color:#8a5e00;border:1px solid #e8a32c}.prod.is-rupture{opacity:.62}.prod.is-rupture .prod-thumb,.prod.is-rupture .prod-name{filter:grayscale(.7)}.prod.is-rupture .qty{pointer-events:none;opacity:.4}';
+  document.head.appendChild(css);
+  function applyDispo(items){
+    document.querySelectorAll('.prod[data-ref]').forEach(card=>{
+      const ref=card.dataset.ref, it=items[ref]||null;
+      const dl=card.querySelector('.dluo');
+      if(dl){ if(!dl.dataset.orig) dl.dataset.orig=dl.textContent; dl.textContent=(it&&it.dluo)?('DLUO '+it.dluo):dl.dataset.orig; }
+      card.querySelectorAll('.dispo-bdg').forEach(e=>e.remove());
+      const rupt=!!(it&&it.statut==='rupture'), lim=!!(it&&it.statut==='limite');
+      card.classList.toggle('is-rupture',rupt);
+      card.querySelectorAll('input,button').forEach(e=>{ if(rupt){ e.dataset.dispoOff='1'; e.disabled=true; } else if(e.dataset.dispoOff){ e.disabled=false; delete e.dataset.dispoOff; } });
+      if(rupt){ card.querySelectorAll('input[type=number]').forEach(i=>{ if(i.value&&Number(i.value)!==0){ i.value=0; i.dispatchEvent(new Event('input',{bubbles:true})); i.dispatchEvent(new Event('change',{bubbles:true})); } }); }
+      if(rupt||lim){
+        const b=document.createElement('div'); b.className='dispo-bdg '+(rupt?'rupture':'limite');
+        const parts=[rupt?'Rupture':'Stock limité']; if(it.retour) parts.push((rupt?'retour prévu ':'')+it.retour); if(it.note) parts.push(it.note);
+        b.textContent=parts.join(' · ');
+        const host=card.querySelector('.prod-name')||card.querySelector('.prod-info'); if(host) host.insertAdjacentElement('afterend',b);
+      }
+    });
+  }
+  window.applyDispo=applyDispo;
+  async function loadDispo(){ try{ const r=await fetch(MAILER_URL+'/commandes/api/dispo-public',{cache:'no-store'}); const j=await r.json(); if(j&&j.ok) applyDispo(j.items||{}); }catch(e){} }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(loadDispo,400)); else setTimeout(loadDispo,400);
+})();
 </script>
 </body>
 </html>
