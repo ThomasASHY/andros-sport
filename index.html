@@ -1897,7 +1897,7 @@ const TH='padding:8px;background:#133F49;color:#fff;font-size:12px;font-family:S
 function checkStore(onglet){
   const pre=onglet?onglet+' : ':'';
   const franco=()=>{
-    if(currentHT>=FRANCO_MIN)return true;
+    if(MODE_CS||currentHT>=FRANCO_MIN)return true; // version commercial : franco non bloquant
     const contactEmail=commercialFor(fieldVal('c_cp'))||DESTINATAIRE;
     alert((onglet?onglet+' : le':'Le')+' franco de port est fixé à '+FRANCO_MIN+' € HT'+(onglet?' par magasin':'')+'. Merci d\'ajouter des produits pour atteindre ce montant avant d\'envoyer la commande.\n\nEn cas de question, merci d\'écrire à votre responsable commercial : '+contactEmail);
     return false;
@@ -2487,12 +2487,12 @@ function multiRefresh(){
   document.getElementById('multiActs').style.display=nb>1 ? '' : 'none';
   document.getElementById('recapHead').textContent=
     (MODE_CS&&!CONF() ? CS_LABELS[CS_MODE].titre+' — Proposition' : 'Récapitulatif')+(nb>1 ? ' — '+infos[STORE_CUR].nom : '');
-  document.getElementById('francoVal').textContent=fmt(FRANCO_MIN)+' HT minimum'+(nb>1?' par magasin':'');
+  document.getElementById('francoVal').textContent=fmt(FRANCO_MIN)+' HT minimum'+(nb>1?' par magasin':'')+(MODE_CS?' (non bloquant)':'');
   // Récap général (dès 2 magasins) : une ligne par magasin, cliquable pour y revenir
   document.getElementById('multiRecap').style.display=nb>1 ? '' : 'none';
   document.getElementById('multiRecapHead').textContent=`${MODE_CS&&!CONF()?'Proposition':'Commande'} groupée — ${nb} magasins`;
   document.getElementById('multiRecapList').innerHTML=infos.map((s,i)=>{
-    const alerte=!s.mag.nom || s.mag.cp.length<2 ? 'Nom et code postal à renseigner' : s.ht<FRANCO_MIN ? `Franco de ${fmt(FRANCO_MIN)} HT non atteint` : '';
+    const alerte=!s.mag.nom || s.mag.cp.length<2 ? 'Nom et code postal à renseigner' : s.ht<FRANCO_MIN ? `Franco de ${fmt(FRANCO_MIN)} HT non atteint${MODE_CS?' (non bloquant)':''}` : '';
     return `<div class="mr-line${i===STORE_CUR?' cur':''}" data-store="${i}"><span class="mr-nom">${i+1} · ${escHtml(s.nom)}`+
       (alerte ? `<span class="mr-warn">⚠️ ${alerte}</span>` : '')+
       `</span><span class="mr-val">${fmt(s.ttc)}<small>${fmt(s.ht)} HT</small></span></div>`;
