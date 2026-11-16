@@ -141,6 +141,7 @@ body{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--p
 .prod-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
 .line-ht{font-size:.88rem;font-weight:800;color:var(--encre);font-variant-numeric:tabular-nums;min-width:72px;text-align:right}
 .line-ht.zero{color:var(--ligne)}
+.line-ht .ucn{display:block;font-size:.72rem;font-weight:700;color:var(--gris,#6b7a74);margin-top:1px}
 .qty{display:flex;align-items:center;border:1.5px solid var(--ligne);border-radius:9px;overflow:hidden;height:36px}
 .qty button{width:32px;height:100%;border:none;background:#fff;font-size:1.1rem;font-weight:700;color:var(--encre);cursor:pointer;transition:.1s}
 .qty button:hover{background:var(--lime);color:#fff}
@@ -300,7 +301,7 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 .btn-pdf{background:transparent;color:#fff;border:1.5px solid #2A5060}
 .btn-pdf:hover{background:#fff;color:var(--encre)}
 
-@media(max-width:600px){.fgrid{grid-template-columns:1fr}.btn-pdf{display:none}.bb-val{font-size:1.15rem}.prod-right{gap:10px}.line-ht{display:none}}
+@media(max-width:600px){.fgrid{grid-template-columns:1fr}.btn-pdf{display:none}.bb-val{font-size:1.15rem}.prod-right{gap:10px}.line-ht{display:block;font-size:0;min-width:0;text-align:right}}
 
 /* ── AMÉLIORATIONS MOBILE UNIQUEMENT ──────────────────────────── */
 @media(max-width:600px){
@@ -1687,7 +1688,7 @@ function recompute(){
     const g=freeQtyOf(prod); dispFree+=g; ucFree+=g*pcb;
     const line=round2(q*pcb*net);
     const cell=prod.querySelector(`[data-linetotal="${prod.dataset.ref}"]`);
-    cell.textContent=fmt(line); cell.classList.toggle('zero',q===0);
+    cell.innerHTML=fmt(line)+(q>0?'<small class="ucn">'+(q*pcb)+' UC</small>':''); cell.classList.toggle('zero',q===0);
     ht+=line;disp+=q;uc+=q*pcb;
     if(tva===0.20)ht20+=line;else ht55+=line;
   });
