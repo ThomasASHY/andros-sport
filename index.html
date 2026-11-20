@@ -1407,17 +1407,30 @@ footer{font-size:.72rem;color:var(--gris);text-align:center;margin:22px 24px 0;l
 <div class="cs-msg" id="csMsg" style="display:none">
   <div class="cs-panel-title">✉️ Message au client</div>
   <div class="cs-msg-chips" id="csMsgChips"></div>
-  <label for="csMsgTxt" class="cs-msg-lbl">Texte d'introduction du mail (modifiable)</label>
+  <div class="cs-cols">
+    <div class="cs-col-l">
+      <label for="csMsgTxt" class="cs-msg-lbl">Texte d'introduction du mail (modifiable)</label>
   <textarea id="csMsgTxt" maxlength="1200" rows="5"></textarea>
   <div class="cs-msg-cnt" id="csMsgCnt"></div>
-  <div class="cs-msg-lock">🔒 <b>Ajoutés automatiquement, non modifiables :</b> le récapitulatif, le PDF joint, <span id="csMsgLockBtn">le bouton « Valider ou modifier »</span> et votre signature.</div>
-  <div class="cs-msg-prev"><b>Aperçu</b><div id="csMsgPrev"></div></div>
-  <button type="button" class="cs-msg-reset" id="csMsgReset">Revenir au texte standard</button>
+      <button type="button" class="cs-msg-reset" id="csMsgReset">Revenir au texte standard</button>
+    </div>
+    <div class="cs-col-r">
+      <div class="cs-msg-prev"><b>Aperçu</b><div id="csMsgPrev"></div></div>
+      <div class="cs-msg-lock">🔒 <b>Ajoutés automatiquement, non modifiables :</b> le récapitulatif, le PDF joint, <span id="csMsgLockBtn">le bouton « Valider ou modifier »</span> et votre signature.</div>
+    </div>
+  </div>
 </div>
 <style>
 #csMsgOv{position:fixed;inset:0;z-index:99999;background:rgba(10,30,45,.62);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:4vh 12px}
 #csMsgOv.on{display:flex}
 #csMsgBox{background:#fff;border-radius:14px;max-width:780px;width:100%;box-shadow:0 18px 60px rgba(0,0,0,.4);overflow:hidden}
+#csMsgBox{max-width:1080px}
+#csMsgBox .cs-panel-title{display:none}
+.cs-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.cs-col-l,.cs-col-r{min-width:0}
+.cs-col-l textarea{min-height:230px}
+.cs-col-r .cs-msg-prev{margin-top:0;min-height:230px}
+@media (max-width:760px){.cs-cols{grid-template-columns:minmax(0,1fr)}.cs-col-l textarea{min-height:140px}.cs-col-r .cs-msg-prev{min-height:0}}
 #csMsgBox .cs-msg{margin:0;border:0;border-radius:0;max-width:none;padding:16px 18px}
 .csMsgHead{background:#0673a3;color:#fff;padding:12px 18px;font-weight:800;font-size:16px}
 .csMsgHead small{display:block;font-weight:500;font-size:13px;opacity:.9;margin-top:2px}
