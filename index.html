@@ -1742,9 +1742,9 @@ function commandesPayload(docs){
     const noms=(typeof PLV_NOMS!=='undefined')?PLV_NOMS:{};
     const plv=(pd.plv||[]).map(p=>({ref:Object.keys(noms).find(k=>noms[k]===p.n)||'', nom:p.n, q:p.q}));
     return {
-      cid:ORDER_CID+'-'+i,
+      cid:ORDER_CID+'-'+(d.gi!=null?d.gi:i),
       edit:d.editCode||'',
-      remplace:(i===0&&window.REMPLACE)?window.REMPLACE:'',
+      remplace:((d.gi!=null?d.gi:i)===0&&window.REMPLACE)?window.REMPLACE:'',
       pdfBon: (window.CS_BONS&&window.CS_BONS[i]) ? window.CS_BONS[i].pdf : undefined,
       pdfBonNom: (window.CS_BONS&&window.CS_BONS[i]) ? window.CS_BONS[i].nom : undefined,
       message: !MODE_CS ? '' : (CONF() ? csMsgResolved(docs.length>1 ? 'vos '+docs.length+' magasins' : 'votre magasin '+(d.magLbl||'')) : (window.CS_MSG_FINAL||'')),
@@ -2126,15 +2126,32 @@ async function submitOrder(){
     docs.push(buildStoreDoc(multi?{n:i+1,nb}:null));
   }
   if(multi) showStore(retour);
+  docs.forEach((d,k)=>{ d.gi = k; d.storeN = k+1; });
+  // Envoi par lots : un e-mail par lot de 20 commandes. Après un échec, un nouveau clic ne renvoie que les lots restants.
+  const sig = docs.map(d=>d.pdfNom+'|'+(d.tot&&d.tot.ttc)).join(';');
+  const lotsTous = splitLots(docs);
+  const dejaEnvoyes = (window.LOTS_SIG===sig && window.LOTS_OK<lotsTous.length) ? window.LOTS_OK : 0;
+  window.LOTS_SIG = sig; window.LOTS_OK = dejaEnvoyes;
+  const label=btn.textContent;
+  btn.disabled=true;
+  for(let li=dejaEnvoyes; li<lotsTous.length; li++){
+    btn.textContent = lotsTous.length>1 ? `Envoi du lot ${li+1}/${lotsTous.length}…` : 'Envoi en cours…';
+    const ok = await envoyerLot(lotsTous[li], li, lotsTous.length, nb, multi, label);
+    if(!ok) return;
+    window.LOTS_OK = li+1;
+  }
+  return;
 
+  async function envoyerLot(docs, lotI, lotN, nbTot, multiOut, label){
+  const nb = docs.length, multi = multiOut && nb>1;
   const d0=docs[0], dateJour=d0.dateJour;
   // Un commercial par secteur : le premier est destinataire, tous les autres sont en copie
   const commerciaux=[...new Set(docs.map(d=>d.emailCommercial))];
   const emailCommercial=commerciaux[0];
-  const noms=docs.map(d=>d.name).join(', ');
+  const noms=[...new Set(docs.map(d=>d.name))].join(', ');
   const lieux=`${nb} magasins (${noms.length>90?noms.slice(0,88)+'…':noms})`;
   const subject=(MODE_CS ? CS_LABELS[CS_MODE].titre+' Andros Sport' : 'Commande Andros Sport BtoB')+
-    ' — '+(multi?lieux:d0.magLbl)+' — '+dateJour;
+    ' — '+(multi?lieux:d0.magLbl)+' — '+dateJour+(lotN>1 ? ` — lot ${lotI+1}/${lotN}` : '');
 
   const signature=`\n\nBien cordialement,\n${commerciaux.length>1?'Vos commerciaux':'Votre commercial'} Andros Sport\n${commerciaux.join(', ')}\n`;
   let intro,outro;
@@ -2168,6 +2185,12 @@ async function submitOrder(){
   const sitesHtml='<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#133F49;margin:14px 0 0"><strong>Vos bons de commande en ligne :</strong><br>'+
     SITES_BTOB.map(([n,u])=>`${n} : <a href="${u}" target="_blank" style="color:#133F49">${u}</a>`).join('<br>')+'</p>';
 
+  if(lotN>1){
+    const rest = lotN-lotI-1, plage = multiOut ? ` (magasins ${docs[0].storeN} à ${docs[docs.length-1].storeN} sur ${nbTot})` : '';
+    intro += `📦 Lot ${lotI+1} sur ${lotN}${plage} : votre envoi est réparti en ${lotN} e-mails (${ORDERS_MAX} commandes maximum par e-mail). `+
+      (rest>0 ? `${rest} autre${rest>1?'s lots arrivent':' lot arrive'} dans ${rest>1?'des e-mails séparés':'un e-mail séparé'}.` : `C'est le dernier lot : votre envoi est complet.`)+'\n\n';
+  }
+
   // Mode commercial : bouton « Je valide la proposition ». {{ACCEPT_URL}} est remplacé par le worker
   // mailer par un lien signé qui renvoie la validation au commercial (client en copie).
   const acceptBtnHtml=
@@ -2185,7 +2208,7 @@ async function submitOrder(){
   // Multi-magasins : contact commun en tête, un bloc par magasin, puis le total général
   const somme=k=>round2(docs.reduce((n,d)=>n+d.tot[k],0));
   const totauxGen=[['Total HT',fmt(somme('htNet'))],['TVA 5,5 %',fmt(somme('tva55'))],['TVA 20 % (gummies)',fmt(somme('tva20'))],['Total TTC',fmt(somme('ttc'))]];
-  const titreMag=(d,i)=>`MAGASIN ${i+1}/${nb} — ${d.magLbl}`;
+  const titreMag=(d,i)=>`MAGASIN ${d.storeN}/${nbTot} — ${d.magLbl}`;
   const corpsTxt=!multi ? d0.enteteTxt+'\n'+d0.recapTxt :
     `${d0.docTitre}\n\nCONTACT\n${d0.contactTxt}\n`+
     docs.map((d,i)=>`${SEP}\n${titreMag(d,i)}\n${d.magTxt}${d.apresTxt}\n${d.recapTxt}\n\n`).join('')+
@@ -2261,12 +2284,10 @@ async function submitOrder(){
   };
   const buildBody_prop = propBody, buildHtml_prop = propHtml;
 
-  const pjJoint = multi ? ('Proposition_'+CS_LABELS[CS_MODE].court+'_'+nb+'_magasins_'+dateJour).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\-]+/g,'_')+'.pdf' : d0.pdfNom;
+  const pjJoint = multi ? ('Proposition_'+CS_LABELS[CS_MODE].court+'_'+nb+'_magasins_'+dateJour+(lotN>1?'_lot'+(lotI+1):'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\-]+/g,'_')+'.pdf' : d0.pdfNom;
   const buildBody = avecPdf => PROP ? buildBody_prop(avecPdf, pjJoint) : buildBody_orig(avecPdf);
   const buildHtml = avecPdf => PROP ? buildHtml_prop(avecPdf, pjJoint) : buildHtml_orig(avecPdf);
 
-  const label=btn.textContent;
-  btn.textContent='Envoi en cours…';
   try{
     // Un PDF par magasin, générés l'un après l'autre
     const attachments=[];
@@ -2306,14 +2327,18 @@ async function submitOrder(){
     if(!res.ok)throw new Error('send failed');
     const data=await res.json();
     if(!data.ok)throw new Error(data.error||'send failed');
+    if(lotI<lotN-1) return true;
     ORDER_SENT=true;
-    alert(CONF()?'Commande enregistrée : le client reçoit son bon de commande par e-mail.':MODE_CS?'Proposition envoyée au magasin avec succès !':(multi?'Commandes envoyées avec succès !':'Commande envoyée avec succès !'));
-    btn.textContent=CONF()?'✓ Commande enregistrée':MODE_CS?'✓ Proposition envoyée':(multi?'✓ Commandes envoyées':'✓ Commande envoyée');
+    alert((lotN>1 ? `Envoi terminé : ${lotN} e-mails (un par lot de ${ORDERS_MAX} commandes maximum). ` : '') + (CONF()?'Commande enregistrée : le client reçoit son bon de commande par e-mail.':MODE_CS?'Proposition envoyée au magasin avec succès !':(multiOut?'Commandes envoyées avec succès !':'Commande envoyée avec succès !')));
+    btn.textContent=CONF()?'✓ Commande enregistrée':MODE_CS?'✓ Proposition envoyée':(multiOut?'✓ Commandes envoyées':'✓ Commande envoyée');
     btn.disabled=true;
+    return true;
   }catch{
-    alert(MODE_CS&&!CONF()?"Erreur lors de l'envoi de la proposition. Merci de réessayer.":"Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial.");
+    alert((lotN>1 ? `Le lot ${lotI+1} sur ${lotN} n'a pas pu partir (${lotI} lot${lotI>1?'s':''} déjà envoyé${lotI>1?'s':''}). Cliquez de nouveau sur le bouton : seuls les lots restants seront renvoyés.\n\n` : '') + (MODE_CS&&!CONF()?"Erreur lors de l'envoi de la proposition. Merci de réessayer.":"Erreur lors de l'envoi de la commande. Merci de réessayer ou de contacter votre commercial."));
     btn.disabled=false;
     btn.textContent=label;
+    return false;
+  }
   }
 }
 
@@ -2432,7 +2457,19 @@ async function buildPdfBase64(d, sh){
 // Le formulaire affiche toujours le magasin courant (STORE_CUR) ; les autres onglets sont rangés dans STORES.
 // Contact, téléphone et e-mail sont communs ; nom du magasin, code postal, ville, BT-49, notes et panier sont propres
 // à chaque onglet, tout comme le franco et la remise Intersport (selon le nom du magasin).
-const MULTI_MAX=12;
+const MULTI_MAX=60;
+// Un envoi est découpé en lots de 20 commandes maximum (un e-mail par lot).
+const ORDERS_MAX = 20;
+function splitLots(docs){
+  const lots=[[]]; let i=0;
+  while(i<docs.length){
+    let j=i; while(j<docs.length && docs[j].storeN===docs[i].storeN) j++;
+    const g=docs.slice(i,j), cur=lots[lots.length-1];
+    if(cur.length && cur.length+g.length>ORDERS_MAX) lots.push(g); else cur.push(...g);
+    i=j;
+  }
+  return lots;
+}
 let MULTI=false, STORE_CUR=0;
 const STORES=[null];  // STORES[STORE_CUR] n'est à jour qu'au moment où l'on quitte l'onglet (snapStore)
 const MAG_VIDE={nom:'', cp:'', ville:''};
@@ -2477,7 +2514,7 @@ function showStore(i){
 }
 // Nouvel onglet : vierge, ou copie du panier affiché (le magasin, le BT-49 et les notes restent à saisir)
 function addStore(dupliquer){
-  if(STORES.length>=MULTI_MAX){ alert(`Vous pouvez regrouper jusqu'à ${MULTI_MAX} magasins par envoi.`); return; }
+  if(STORES.length>=MULTI_MAX){ alert(`Vous pouvez regrouper jusqu'à ${MULTI_MAX} magasins par envoi (envoyés en plusieurs e-mails de ${ORDERS_MAX} commandes maximum).`); return; }
   STORES[STORE_CUR]=snapStore();
   STORES.push(dupliquer ? {...STORES[STORE_CUR], mag:MAG_VIDE, bt49:'', notes:''} : null);
   STORE_CUR=STORES.length-1;
