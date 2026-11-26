@@ -2153,7 +2153,19 @@ async function submitOrder(){
   const subject=(MODE_CS ? CS_LABELS[CS_MODE].titre+' Andros Sport' : 'Commande Andros Sport BtoB')+
     ' — '+(multi?lieux:d0.magLbl)+' — '+dateJour+(lotN>1 ? ` — lot ${lotI+1}/${lotN}` : '');
 
-  const signature=`\n\nBien cordialement,\n${commerciaux.length>1?'Vos commerciaux':'Votre commercial'} Andros Sport\n${commerciaux.join(', ')}\n`;
+  const SITES_BTOB=[['Andros Sport','https://andros-sport.pages.dev'],['Hydratis',docs.every(d=>d.IS_ITS)?'https://hydratis-its.pages.dev':'https://hydratis-bdc.pages.dev']];
+
+  const _REPS={florian:{nom:'Florian DESCUNS',poste:'Représentant commercial',tel:'06 15 80 79 67',mail:'florian.d@magnitude.fr'},severine:{nom:'Séverine VANLERBERGHE',poste:'Représentante commerciale',tel:'06 46 98 27 67',mail:'severine.v@magnitude.fr'},stephane:{nom:'Stéphane LEFRAND',poste:'Représentant commercial',tel:'06 58 03 23 94',mail:'stephane.l@magnitude.fr'},thomas:{nom:'Thomas MINARD',poste:'Chef des ventes',tel:'07 66 25 99 46',mail:'thomas.m@magnitude.fr'},yoann:{nom:'Yoann PONCET',poste:'Représentant commercial',tel:'06 66 26 65 93',mail:'yoann.p@magnitude.fr'}};
+  const _rk0=String(commerciaux[0]||'').toLowerCase().split('@')[0].split('.')[0].normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const _rkey=_REPS[_rk0]?_rk0:'thomas', _r=_REPS[_rkey];
+  const _FS='font-family:Segoe UI,Arial,sans-serif;';
+  const _sitesOrd=[...SITES_BTOB].sort((a,b)=>/andros/i.test(b[0])-/andros/i.test(a[0]));
+  const sitesTxt='\nLiens de nos sites BtoB :\n'+_sitesOrd.map(([n,u])=>`  • ${n} : ${u}`).join('\n')+'\n';
+  const _uA=(_sitesOrd.find(s=>/andros/i.test(s[0]))||[])[1], _uH=(_sitesOrd.find(s=>!/andros/i.test(s[0]))||[])[1];
+  const sitesHtml=`<p style="${_FS}font-size:13px;color:#0c2434;margin:12px 0 0;line-height:1.6"><b>Liens de nos sites BtoB :</b>${_uA?`<br>Andros Sport : <a href="${_uA}">${_uA}</a>`:''}${_uH?`<br>Hydratis : <a href="${_uH}">${_uH}</a>`:''}</p>`;
+  const _logo=(u,n,w)=>u?`<a href="${u}" target="_blank" style="text-decoration:none"><img src="${MAILER_URL}/sig/${n}.png" width="140" alt="${w}" style="display:block;border:0;margin:0 auto 12px;height:auto"></a>`:'';
+  const signature=`\n\nBien cordialement,\n\n${_r.nom}\n${_r.poste} - Pôle Nutrition & Hydratation - Magnitude\nMob : ${_r.tel}\n${_r.mail}\n${sitesTxt}`;
+  const signatureHtml=`<p style="${_FS}font-size:15px;margin:18px 0 0">Bien cordialement,</p><table role="presentation" cellspacing="0" cellpadding="0" style="margin-top:6px"><tr><td style="padding:0 16px 0 0;vertical-align:top"><img src="${MAILER_URL}/sig/${_rkey}.png" width="199" alt="${_r.nom}, ${_r.poste}, Magnitude. Mob ${_r.tel}. ${_r.mail}" style="display:block;border:0;height:auto"></td><td width="3" bgcolor="#3f8fd0" style="width:3px;background:#3f8fd0;background:linear-gradient(180deg,#a7da20,#1b4fb0);font-size:0;line-height:0">&nbsp;</td><td style="padding:0 0 0 16px;vertical-align:top;text-align:center"><div style="${_FS}font-size:15px;line-height:1;font-weight:700;color:#0c2434;margin:0 0 12px">Sites BtoB</div>${_logo(_uA,'andros','Andros Sport')}${_logo(_uH,'hydratis','Hydratis')}</td></tr></table>${sitesHtml}`;
   let intro,outro;
   if(!MODE_CS){
     intro=multi
@@ -2180,10 +2192,6 @@ async function submitOrder(){
     intro = (csMsgResolved(_lx) ? _m : csGreetLine()+'\n\n'+_m)+'\n\n'; outro = '';
   }
 
-  const SITES_BTOB=[['Andros Sport','https://andros-sport.pages.dev'],['Hydratis',docs.every(d=>d.IS_ITS)?'https://hydratis-its.pages.dev':'https://hydratis-bdc.pages.dev']];
-  const sitesTxt='\nVos bons de commande en ligne :\n'+SITES_BTOB.map(([n,u])=>`  • ${n} : ${u}`).join('\n')+'\n';
-  const sitesHtml='<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#133F49;margin:14px 0 0"><strong>Vos bons de commande en ligne :</strong><br>'+
-    SITES_BTOB.map(([n,u])=>`${n} : <a href="${u}" target="_blank" style="color:#133F49">${u}</a>`).join('<br>')+'</p>';
 
   if(lotN>1){
     const rest = lotN-lotI-1, plage = multiOut ? ` (magasins ${docs[0].storeN} à ${docs[docs.length-1].storeN} sur ${nbTot})` : '';
@@ -2234,11 +2242,11 @@ async function submitOrder(){
     intro+corpsTxt+
     (avecPdf?'\n\n'+pjLigne:'')+
     (MODE_CS&&!CONF()?'\n\n👉 Valider la proposition en un clic : {{ACCEPT_URL}}':'')+
-    outro + (CONF()?'':sitesTxt);
+    outro + (CONF()||MODE_CS?'':signature);
   const buildHtml_orig=avecPdf=>{
     const h=preHtml(intro)+corpsHtml+
       (avecPdf?`<p style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:700;color:#133F49;background:#F0F9D6;border-radius:8px;padding:10px 12px;margin:14px 0 0;max-width:616px">${escHtml(pjLigne)}</p>`:'')+
-      (MODE_CS&&!CONF()?acceptBtnHtml+preHtml(outro.replace(/^\n+/,'')):preHtml(outro)) + (CONF()?'':sitesHtml);
+      (MODE_CS&&!CONF() ? acceptBtnHtml+preHtml(outro.replace(signature,'').replace(/^\n+/,''))+signatureHtml : preHtml(outro)) + (CONF()||MODE_CS?'':signatureHtml);
     return multi ? h : bt49Rouge(h, d0.bt49);
   };
 
@@ -2280,7 +2288,7 @@ async function submitOrder(){
       `<table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin:8px auto 0"><tr><td style="background:#7EA818;border-radius:10px"><a href="{{ACCEPT_URL}}" target="_blank" style="display:inline-block;padding:14px 26px;color:#ffffff;font-weight:800;font-size:16px;text-decoration:none;${F}">✅ Valider ou modifier ${multi ? 'mes propositions' : 'ma proposition'}</a></td></tr></table>` +
       `<p style="${F}font-size:13px;color:#445;text-align:center;margin:8px 0 0">${multi ? 'Vous pourrez valider tout ou une partie des magasins, ou modifier les quantités.' : 'Vous pourrez valider la proposition ou modifier les quantités.'}<br>Vous pouvez aussi répondre à cet e-mail.</p>` +
       `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:616px;margin:12px 0 4px"><tr><td align="center" style="${F}background:#fff7e6;border:1px solid #f0c36d;color:#7a5200;border-radius:9px;padding:10px 13px;font-size:14px">💡 <b>Pensez à valider ${multi ? 'vos propositions' : 'votre proposition'} via le bouton ci-dessus.</b><br>${multi ? 'Elles n\'ont' : 'Elle n\'a'} pas valeur de commande tant que vous ne l'avez pas validée${multi ? 's' : 'e'}.</td></tr></table>` +
-      preHtml(signature.replace(/^\n+/,''));
+      signatureHtml;
   };
   const buildBody_prop = propBody, buildHtml_prop = propHtml;
 
