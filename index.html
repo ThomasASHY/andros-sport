@@ -1913,7 +1913,7 @@ const fmtPU=n=>n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFraction
 
 // ===== ENVOI =====
 const escHtml=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const preHtml=s=>'<pre style="font-family:inherit;white-space:pre-wrap;margin:0">'+escHtml(s)+'</pre>';
+const preHtml=s=>'<pre style="font-family:Aptos,Calibri,Arial,sans-serif;white-space:pre-wrap;margin:0">'+escHtml(s)+'</pre>';
 const fieldVal=id=>document.getElementById(id).value.trim();
 const plural=(n,s)=>`${n} ${s}${n>1?'s':''}`;
 const SEP='────────────────────────────────';
@@ -2158,14 +2158,14 @@ async function submitOrder(){
   const _REPS={florian:{nom:'Florian DESCUNS',poste:'Représentant commercial',tel:'06 15 80 79 67',mail:'florian.d@magnitude.fr'},severine:{nom:'Séverine VANLERBERGHE',poste:'Représentante commerciale',tel:'06 46 98 27 67',mail:'severine.v@magnitude.fr'},stephane:{nom:'Stéphane LEFRAND',poste:'Représentant commercial',tel:'06 58 03 23 94',mail:'stephane.l@magnitude.fr'},thomas:{nom:'Thomas MINARD',poste:'Chef des ventes',tel:'07 66 25 99 46',mail:'thomas.m@magnitude.fr'},yoann:{nom:'Yoann PONCET',poste:'Représentant commercial',tel:'06 66 26 65 93',mail:'yoann.p@magnitude.fr'}};
   const _rk0=String(commerciaux[0]||'').toLowerCase().split('@')[0].split('.')[0].normalize('NFD').replace(/[̀-ͯ]/g,'');
   const _rkey=_REPS[_rk0]?_rk0:'thomas', _r=_REPS[_rkey];
-  const _FS='font-family:Segoe UI,Arial,sans-serif;';
+  const _FS='font-family:Aptos,Calibri,Arial,sans-serif;';
   const _sitesOrd=[...SITES_BTOB].sort((a,b)=>/andros/i.test(b[0])-/andros/i.test(a[0]));
   const sitesTxt='\nLiens de nos sites BtoB :\n'+_sitesOrd.map(([n,u])=>`  • ${n} : ${u}`).join('\n')+'\n';
   const _uA=(_sitesOrd.find(s=>/andros/i.test(s[0]))||[])[1], _uH=(_sitesOrd.find(s=>!/andros/i.test(s[0]))||[])[1];
   const sitesHtml=`<p style="${_FS}font-size:13px;color:#0c2434;margin:12px 0 0;line-height:1.6"><b>Liens de nos sites BtoB :</b>${_uA?`<br>Andros Sport : <a href="${_uA}">${_uA}</a>`:''}${_uH?`<br>Hydratis : <a href="${_uH}">${_uH}</a>`:''}</p>`;
   const _logo=(u,n,w)=>u?`<a href="${u}" target="_blank" style="text-decoration:none"><img src="${MAILER_URL}/sig/${n}.png" width="140" alt="${w}" style="display:block;border:0;margin:0 auto 12px;height:auto"></a>`:'';
   const signature=`\n\nBien cordialement,\n\n${_r.nom}\n${_r.poste} - Pôle Nutrition & Hydratation - Magnitude\nMob : ${_r.tel}\n${_r.mail}\n${sitesTxt}`;
-  const signatureHtml=`<p style="${_FS}font-size:15px;margin:18px 0 14px">Bien cordialement,</p><table role="presentation" cellspacing="0" cellpadding="0" style="margin-top:0"><tr><td style="padding:0 16px 0 0;vertical-align:top"><img src="${MAILER_URL}/sig/${_rkey}.png" width="199" alt="${_r.nom}, ${_r.poste}, Magnitude. Mob ${_r.tel}. ${_r.mail}" style="display:block;border:0;height:auto"></td><td width="3" bgcolor="#3f8fd0" style="width:3px;background:#3f8fd0;background:linear-gradient(180deg,#a7da20,#1b4fb0);font-size:0;line-height:0">&nbsp;</td><td style="padding:0 0 0 16px;vertical-align:top;text-align:center"><div style="${_FS}font-size:15px;line-height:1;font-weight:700;color:#0c2434;margin:0 0 12px">Sites BtoB</div>${_logo(_uA,'andros','Andros Sport')}${_logo(_uH,'hydratis','Hydratis')}</td></tr></table>${sitesHtml}`;
+  const signatureHtml=`<div style="font-size:15px;line-height:20px">&nbsp;</div><p style="${_FS}font-size:15px;margin:0">Bien cordialement,</p><div style="font-size:15px;line-height:20px">&nbsp;</div><div style="font-size:15px;line-height:20px">&nbsp;</div><table role="presentation" cellspacing="0" cellpadding="0" style="margin-top:0"><tr><td style="padding:0 16px 0 0;vertical-align:top"><img src="${MAILER_URL}/sig/${_rkey}.png" width="199" alt="${_r.nom}, ${_r.poste}, Magnitude. Mob ${_r.tel}. ${_r.mail}" style="display:block;border:0;height:auto"></td><td width="3" bgcolor="#3f8fd0" style="width:3px;background:#3f8fd0;background:linear-gradient(180deg,#a7da20,#1b4fb0);font-size:0;line-height:0">&nbsp;</td><td style="padding:0 0 0 16px;vertical-align:top;text-align:center"><div style="${_FS}font-size:15px;line-height:1;font-weight:700;color:#0c2434;margin:0 0 12px">Sites BtoB</div>${_logo(_uA,'andros','Andros Sport')}${_logo(_uH,'hydratis','Hydratis')}</td></tr></table>${sitesHtml}`;
   let intro,outro;
   if(!MODE_CS){
     intro=multi
